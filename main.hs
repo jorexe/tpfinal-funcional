@@ -22,10 +22,10 @@ main= do
   id <- statusbarGetContextId txtstack "Line"
 
   widgetShowAll window
-  widgetSetSensitivity button False
+  --widgetSetSensitivity button False
 
   onEntryActivate txtfield (saveText txtfield button txtstack id)
-  onPressed button (statusbarPop txtstack id)
+  onPressed button (putStrLn "button clicked")
   onDestroy window mainQuit
   mainGUI
 

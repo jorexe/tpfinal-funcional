@@ -1,3 +1,4 @@
 #!/bin/bash
-ghc --make main2.hs -o app
+rm -rf app
+ghc --make main.hs -o app
 ./app

@@ -1,0 +1,56 @@
+import Graphics.UI.Gtk
+
+main :: IO ()
+main= do
+  initGUI
+  window <- windowNew
+  set window [windowTitle := "Text Editor", containerBorderWidth := 0,windowDefaultWidth := 800, windowDefaultHeight := 400]
+
+  vb <- vBoxNew False 0
+  containerAdd window vb
+
+  hb <- hBoxNew False 0
+  boxPackStart vb hb PackNatural 0
+
+  txtfield <- textViewNew
+  boxPackStart hb txtfield PackGrow 2
+ 
+--lo ultimo
+ --button <- buttonNewFromStock stockInfo	
+
+  --onClicked button (putStrLn "button clicked")
+
+--box    <- labelBox "./diskette.png" "cool button"
+
+--boxPackStart hb button PackNatural 0
+  txtstack <- statusbarNew
+  boxPackStart vb txtstack PackNatural 0
+  id <- statusbarGetContextId txtstack "Line"
+
+  widgetShowAll window
+  onDestroy window mainQuit
+  mainGUI
+
+labelBox :: FilePath -> String -> IO HBox
+labelBox fn txt = do
+  box   <- hBoxNew False 0
+  set box [containerBorderWidth := 2]
+  image <- imageNewFromFile fn
+  label <- labelNew (Just txt)
+  boxPackStart box image PackNatural 3
+  boxPackStart box label PackNatural 3
+  return box
+
+saveText :: Entry -> Button -> Statusbar -> ContextId -> IO ()
+saveText fld b stk id = do
+    txt <- entryGetText fld
+    let mesg | txt == reverse txt = "\"" ++ txt ++ "\""  ++
+                                    " is equal to its reverse"
+             | otherwise =  "\"" ++ txt ++ "\""  ++
+                            " is not equal to its reverse"
+    widgetSetSensitivity b True
+    msgid <- statusbarPush stk id mesg
+    return ()
+
+
+
