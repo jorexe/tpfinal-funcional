@@ -12,7 +12,7 @@ main= do
   hb <- hBoxNew False 0
   boxPackStart vb hb PackNatural 0
 
-  txtfield <- entryNew
+  txtfield <- textViewNew
   boxPackStart hb txtfield PackNatural 5
   button <- buttonNewFromStock stockInfo
   boxPackStart hb button PackNatural 0
@@ -24,7 +24,7 @@ main= do
   widgetShowAll window
   --widgetSetSensitivity button False
 
-  onEntryActivate txtfield (saveText txtfield button txtstack id)
+  --onEntryActivate txtfield (saveText txtfield button txtstack id)
   onPressed button (putStrLn "button clicked")
   onDestroy window mainQuit
   mainGUI

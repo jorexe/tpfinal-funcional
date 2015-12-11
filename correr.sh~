@@ -1,4 +1,4 @@
 #!/bin/bash
 rm -rf app
-ghc --make main3.hs -o app
+ghc --make main2.hs -o app
 ./app
