@@ -2,40 +2,57 @@ import Graphics.UI.Gtk
 
 main :: IO ()
 main= do
-  initGUI
-  window <- windowNew
-  set window [windowTitle := "Text Editor", containerBorderWidth := 0,windowDefaultWidth := 800, windowDefaultHeight := 400]
+	initGUI
+	window <- windowNew
+	set window [windowTitle := "Text Editor", containerBorderWidth := 0,windowDefaultWidth := 800, windowDefaultHeight := 400]
+	--We need to set the window color to white (RGB format)
+	widgetModifyBg window StateNormal (Color 0xFFFF 0xFFFF 0xFFFF)
+	--Menu
+	newfile <- actionNew "NEW_FILE" "New"     (Just "Create a new file.") (Just stockNew)
+	openfile <- actionNew "OPEN_FILE" "Open"    (Just "Open an existing file.") (Just stockOpen)
+	savefile <- actionNew "SAVE_FILE" "Save"    (Just "Save the current file.") (Just stockSave)
+	copytext <- actionNew "COPY_TEXT" "Copy"  (Just "Copy text to clipboard.") (Just stockCopy)
+	pastetext <- actionNew "PASTE_TEXT" "Paste" (Just "Paste clipboard.") (Just stockPaste)
+	quitapp <- actionNew "QUIT" "Exit"    (Just "Quit the editor.") (Just stockQuit)
 
-  vb <- vBoxNew False 0
-  containerAdd window vb
+	defaultgroup <- actionGroupNew "DEFAULT_GROUP"
+	mapM_ (actionGroupAddAction defaultgroup) [savefile, copytext, pastetext, newfile, openfile, quitapp]
 
-  hb <- hBoxNew False 0
-  boxPackStart vb hb PackNatural 0
+	uimanager <- uiManagerNew
+	uiManagerAddUiFromString uimanager uitemplate
+	uiManagerInsertActionGroup uimanager defaultgroup 0
 
-  txtfield <- textViewNew
-  boxPackStart hb txtfield PackGrow 2
-  --button <- buttonNewFromStock stockInfo
-  --boxPackStart hb button PackNatural 0
+	maybeToolbar <- uiManagerGetWidget uimanager "/ui/toolbar"
+	let toolbar = case maybeToolbar of
+						(Just x) -> x
+						Nothing -> error "Cannot get toolbar from string." 
+	--Bind de botones
+	--actionSetSensitive cuta False
+	onActionActivate quitapp (widgetDestroy window)
+	mapM_ printexample [newfile,openfile,savefile,copytext,pastetext,quitapp]
 
-  txtstack <- statusbarNew
-  boxPackStart vb txtstack PackNatural 0
-  id <- statusbarGetContextId txtstack "Line"
+	--BoxContainer
+	vb <- vBoxNew False 0
+	containerAdd window vb
 
-  widgetShowAll window
-  --widgetSetSensitivity button False
+	boxPackStart vb toolbar PackNatural 2
+	hseparator <- hSeparatorNew
+	boxPackStart vb hseparator PackNatural 2
 
-  --onEntryActivate txtfield (saveText txtfield button txtstack id)
-  --onPressed button (statusbarPop txtstack id)
-  onDestroy window mainQuit
-  mainGUI
 
-saveText :: Entry -> Button -> Statusbar -> ContextId -> IO ()
-saveText fld b stk id = do
-    txt <- entryGetText fld
-    let mesg | txt == reverse txt = "\"" ++ txt ++ "\""  ++
-                                    " is equal to its reverse"
-             | otherwise =  "\"" ++ txt ++ "\""  ++
-                            " is not equal to its reverse"
-    widgetSetSensitivity b True
-    msgid <- statusbarPush stk id mesg
-    return ()
+	--TextView
+	textview <- textViewNew
+	boxPackStart vb textview PackGrow 4
+	textViewSetWrapMode textview WrapChar
+
+
+	widgetShowAll window
+
+	onDestroy window mainQuit
+	mainGUI
+
+uitemplate = "<ui><toolbar><toolitem action=\"NEW_FILE\" /><toolitem action=\"OPEN_FILE\" /><toolitem action=\"SAVE_FILE\" /><separator /><toolitem action=\"COPY_TEXT\" /><toolitem action=\"PASTE_TEXT\" /><separator /><toolitem action=\"QUIT\" /></toolbar></ui>"
+
+printexample :: ActionClass self => self -> IO (ConnectId self)
+printexample a = onActionActivate a $ do name <- actionGetName a
+                                         putStrLn ("Action Name: " ++ name)
