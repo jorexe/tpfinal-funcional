@@ -1,4 +1,4 @@
-import Graphics.UI.Gtk.Glade
+import Graphics.UI.Gtk
 
 main :: IO ()
 main = do
