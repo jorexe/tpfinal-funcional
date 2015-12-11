@@ -8,6 +8,7 @@ main = do
   initGUI
   window <- windowNew
   button <- buttonNew
+
   set window [windowDefaultWidth := 800, windowDefaultHeight := 400,
               containerChild := button, containerBorderWidth := 10]
   onClicked button (hello button)
