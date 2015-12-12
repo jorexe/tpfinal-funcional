@@ -1,6 +1,6 @@
 # tpfinal-funcional
 Se toma como base el tutorial: http://www.muitovar.com/gtk2hs/index.html
-
+Se emplea la librería gráfica GTK2HS.
 ## Funcionalidades básicas
 Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a hacer CTRL+C).
 
