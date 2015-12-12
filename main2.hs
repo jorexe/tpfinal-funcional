@@ -1,4 +1,5 @@
 import Graphics.UI.Gtk
+import Control.Monad.IO.Class
 
 main :: IO ()
 main= do
@@ -46,6 +47,23 @@ main= do
     boxPackStart vb textview PackGrow 4
     textViewSetWrapMode textview WrapChar
 
+
+    buffer <- get textview textViewBuffer
+    tags <- textBufferGetTagTable buffer
+    kindaRedItalic <- textTagNew Nothing
+    set kindaRedItalic [
+      textTagStyle := StyleItalic,
+      textTagForegroundSet := True,
+      --textTagForegroundGdk := Color 30000 0 0 ]
+      textTagForeground := ("red" :: String) ]
+
+    textTagTableAdd tags kindaRedItalic
+    textview `on` keyPressEvent $ tryEvent $ do
+      [Control] <- eventModifier
+      "i" <- eventKeyName
+      liftIO $ do
+        (start, end) <- textBufferGetSelectionBounds buffer
+        textBufferApplyTag buffer kindaRedItalic start end
 
     widgetShowAll window
 
