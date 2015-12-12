@@ -17,6 +17,9 @@ La idea es que se vea forma similar a como lo realiza gedit.
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/gedit_haskell.png)
 
+Para lograr esto, cada palabra se pondrá en un label y, dependiendo del tipo de elemento de la sintaxis que representa, se le asignará un color. Para el coloreado de un label: http://www.muitovar.com/gtk2hs/chap5-3.html.
+Para juntar multiples labels se utiliza "packing":http://www.muitovar.com/gtk2hs/chap3-2.html.
+
 ## Corrector ortográfico
 Para detectar las palabras mal escritas, se emplea la librería Aspell para Haskell :https://hackage.haskell.org/package/haspell-1.1.0/docs/doc-index.html
 
