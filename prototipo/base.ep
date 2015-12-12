@@ -30,7 +30,7 @@
             </defs>
             <rect width="89" height="23" rx="3" ry="3" x="0.5" y="0.5" style="fill: url(&quot;#00292a6bf5aa4cbf988907a3e4231379&quot;) none; stroke: rgb(161, 150, 133); stroke-width: 1; stroke-linejoin: round; stroke-opacity: 1;" p:name="rect" id="333c0bc5a6c54608b6b8eae073169489"/>
             <text x="31.5" y="17.25" style="font-size: 12px; font-style: normal; font-weight: normal; text-align: left; text-anchor: start; dominant-baseline: central; fill: rgb(0, 0, 0); font-family: Liberation Sans; fill-opacity: 1; text-decoration: none;" xml:space="preserve" p:name="text" id="dede3707bd404d8986c6c3f66748606d" transform="translate(-9,-5)">Guardar</text>
-        </g><g xmlns="http://www.w3.org/2000/svg" p:type="Shape" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:def="Evolus.GTK.Widgets:Button" id="398828733dc746739b0e7d53e0ca3488" transform="matrix(1,0,0,1,196,28)"><p:metadata><p:property name="box"><![CDATA[90,24]]></p:property><p:property name="buttonText"><![CDATA[Corrección]]></p:property><p:property name="textColor"><![CDATA[#000000FF]]></p:property><p:property name="textFont"><![CDATA[Liberation Sans|normal|normal|12px|none]]></p:property><p:property name="textAlign"><![CDATA[1,1]]></p:property><p:property name="disabled"><![CDATA[false]]></p:property></p:metadata>
+        </g><g xmlns="http://www.w3.org/2000/svg" p:type="Shape" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:def="Evolus.GTK.Widgets:Button" id="398828733dc746739b0e7d53e0ca3488" transform="matrix(1,0,0,1,297,28)"><p:metadata><p:property name="box"><![CDATA[90,24]]></p:property><p:property name="buttonText"><![CDATA[Corrección]]></p:property><p:property name="textColor"><![CDATA[#000000FF]]></p:property><p:property name="textFont"><![CDATA[Liberation Sans|normal|normal|12px|none]]></p:property><p:property name="textAlign"><![CDATA[1,1]]></p:property><p:property name="disabled"><![CDATA[false]]></p:property></p:metadata>
             
             <defs>
                 <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" p:name="linearFill" id="55307b5c5c6e429186ad00b7f53819b3">
@@ -75,4 +75,15 @@
             <foreignObject x="0" y="0" width="12" height="171" p:name="htmlObject" id="7515cb6232c940d0b8b16e769da59951" style="color: rgb(0, 0, 0); opacity: 1; font-family: &quot;Liberation Sans&quot;,Arial,sans-serif; font-size: 13px; font-weight: normal; font-style: normal; text-decoration: none;">
                 <div xmlns="http://www.w3.org/1999/xhtml" p:name="textDiv" id="802fdd640b51451cbe87f647ad7f6981" style="display: inline-block; width: 12px; text-decoration: none;"><div xmlns="http://www.w3.org/1999/xhtml"><font size="3"><span style="font-weight: bold;">1 2 3 4 5 6 7 8 9 <br /></span></font></div></div>
             </foreignObject>
+        </g><g xmlns="http://www.w3.org/2000/svg" p:type="Shape" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:def="Evolus.GTK.Widgets:Button" id="cb80612d65904b8595c6f790a1d0d217" transform="matrix(1,0,0,1,199,28)"><p:metadata><p:property name="box"><![CDATA[90,24]]></p:property><p:property name="buttonText"><![CDATA[Pegar]]></p:property><p:property name="textColor"><![CDATA[#000000FF]]></p:property><p:property name="textFont"><![CDATA[Liberation Sans|normal|normal|12px|none]]></p:property><p:property name="textAlign"><![CDATA[1,1]]></p:property><p:property name="disabled"><![CDATA[false]]></p:property></p:metadata>
+            
+            <defs>
+                <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" p:name="linearFill" id="44fee91f8b514fa1b28018bafac8ee32">
+                    <stop style="stop-color:#fdfdfc;stop-opacity:1" offset="0" p:name="stop1" id="95ed34995d6f4289b81f3c081bc11563"/>
+                    <stop style="stop-color: rgb(235, 235, 235); stop-opacity: 1;" offset="0.7" p:name="stop2" id="61169e4ed6204418b8b82a585d26f755"/>
+                    <stop style="stop-color: rgb(252, 252, 252); stop-opacity: 1;" offset="1" p:name="stop3" id="a7ab0d9923484c1da510d9ea7a77cc4f"/>
+                </linearGradient>
+            </defs>
+            <rect width="89" height="23" rx="3" ry="3" x="0.5" y="0.5" style="fill: url(#44fee91f8b514fa1b28018bafac8ee32) none; stroke: rgb(161, 150, 133); stroke-width: 1; stroke-linejoin: round; stroke-opacity: 1;" p:name="rect" id="a7f73c4f4cd8411abcd4974c6ed0ddbb"/>
+            <text x="31.5" y="17.25" style="font-size: 12px; font-style: normal; font-weight: normal; text-align: left; text-anchor: start; dominant-baseline: central; fill: rgb(0, 0, 0); font-family: Liberation Sans; fill-opacity: 1; text-decoration: none;" xml:space="preserve" p:name="text" id="8d50f4ebdcb942ff9a8cd4c30dd296f9" transform="translate(-3,-5)">Pegar</text>
         </g></Content></Page></Pages></Document>

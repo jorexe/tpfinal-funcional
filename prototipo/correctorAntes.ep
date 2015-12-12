@@ -163,4 +163,15 @@
             <foreignObject x="0" y="0" width="176" height="15" p:name="htmlObject" id="09ab1e18ca2a4c57899f94cd09a271be" style="color: rgb(0, 0, 0); opacity: 1; font-family: &quot;Liberation Sans&quot;,Arial,sans-serif; font-size: 13px; font-weight: normal; font-style: normal; text-decoration: none;">
                 <div xmlns="http://www.w3.org/1999/xhtml" p:name="textDiv" id="ee2ad8d6ad414c659910daf9a86de79d" style="display: inline-block; white-space: nowrap; text-decoration: none;"><div xmlns="http://www.w3.org/1999/xhtml"> . La anterior palabra no existe.</div></div>
             </foreignObject>
+        </g><g xmlns="http://www.w3.org/2000/svg" p:type="Shape" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:def="Evolus.GTK.Widgets:Button" id="6c36d621ec82486ca23f33beddf23568" transform="matrix(1,0,0,1,289,28)"><p:metadata><p:property name="box"><![CDATA[109,24]]></p:property><p:property name="buttonText"><![CDATA[Salir de corrección]]></p:property><p:property name="textColor"><![CDATA[#000000FF]]></p:property><p:property name="textFont"><![CDATA[Liberation Sans|normal|normal|12px|none]]></p:property><p:property name="textAlign"><![CDATA[1,1]]></p:property><p:property name="disabled"><![CDATA[false]]></p:property></p:metadata>
+            
+            <defs>
+                <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" p:name="linearFill" id="ae9be832fc8d4bf48c7d8abca481c842">
+                    <stop style="stop-color:#fdfdfc;stop-opacity:1" offset="0" p:name="stop1" id="598940c16e954eeebe5693ba51841425"/>
+                    <stop style="stop-color: rgb(235, 235, 235); stop-opacity: 1;" offset="0.7" p:name="stop2" id="9be3bd97a3de4e2087d47661081a9fbd"/>
+                    <stop style="stop-color: rgb(252, 252, 252); stop-opacity: 1;" offset="1" p:name="stop3" id="adb761efd9d446a3ab6fcea54e100a89"/>
+                </linearGradient>
+            </defs>
+            <rect width="108" height="23" rx="3" ry="3" x="0.5" y="0.5" style="fill: url(#ae9be832fc8d4bf48c7d8abca481c842) none; stroke: rgb(161, 150, 133); stroke-width: 1; stroke-linejoin: round; stroke-opacity: 1;" p:name="rect" id="6fffd8e940e642f6a75591a2ae19ffd3"/>
+            <text x="31.5" y="17.25" style="font-size: 12px; font-style: normal; font-weight: normal; text-align: left; text-anchor: start; dominant-baseline: central; fill: rgb(0, 0, 0); font-family: Liberation Sans; fill-opacity: 1; text-decoration: none;" xml:space="preserve" p:name="text" id="e09843bd9b0143819ab2efe45e8c5725" transform="translate(-28,-5)">Salir de corrección</text>
         </g></Content></Page></Pages></Document>
