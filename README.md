@@ -6,7 +6,7 @@ Abrir archivo (con ventana de dialogo), guardarlo, editarlo.
 
 ## Ventana principal que contiene el texto
 El texto del documento se carga en un label con letra negra.
-![Alt text](/prototipo/base.jpg)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/base.jpg)
 ## Resaltador de sintaxis de haskell
 https://wiki.haskell.org/Parsing_expressions_and_statements
 https://www.haskell.org/onlinereport/syntax-iso.html
@@ -20,10 +20,10 @@ Para resaltar las palabras mal escritas se separa la palabra errónea en un labe
 Antes de tocar el botón del corrector:
 
 	
-![Alt text](/prototipo/antes.jpg)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/antes.jpg)
 
 Después de tocar el botón del corrector.
 
-![Alt text](/prototipo/despues.jpg)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/despues.jpg)
 
 ## Abrir archivo
