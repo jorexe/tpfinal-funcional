@@ -1,0 +1,4 @@
+language: haskell
+install: "./setupEnviroment.sh"
+script:  "./correr.sh"
+
