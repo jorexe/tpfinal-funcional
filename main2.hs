@@ -47,9 +47,7 @@ main= do
     textview <- textViewNew
     boxPackStart vb textview PackGrow 4
     textViewSetWrapMode textview WrapChar
-    -- txtBuffer <- textViewGetBuffer textview
-    --textBufferSetText txtBuffer "pepe"
-    openFile "archivoPrueba.txt" textview	
+    readFileIntoTextView "archivoPrueba.txt" textview	
 
     buffer <- get textview textViewBuffer
     tags <- textBufferGetTagTable buffer
