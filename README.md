@@ -35,5 +35,11 @@ Si se presiona el botón "Salir de corrección" se vuelve al estado inicial.
 NOTA:no se puede editar mientras se este en modo de correción.
 
 ## Abrir archivo
-Se emplea la función readFile de Haskell.
+Se abre una ventana que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se emplea la función readFile de Haskell. Luego se carga el contenido del archivo en el buffer de la ventana de edición de texto (TextView).
+
+## Guardar un archivo
+Se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Después se emplea la función writeFile de Haskell para guardar el contenido de la ventana de edición de texto (TextView) en el archivo. 
+
+## Nuevo archivo.
+Se borra el contenido del buffer de la ventana de edición de texto.
 

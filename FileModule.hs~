@@ -23,11 +23,21 @@ readFileIntoTextView fileName txtView=
 writeFileFromTextView:: FilePath -> TextView -> IO ()
 writeFileFromTextView fileName txtView=
 		do	putStrLn ("Saving file: " ++ fileName)
-			handle <- openFile fileName WriteMode
+			
   			txtBuffer <- textViewGetBuffer txtView
 			start <- textBufferGetStartIter txtBuffer
 			end <- textBufferGetEndIter txtBuffer
 			contents <- textBufferGetText txtBuffer start end False		
-			putStr contents
-			hClose handle
+			writeFile fileName contents
 			return ()
+
+
+--función que se emplea para la opción de "nuevo archivo".
+--newFile:: ActionClass self =>(self,TextView) -> IO (ConnectId self)
+newFile:: ActionClass self =>(self,TextView) -> IO ()
+newFile (a,txtView) =
+		do	txtBuffer <- textViewGetBuffer txtView
+			start <- textBufferGetStartIter txtBuffer
+			end <- textBufferGetEndIter txtBuffer
+			textBufferDelete txtBuffer start end
+			

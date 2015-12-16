@@ -30,3 +30,14 @@ writeFileFromTextView fileName txtView=
 			contents <- textBufferGetText txtBuffer start end False		
 			writeFile fileName contents
 			return ()
+
+
+--función que se emplea para la opción de "nuevo archivo".
+--newFile:: ActionClass self =>(self,TextView) -> IO (ConnectId self)
+createNewFile:: ActionClass self =>(self,TextView) -> IO ()
+createNewFile (a,txtView) =
+		do	txtBuffer <- textViewGetBuffer txtView
+			start <- textBufferGetStartIter txtBuffer
+			end <- textBufferGetEndIter txtBuffer
+			textBufferDelete txtBuffer start end
+			

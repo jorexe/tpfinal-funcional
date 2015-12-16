@@ -65,7 +65,8 @@ main= do
     --Bind de botones
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
-    mapM_ printexample [newfile,copytext,pastetext,quitapp]
+    mapM_ printexample [copytext,pastetext,quitapp]
+    mapM_ createNewFile [(newfile,textview)]
     mapM_ savedisplaydialog [(savefile,textview)]
     mapM_ loaddisplaydialog [(openfile,textview)]
     widgetShowAll window

@@ -65,7 +65,8 @@ main= do
     --Bind de botones
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
-    mapM_ printexample [newfile,copytext,pastetext,quitapp]
+    mapM_ printexample [copytext,pastetext,quitapp]
+    mapM_ newFile [(newfile,textview)]
     mapM_ savedisplaydialog [(savefile,textview)]
     mapM_ loaddisplaydialog [(openfile,textview)]
     widgetShowAll window
@@ -89,7 +90,7 @@ savedisplaydialog (a,textview) = onActionActivate a $ do
                     ResponseCancel -> putStrLn "You cancelled..."
                     ResponseAccept -> do nwf <- fileChooserGetFilename fchdal
                                          case nwf of Nothing -> putStrLn "Nothing" 
-                                                     Just path -> writeFileFromTextView path textView
+                                                     Just path -> writeFileFromTextView path textview
                     ResponseUser 100 -> putStrLn "You pressed the backup button"
                     ResponseDeleteEvent -> putStrLn "You closed the dialog window..."
 
