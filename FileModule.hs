@@ -17,3 +17,16 @@ readFileIntoTextView fileName txtView=
 		  	putStr contents
 			hClose handle
 			return ()
+
+--recibe el string del nombre del archivo y el textview.
+--No reterna nada. Inserta el texto del buffer del textview al archivo.
+writeFileFromTextView:: FilePath -> TextView -> IO ()
+writeFileFromTextView fileName txtView=
+		do	putStrLn ("Saving file: " ++ fileName)
+			
+  			txtBuffer <- textViewGetBuffer txtView
+			start <- textBufferGetStartIter txtBuffer
+			end <- textBufferGetEndIter txtBuffer
+			contents <- textBufferGetText txtBuffer start end False		
+			writeFile fileName contents
+			return ()

@@ -28,12 +28,7 @@ main= do
     let toolbar = case maybeToolbar of
                         (Just x) -> x
                         Nothing -> error "Cannot get toolbar from string." 
-    --Bind de botones
-    --actionSetSensitive cuta False
-    onActionActivate quitapp (widgetDestroy window)
-    mapM_ printexample [newfile,copytext,pastetext,quitapp]
-    mapM_ savedisplaydialog [savefile]
-    mapM_ loaddisplaydialog [openfile]
+    
     --BoxContainer
     vb <- vBoxNew False 0
     containerAdd window vb
@@ -47,6 +42,7 @@ main= do
     textview <- textViewNew
     boxPackStart vb textview PackGrow 4
     textViewSetWrapMode textview WrapChar
+    --borrar luego la siguiente linea, es para testing. abre un archivo 
     readFileIntoTextView "archivoPrueba.txt" textview	
 
     buffer <- get textview textViewBuffer
@@ -65,7 +61,13 @@ main= do
       liftIO $ do
         (start, end) <- textBufferGetSelectionBounds buffer
         textBufferApplyTag buffer kindaRedItalic start end
-
+    
+    --Bind de botones
+    --actionSetSensitive cuta False
+    onActionActivate quitapp (widgetDestroy window)
+    mapM_ printexample [newfile,copytext,pastetext,quitapp]
+    mapM_ savedisplaydialog [(savefile,textview)]
+    mapM_ loaddisplaydialog [(openfile,textview)]
     widgetShowAll window
 
     onDestroy window mainQuit
@@ -77,8 +79,8 @@ printexample :: ActionClass self => self -> IO (ConnectId self)
 printexample a = onActionActivate a $ do name <- actionGetName a
                                          putStrLn ("Action Name: " ++ name)
 
-savedisplaydialog :: ActionClass self => self -> IO (ConnectId self)
-savedisplaydialog a = onActionActivate a $ do
+savedisplaydialog :: ActionClass self =>(self,TextView) -> IO (ConnectId self)
+savedisplaydialog (a,textview) = onActionActivate a $ do
                 fchdal <- fileChooserDialogNew (Just "Save As...Dialog") Nothing FileChooserActionSave [("Cancel", ResponseCancel), ("Save", ResponseAccept), ("Backup", ResponseUser 100)]
                 fileChooserSetDoOverwriteConfirmation fchdal True
                 widgetShow fchdal
@@ -87,14 +89,14 @@ savedisplaydialog a = onActionActivate a $ do
                     ResponseCancel -> putStrLn "You cancelled..."
                     ResponseAccept -> do nwf <- fileChooserGetFilename fchdal
                                          case nwf of Nothing -> putStrLn "Nothing" 
-                                                     Just path -> putStrLn ("Saving file:\n" ++ path)
+                                                     Just path -> writeFileFromTextView path textView
                     ResponseUser 100 -> putStrLn "You pressed the backup button"
                     ResponseDeleteEvent -> putStrLn "You closed the dialog window..."
 
                 widgetDestroy fchdal
 
-loaddisplaydialog :: ActionClass self => self -> IO (ConnectId self)
-loaddisplaydialog a = onActionActivate a $ do
+loaddisplaydialog :: ActionClass self => (self,TextView) -> IO (ConnectId self)
+loaddisplaydialog (a,textview) = onActionActivate a $ do
                 fchdal <- fileChooserDialogNew (Just "Load As...Dialog") Nothing FileChooserActionOpen [("Cancel", ResponseCancel), ("Open", ResponseAccept), ("Backup", ResponseUser 100)]
                 --fileChooserSetDoOverwriteConfirmation fchdal True
                 widgetShow fchdal
@@ -104,6 +106,7 @@ loaddisplaydialog a = onActionActivate a $ do
                     ResponseAccept -> do nwf <- fileChooserGetFilename fchdal
                                          case nwf of Nothing -> putStrLn "Nothing" 
                                                      Just path -> readFileIntoTextView path textview
+
                     ResponseUser 100 -> putStrLn "You pressed the backup button"
                     ResponseDeleteEvent -> putStrLn "You closed the dialog window..."
 
