@@ -1,5 +1,6 @@
 import Graphics.UI.Gtk
 import Control.Monad.IO.Class
+import FileModule
 
 main :: IO ()
 main= do
@@ -46,7 +47,9 @@ main= do
     textview <- textViewNew
     boxPackStart vb textview PackGrow 4
     textViewSetWrapMode textview WrapChar
-
+    -- txtBuffer <- textViewGetBuffer textview
+    --textBufferSetText txtBuffer "pepe"
+    openFile "archivoPrueba.txt" textview	
 
     buffer <- get textview textViewBuffer
     tags <- textBufferGetTagTable buffer
