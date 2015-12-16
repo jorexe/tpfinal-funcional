@@ -9,7 +9,8 @@ import System.IO
 --No reterna nada. Inserta el texto del archivo en el buffer del textview.
 readFileIntoTextView:: FilePath -> TextView -> IO ()
 readFileIntoTextView fileName txtView=
-		do	handle <- openFile fileName ReadMode
+		do	putStrLn ("Opening file: " ++ fileName)
+			handle <- openFile fileName ReadMode
   			contents <- hGetContents handle
 			txtBuffer <- textViewGetBuffer txtView
    			textBufferSetText txtBuffer contents

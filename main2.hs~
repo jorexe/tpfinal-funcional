@@ -47,8 +47,6 @@ main= do
     textview <- textViewNew
     boxPackStart vb textview PackGrow 4
     textViewSetWrapMode textview WrapChar
-    -- txtBuffer <- textViewGetBuffer textview
-    --textBufferSetText txtBuffer "pepe"
     readFileIntoTextView "archivoPrueba.txt" textview	
 
     buffer <- get textview textViewBuffer
@@ -89,7 +87,7 @@ savedisplaydialog a = onActionActivate a $ do
                     ResponseCancel -> putStrLn "You cancelled..."
                     ResponseAccept -> do nwf <- fileChooserGetFilename fchdal
                                          case nwf of Nothing -> putStrLn "Nothing" 
-                                                     Just path -> putStrLn ("New file path is:\n" ++ path)
+                                                     Just path -> putStrLn ("Saving file:\n" ++ path)
                     ResponseUser 100 -> putStrLn "You pressed the backup button"
                     ResponseDeleteEvent -> putStrLn "You closed the dialog window..."
 
@@ -97,7 +95,7 @@ savedisplaydialog a = onActionActivate a $ do
 
 loaddisplaydialog :: ActionClass self => self -> IO (ConnectId self)
 loaddisplaydialog a = onActionActivate a $ do
-                fchdal <- fileChooserDialogNew (Just "Save As...Dialog") Nothing FileChooserActionOpen [("Cancel", ResponseCancel), ("Open", ResponseAccept), ("Backup", ResponseUser 100)]
+                fchdal <- fileChooserDialogNew (Just "Load As...Dialog") Nothing FileChooserActionOpen [("Cancel", ResponseCancel), ("Open", ResponseAccept), ("Backup", ResponseUser 100)]
                 --fileChooserSetDoOverwriteConfirmation fchdal True
                 widgetShow fchdal
                 response <- dialogRun fchdal
@@ -105,7 +103,7 @@ loaddisplaydialog a = onActionActivate a $ do
                     ResponseCancel -> putStrLn "You cancelled..."
                     ResponseAccept -> do nwf <- fileChooserGetFilename fchdal
                                          case nwf of Nothing -> putStrLn "Nothing" 
-                                                     Just path -> putStrLn ("File path is:\n" ++ path)
+                                                     Just path -> readFileIntoTextView path textview
                     ResponseUser 100 -> putStrLn "You pressed the backup button"
                     ResponseDeleteEvent -> putStrLn "You closed the dialog window..."
 
