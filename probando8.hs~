@@ -1,12 +1,22 @@
 import Language.Aspell
+import qualified Data.ByteString as DBS
+import qualified Data.ByteString.Char8 as BC
+
+
+bytestringLang = BC.pack "es"
+bytestringWords =BC.pack "asdf"
 
 main= do
-checker <- unpack (spellCheckerWithDictionary "es")
-putStrLn (check checker "asdf")
+	aux <- spellCheckerWithDictionary bytestringLang
+	--el corrector ortografico queda en aux
+	let checker=unpack' aux 
+	if(check checker bytestringWords)
+		then
+		putStrLn ("spellcheck pass")
+	else
+		putStrLn ("spellcheck not passed")
 
 
-
-unpack::Either ByteString SpellChecker-> SpellChecker
-unpack (Right checker)=checker
-unpack (Left str)=error "invalid language"
-
+unpack'::Either BC.ByteString SpellChecker ->SpellChecker
+unpack' (Right checker)=checker
+unpack' (Left a)=error "Invalid value"
