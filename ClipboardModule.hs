@@ -1,15 +1,19 @@
-module ClipboardModule where
+module ClipboardModule(copyFromClipboard,pasteFromClipboard)  where
 
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.General.Clipboard
 import Control.Monad.IO.Class
 import System.IO
 
+
+-- se lee del clipboard de seleccion, luego se graba en el clipboard general
 copyFromClipboard:: ActionClass self => (self,TextView) -> IO (ConnectId self)
 copyFromClipboard (a, txtview) = onActionActivate a $
 		do	putStrLn ("Copy to clipboard")
-			--clipboard <-clipboardGet selectionClipboard
-			
+			readClipboard <-clipboardGet selectionPrimary
+			writeClipboard <-clipboardGet selectionClipboard
+			clipboardRequestText readClipboard (copyCallBack writeClipboard)
+--
 pasteFromClipboard:: ActionClass self => (self,TextView) -> IO (ConnectId self)
 pasteFromClipboard (a, txtview) = onActionActivate a $
 		do	putStrLn ("Paste from clipboard")
@@ -17,6 +21,8 @@ pasteFromClipboard (a, txtview) = onActionActivate a $
 			clipboardRequestText clipboard (pasteCallback txtview)
 
 
+
+--
 pasteCallback:: TextView -> Maybe String -> IO ()
 pasteCallback txtView (Just str)=
 			do	putStrLn (str)
@@ -24,3 +30,12 @@ pasteCallback txtView (Just str)=
    				textBufferInsertAtCursor txtBuffer str
 pasteCallback txtView Nothing = 
 			do return()
+
+
+
+--
+copyCallBack::Clipboard -> Maybe String -> IO ()
+copyCallBack writeClipboard (Just str)=
+			do 	clipboardSetText writeClipboard str
+copyCallBack writeClipboard Nothing=
+				do return()
