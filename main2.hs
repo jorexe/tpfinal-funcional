@@ -1,7 +1,7 @@
 import Graphics.UI.Gtk
 import Control.Monad.IO.Class
 import FileModule
-
+import ClipboardModule
 main :: IO ()
 main= do
     initGUI
@@ -65,7 +65,9 @@ main= do
     --Bind de botones
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
-    mapM_ printexample [copytext,pastetext,quitapp]
+    mapM_ printexample [quitapp]
+    mapM_ pasteFromClipboard [(pastetext,textview)]
+    mapM_ copyFromClipboard [(copytext,textview)]
     mapM_ createNewFile [(newfile,textview)]
     mapM_ savedisplaydialog [(savefile,textview)]
     mapM_ loaddisplaydialog [(openfile,textview)]
