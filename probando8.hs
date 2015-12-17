@@ -9,7 +9,9 @@ bytestringWords =BC.pack "hola"
 main= do
 	aux <- spellCheckerWithDictionary bytestringLang
 	--el corrector ortografico queda en aux
-	let checker=unpack' aux 
+	
+	let 	checker=unpack' aux
+		
 	if(check checker bytestringWords)
 		then
 		putStrLn ("spellcheck pass")

@@ -10,7 +10,6 @@ spellCheck::String ->IO Bool
 spellCheck string=do
 			aux <- spellCheckerWithDictionary bytestringLang
 			let 	checker=unpack' aux
-			bytestringWords =BC.pack string	
 		return (check checker bytestringWords)
 
 

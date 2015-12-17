@@ -3,13 +3,16 @@ import qualified Data.ByteString as DBS
 import qualified Data.ByteString.Char8 as BC
 
 
-bytestringLang = BC.pack "es"
-bytestringWords =BC.pack "asdf"
+
 
 main= do
-	aux <- spellCheckerWithDictionary bytestringLang
+	
 	--el corrector ortografico queda en aux
-	let checker=unpack' aux 
+	
+	let 	checker=unpack' aux
+		bytestringLang = BC.pack "es"
+		bytestringWords =BC.pack "hola"
+	aux <- spellCheckerWithDictionary bytestringLang
 	if(check checker bytestringWords)
 		then
 		putStrLn ("spellcheck pass")
