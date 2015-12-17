@@ -9,8 +9,9 @@ bytestringLang = BC.pack "es"
 spellCheck::String ->IO Bool
 spellCheck string=do
 			aux <- spellCheckerWithDictionary bytestringLang
-			let 	checker=unpack' aux
-		return (check checker bytestringWords)
+			let 	checker = unpack' aux
+			let 	bytestringWords =BC.pack string	
+			return check checker bytestringWords
 
 
 unpack'::Either BC.ByteString SpellChecker ->SpellChecker
