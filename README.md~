@@ -39,3 +39,7 @@ Se abre una ventana que permite elegir el archivo que se desea abrir. Una vez se
 
 ## Guardar un archivo
 Se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Después se emplea la función writeFile de Haskell para guardar el contenido de la ventana de edición de texto (TextView) en el archivo. 
+
+## Nuevo archivo.
+Se borra el contenido del buffer de la ventana de edición de texto.
+

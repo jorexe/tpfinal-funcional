@@ -5,7 +5,8 @@ Se emplea la librería gráfica GTK2HS.
 Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a hacer CTRL+C).
 
 ## Ventana principal que contiene el texto
-El texto del documento se carga en un TextView con letra negra.
+El texto del documento se carga en un TextView (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html)
+ con letra negra.
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/base.png)
 En la parte superior se encuentran botones con las funcionalidades. En el borde izquierdo se muestran los número de línea.
 
@@ -41,5 +42,5 @@ Se abre una ventana que permite elegir el archivo que se desea abrir. Una vez se
 Se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Después se emplea la función writeFile de Haskell para guardar el contenido de la ventana de edición de texto (TextView) en el archivo. 
 
 ## Nuevo archivo.
-Se borra el contenido del buffer de la ventana de edición de texto.
+Se borra el contenido del buffer (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextBuffer.html#v%3AtextBufferDelete) de la ventana de edición de texto.
 
