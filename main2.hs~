@@ -2,6 +2,8 @@ import Graphics.UI.Gtk
 import Control.Monad.IO.Class
 import FileModule
 import ClipboardModule
+import SpellingModule
+
 main :: IO ()
 main= do
     initGUI
@@ -42,8 +44,9 @@ main= do
     textview <- textViewNew
     boxPackStart vb textview PackGrow 4
     textViewSetWrapMode textview WrapChar
-    --borrar luego la siguiente linea, es para testing. abre un archivo 
+    --BORAR luego la siguiente linea, es para testing. abre un archivo 
     readFileIntoTextView "archivoPrueba.txt" textview	
+    markSpelling textview
 
     buffer <- get textview textViewBuffer
     tags <- textBufferGetTagTable buffer
@@ -65,7 +68,8 @@ main= do
     --Bind de botones
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
-    mapM_ printexample [pastetext,quitapp]
+    mapM_ printexample [quitapp]
+    mapM_ pasteFromClipboard [(pastetext,textview)]
     mapM_ copyFromClipboard [(copytext,textview)]
     mapM_ createNewFile [(newfile,textview)]
     mapM_ savedisplaydialog [(savefile,textview)]

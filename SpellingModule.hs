@@ -12,6 +12,7 @@ markSpelling:: TextView->IO()
 markSpelling txtview=do
 			txtBuffer <- textViewGetBuffer txtview
 			start <- textBufferGetStartIter txtBuffer
+			
 			end <- textBufferGetEndIter txtBuffer
 			contents <- textBufferGetText txtBuffer start end False	
 			tags <- textBufferGetTagTable txtBuffer
@@ -22,13 +23,17 @@ markSpelling txtview=do
 					textTagForeground := ("red" :: String) 
 					]
 			textTagTableAdd tags kindaRedItalic
-
-			markSpellingRec contents start end "" txtBuffer kindaRedItalic
+			end' <- textIterCopy start
+			markSpellingRec contents start end' "" txtBuffer kindaRedItalic
 --
 
 markSpellingRec:: [Char] -> TextIter ->TextIter ->String ->TextBuffer->TextTag->IO()
 markSpellingRec [] start end acum txtbuffer tag=return ()
-markSpellingRec (x:xs) start end acum txtbuffer tag= if (DC.isSpace x)
+markSpellingRec (x:xs) start end acum txtbuffer tag=do
+					startOffset'<-textIterGetOffset start
+					endOffset'<-textIterGetOffset end
+					putStrLn ("start"++(show startOffset')++" end"++(show endOffset') )					
+					if (DC.isSpace x)
 						then
 							do
 							spellPass<-spellCheck acum
@@ -36,9 +41,14 @@ markSpellingRec (x:xs) start end acum txtbuffer tag= if (DC.isSpace x)
 							--hay error de ortografia
 								then do
 									textIterBackwardChars end 1
+									auxStart <-textIterCopy end
+									startOffset<-textIterGetOffset start
+									endOffset<-textIterGetOffset end
+									putStrLn ("start"++(show startOffset)++" end"++(show endOffset) ++" error ortografico: "++acum)
+									--se marca el error
 									textBufferApplyTag txtbuffer tag start end
 									textIterForwardChars end 2
-									auxStart <-textIterCopy end
+									
 									markSpellingRec xs (auxStart) (end) "" txtbuffer tag
 								
 								else do
