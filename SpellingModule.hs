@@ -1,40 +1,53 @@
 module SpellingModule where
 
+import Graphics.UI.Gtk
+import Control.Monad.IO.Class
 import Language.Aspell
 import qualified Data.ByteString as DBS
 import qualified Data.ByteString.Char8 as BC
-
+import qualified Data.Char as DC
 bytestringLang = BC.pack "es"
 --
 markSpelling:: TextView->IO()
 markSpelling txtview=do
-			txtBuffer <- textViewGetBuffer txtView
+			txtBuffer <- textViewGetBuffer txtview
 			start <- textBufferGetStartIter txtBuffer
 			end <- textBufferGetEndIter txtBuffer
 			contents <- textBufferGetText txtBuffer start end False	
-			markSpellingRec contents start end "" txtBuffer
+			tags <- textBufferGetTagTable txtBuffer
+			kindaRedItalic <- textTagNew Nothing
+			set kindaRedItalic [
+      					textTagStyle := StyleItalic,
+      					textTagForegroundSet := True,
+					textTagForeground := ("red" :: String) 
+					]
+			textTagTableAdd tags kindaRedItalic
+
+			markSpellingRec contents start end "" txtBuffer kindaRedItalic
 --
 
-markSpellingRec:: [Char] -> TextIter ->TextIter ->String ->TextBuffer->IO()
-markSpellingRec [] start end acum txtbuffer=return IO()
-markSpellingRec (x:xs) start end acum txtbuffer= if (isSpace x)
+markSpellingRec:: [Char] -> TextIter ->TextIter ->String ->TextBuffer->TextTag->IO()
+markSpellingRec [] start end acum txtbuffer tag=return ()
+markSpellingRec (x:xs) start end acum txtbuffer tag= if (DC.isSpace x)
 						then
-							if not(speelCheck acum)
+							do
+							spellPass<-spellCheck acum
+							if (not spellPass)
 							--hay error de ortografia
 								then do
 									textIterBackwardChars end 1
-									textBufferApplyTag txtbuffer kindaRedItalic start end
+									textBufferApplyTag txtbuffer tag start end
 									textIterForwardChars end 2
 									auxStart <-textIterCopy end
-									markSpellingRec xs (auxStart) (end) "" txtbuffer
+									markSpellingRec xs (auxStart) (end) "" txtbuffer tag
 								
 								else do
 									textIterForwardChars end 1
 									auxStart <-textIterCopy end
-									markSpellingRec xs auxStart end "" txtbuffer
+									markSpellingRec xs auxStart end "" txtbuffer tag
 						else do
 							textIterForwardChars end 1
-							markSpellingRec xs start end (acum ++ x) txtbuffer
+							markSpellingRec xs start end (acum ++ [x]) txtbuffer tag
 							
 
 
