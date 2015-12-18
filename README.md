@@ -2,7 +2,7 @@
 Se toma como base el tutorial: http://www.muitovar.com/gtk2hs/index.html
 Se emplea la librería gráfica GTK2HS.
 ## Funcionalidades básicas
-Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a hacer CTRL+C).
+Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a hacer CTRL+C), copiar lo que se haya seleccionado al clipboard.
 
 ## Ventana principal que contiene el texto
 El texto del documento se carga en un TextView (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html)
@@ -36,7 +36,7 @@ Si se presiona el botón "Salir de corrección" se vuelve al estado inicial.
 NOTA:no se puede editar mientras se este en modo de correción.
 
 ## Abrir archivo
-Se abre una ventana que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se emplea la función readFile de Haskell. Luego se carga el contenido del archivo en el buffer de la ventana de edición de texto (TextView).
+Se abre una ventana que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se emplea la función readFile de Haskell. Luego se carga el contenido del archivo en el buffer de la ventana de edición de texto (TextView http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html).
 
 ## Guardar un archivo
 Se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Después se emplea la función writeFile de Haskell para guardar el contenido de la ventana de edición de texto (TextView) en el archivo. 
