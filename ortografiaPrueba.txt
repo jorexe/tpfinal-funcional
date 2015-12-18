@@ -1,2 +1,2 @@
-Esta línea no tiene error .
-Esta línea tiene error : asdfkadfj 
+Esta oración no tiene error.
+Esta oración tiene error: asdfkadfj 

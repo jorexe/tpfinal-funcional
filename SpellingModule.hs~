@@ -33,21 +33,22 @@ markSpellingRec (x:xs) start end acum txtbuffer tag=do
 					startOffset'<-textIterGetOffset start
 					endOffset'<-textIterGetOffset end
 					putStrLn ("start"++(show startOffset')++" end"++(show endOffset') )					
-					if (DC.isSpace x)
+					if (DC.isSpace x || (x == '.'))
 						then
 							do
 							spellPass<-spellCheck acum
 							if (not spellPass)
 							--hay error de ortografia
 								then do
-									
-									textIterBackwardChars end 1
-									textBufferApplyTag txtbuffer tag start end
-									textIterForwardChars end 2
+									--textIterBackwardChars end 1
 									auxStart <-textIterCopy end
 									startOffset<-textIterGetOffset start
 									endOffset<-textIterGetOffset end
 									putStrLn ("start"++(show startOffset)++" end"++(show endOffset) ++" error ortografico: "++acum)
+									--se marca el error
+									textBufferApplyTag txtbuffer tag start end
+									textIterForwardChars end 1
+									
 									markSpellingRec xs (auxStart) (end) "" txtbuffer tag
 								
 								else do
