@@ -3,6 +3,7 @@ import Control.Monad.IO.Class
 import FileModule
 import ClipboardModule
 import SpellingModule
+import SyntaxHighlightModule
 
 main :: IO ()
 main= do
@@ -45,10 +46,12 @@ main= do
     textview <- textViewNew
     boxPackStart vb textview PackGrow 4
     textViewSetWrapMode textview WrapChar
+    
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "ortografiaPrueba.txt" textview	
+    readFileIntoTextView "codigoPrueba2.hs" textview	
     
     --markSpelling textview
+    highlightSyntax textview
 
     buffer <- get textview textViewBuffer
     tags <- textBufferGetTagTable buffer

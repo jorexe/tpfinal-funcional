@@ -1,0 +1,6 @@
+data Punto =Punto2D Float Float deriving (Show)
+
+modulo:: Punto -> Float
+modulo (Punto2D x y) = sqrt ( x^2 + y^2)
+modulo (Punto3D x y z)= sqrt ( x^2 + y^2 +z^2)
+

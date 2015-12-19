@@ -9,4 +9,6 @@ sudo apt-get install libaspell-dev
 sudo apt-get install cabal-install
 cabal update
 cabal install haspell
-
+#librerias necesarias para parsear código haskell
+sudo apt-get install happy
+cabal install haskell-src
