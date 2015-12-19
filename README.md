@@ -19,10 +19,11 @@ La idea es que se vea forma similar a como lo realiza gedit, utilizando tags en 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/gedit_haskell.png)
 
 Los colores que se emplean son los siguientes:
-+ nombre de función:azul.
++ nombre de función: negro en cursiva y subrayado.
++ comentario: azul.
 + tipo de dato y constructores: verde.
 + palabra reservada "data": marrón.
-+ 
++ el resto: en negro sin subrayado ni cursiva.
 ## Corrector ortográfico
 Para detectar las palabras mal escritas, se emplea la librería Aspell para Haskell :https://hackage.haskell.org/package/haspell-1.1.0/docs/doc-index.html
 

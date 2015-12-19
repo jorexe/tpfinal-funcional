@@ -32,7 +32,7 @@ data HsDecl
 | HsInstDecl SrcLoc HsContext HsQName [HsType] [HsDecl]
 | HsDefaultDecl SrcLoc [HsType]
 | HsTypeSig SrcLoc [HsName] HsQualType
-| HsFunBind [HsMatch]
+| HsFunBind [HsMatch]  --ACA ESTA LA FUNCION
 | HsPatBind SrcLoc HsPat HsRhs [HsDecl]
 | HsForeignImport SrcLoc String HsSafety String HsName HsType
 | HsForeignExport SrcLoc String String HsName HsType
