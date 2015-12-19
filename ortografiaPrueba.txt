@@ -1,2 +1,5 @@
-Esta oración no tiene error.
-Esta oración tiene error: asdfkadfj 
+Esta oración no tiene error; día. 
+Esta oración tiene error: asdfkadfj; dia.
+ 
+Dé un mensaje.
+De un mensaje.

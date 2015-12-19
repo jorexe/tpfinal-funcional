@@ -32,8 +32,8 @@ markSpellingRec [] start end acum txtbuffer tag=return ()
 markSpellingRec (x:xs) start end acum txtbuffer tag=do
 					startOffset'<-textIterGetOffset start
 					endOffset'<-textIterGetOffset end
-					putStrLn ("start"++(show startOffset')++" end"++(show endOffset') )					
-					if (DC.isSpace x || (x == '.'))
+					--putStrLn ("start"++(show startOffset')++" end"++(show endOffset') )					
+					if (DC.isSpace x || (x == '.') || (x == ':')|| (x == ';'))
 						then
 							do
 							spellPass<-spellCheck acum
@@ -61,13 +61,15 @@ markSpellingRec (x:xs) start end acum txtbuffer tag=do
 							
 
 
---
+--funcion que devuelve True si es correcta la ortografia del string que recive.
 spellCheck::String ->IO Bool
 spellCheck string=do
 			aux <- spellCheckerWithDictionary bytestringLang
 			let 	checker = unpack' aux
-			let 	bytestringWords =BC.pack string	
-			return (check checker bytestringWords)
+			let 	bytestringInput =BC.pack string
+			putStrLn ("bytestringInput: "++(show bytestringInput))
+			--se termina llamando al corrector ortografico	
+			return (check checker bytestringInput)
 
 
 unpack'::Either BC.ByteString SpellChecker ->SpellChecker

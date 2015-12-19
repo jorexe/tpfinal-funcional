@@ -6,7 +6,7 @@ import SpellingModule
 
 main= do
 	
-	aux <- spellCheck ","
+	aux <- spellCheck "dé"
 		
 	if(aux)
 		then
