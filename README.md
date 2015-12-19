@@ -32,8 +32,8 @@ Después de tocar el botón del corrector por primera vez.
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/despues.png)
 
-Si se presiona el botón "Salir de corrección" se vuelve al estado inicial.
-NOTA:no se puede editar mientras se este en modo de correción.
+
+NOTA:se puede editar mientras se este en modo de correción.
 
 ## Abrir archivo
 Se abre una ventana que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se emplea la función readFile de Haskell. Luego se carga el contenido del archivo en el buffer de la ventana de edición de texto (TextView http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html).

@@ -18,9 +18,10 @@ main= do
     copytext <- actionNew "COPY_TEXT" "Copy"  (Just "Copy text to clipboard.") (Just stockCopy)
     pastetext <- actionNew "PASTE_TEXT" "Paste" (Just "Paste clipboard.") (Just stockPaste)
     quitapp <- actionNew "QUIT" "Exit"    (Just "Quit the editor.") (Just stockQuit)
+    spellcheck <- actionNew "CHECK" "SpellCheck" (Just "Check spelling.") (Just stockSpellCheck)
 
     defaultgroup <- actionGroupNew "DEFAULT_GROUP"
-    mapM_ (actionGroupAddAction defaultgroup) [savefile, copytext, pastetext, newfile, openfile, quitapp]
+    mapM_ (actionGroupAddAction defaultgroup) [savefile, copytext, pastetext, newfile, openfile,spellcheck, quitapp]
 
     uimanager <- uiManagerNew
     uiManagerAddUiFromString uimanager uitemplate
@@ -44,9 +45,9 @@ main= do
     textview <- textViewNew
     boxPackStart vb textview PackGrow 4
     textViewSetWrapMode textview WrapChar
-    --BORAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "archivoPrueba.txt" textview	
-    markSpelling textview
+    --BORRAR luego la siguiente linea, es para testing. abre un archivo 
+    readFileIntoTextView "ortografiaPrueba.txt" textview	
+    --markSpelling textview
 
     buffer <- get textview textViewBuffer
     tags <- textBufferGetTagTable buffer
@@ -74,12 +75,13 @@ main= do
     mapM_ createNewFile [(newfile,textview)]
     mapM_ savedisplaydialog [(savefile,textview)]
     mapM_ loaddisplaydialog [(openfile,textview)]
+    mapM_ runSpellCheck [(spellcheck,textview)]
     widgetShowAll window
 
     onDestroy window mainQuit
     mainGUI
 
-uitemplate = "<ui><toolbar><toolitem action=\"NEW_FILE\" /><toolitem action=\"OPEN_FILE\" /><toolitem action=\"SAVE_FILE\" /><separator /><toolitem action=\"COPY_TEXT\" /><toolitem action=\"PASTE_TEXT\" /><separator /><toolitem action=\"QUIT\" /></toolbar></ui>"
+uitemplate = "<ui><toolbar><toolitem action=\"NEW_FILE\" /><toolitem action=\"OPEN_FILE\" /><toolitem action=\"SAVE_FILE\" /><separator /><toolitem action=\"COPY_TEXT\" /><toolitem action=\"PASTE_TEXT\" /><separator /><toolitem action=\"QUIT\" /><toolitem action=\"CHECK\" /></toolbar></ui>"
 
 printexample :: ActionClass self => self -> IO (ConnectId self)
 printexample a = onActionActivate a $ do name <- actionGetName a

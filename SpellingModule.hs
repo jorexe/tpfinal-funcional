@@ -12,9 +12,14 @@ bytestringLang = BC.pack "es"
 markSpelling:: TextView->IO()
 markSpelling txtview=do
 			txtBuffer <- textViewGetBuffer txtview
+
 			start <- textBufferGetStartIter txtBuffer
 			
 			end <- textBufferGetEndIter txtBuffer
+			
+			--se remueven marcas previas
+			textBufferRemoveAllTags txtBuffer start end
+
 			contents <- textBufferGetText txtBuffer start end False	
 			tags <- textBufferGetTagTable txtBuffer
 			kindaRedItalic <- textTagNew Nothing
@@ -45,7 +50,7 @@ markSpellingRec (x:xs) start end acum txtbuffer tag=do
 									auxStart <-textIterCopy end
 									startOffset<-textIterGetOffset start
 									endOffset<-textIterGetOffset end
-									putStrLn ("start"++(show startOffset)++" end"++(show endOffset) ++" error ortografico: "++acum)
+									putStrLn ("start"++(show startOffset)++" end"++(show endOffset) ++" error ortográfico: "++acum)
 									--se marca el error
 									textBufferApplyTag txtbuffer tag start end
 									textIterForwardChars end 1
@@ -62,17 +67,22 @@ markSpellingRec (x:xs) start end acum txtbuffer tag=do
 							
 
 
---funcion que devuelve True si es correcta la ortografia del string que recive.
+--funcion que devuelve True si es correcta la ortografía del string que recive.
 spellCheck::String ->IO Bool
 spellCheck string=do
 			aux <-spellCheckerWithOptions [(LAO.Dictionary bytestringLang),LAO.Encoding LAO.Latin1]
 			let 	checker = unpack' aux
 			let 	bytestringInput =BC.pack string
-			putStrLn ("bytestringInput: "++(show bytestringInput))
 			--se termina llamando al corrector ortografico	
 			return (check checker bytestringInput)
 
-
+--
 unpack'::Either BC.ByteString SpellChecker ->SpellChecker
 unpack' (Right checker)=checker
 unpack' (Left a)=error "Invalid value"
+
+--función que es llamada desde el botón de la interfaz gráfica
+runSpellCheck :: ActionClass self =>(self,TextView) -> IO (ConnectId self)
+runSpellCheck (a,textview) = onActionActivate a $ do
+						markSpelling textview
+
