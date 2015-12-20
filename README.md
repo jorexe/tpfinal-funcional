@@ -39,7 +39,7 @@ Para resaltar las palabras mal escritas se utilizan tags en el TextView del apli
 Antes de tocar el botón del corrector:
 
 	
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/haskellSintax/antes.png)
+![Alt text](http://github.com/jorexe/tpfinal-funcional/blob/haskellSintax/prototipo/antes.png)
 
 Después de tocar el botón del corrector por primera vez.
 
