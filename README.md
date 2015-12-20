@@ -2,7 +2,7 @@
 
 ***Jorge Gomez,Fernando Bejarano***
 
-En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. 
+En el presente informe, se detalla la implementación de un editor de texto con interface gráfica en lenguaje Haskell. 
 Se emplea la librería gráfica GTK2HS.
 Se toma como base el tutorial: http://www.muitovar.com/gtk2hs/index.html
 
@@ -42,7 +42,7 @@ Antes de tocar el botón del corrector:
 	
 ![Alt text](https://github.com/jorexe/tpfinal-funcional/blob/haskellSintax/prototipo/antes.png)
 
-Después de tocar el botón del corrector por primera vez.
+Después de tocar el botón del corrector se obtiene lo siguiente:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/despues.png)
 
@@ -62,7 +62,7 @@ Se borra el contenido del buffer (http://projects.haskell.org/gtk2hs/docs/devel/
 Se copia en el clipboard, lo que se haya seleccionado de la ventana principal.
 
 ## Pegar
-Se copia al buffer de la ventana de edición, el contenido del clipboard.
+Se copia en la posición del cursor en la ventana de edición, el contenido del clipboard.
 
 ## Colapsar definiciones.
 Cuando se tiene el texto resaltado con la sintaxis de Haskell, se ofrece la posibilidad de colapsar las definiciones de funciones. Se muestra un botón con el símbolo "-" en el margen izquierdo de la línea donde esta definida la función. Esto se puede apreciar en el siguiente prototipo de la aplicación:

@@ -2,7 +2,7 @@
 
 ***Jorge Gomez,Fernando Bejarano***
 
-En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. 
+En el presente informe, se detalla la implementación de un editor de texto con interface gráfica en lenguaje Haskell. 
 Se emplea la librería gráfica GTK2HS.
 Se toma como base el tutorial: http://www.muitovar.com/gtk2hs/index.html
 
@@ -42,7 +42,7 @@ Antes de tocar el botón del corrector:
 	
 ![Alt text](https://github.com/jorexe/tpfinal-funcional/blob/haskellSintax/prototipo/antes.png)
 
-Después de tocar el botón del corrector por primera vez.
+Después de tocar el botón del corrector se obtiene lo siguiente:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/despues.png)
 
@@ -85,6 +85,11 @@ Esta funcionalidad se puede apreciar en el siguiente prototipo:
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/parentesis.png)
 
 ## Búsqueda de palabras
+Junto con los botones mencionados anteriormente, se ofrece en la barra superior un campo en el cual se puede ingresar una cadena de caracteres a buscar. Al lado de dicho campo hay un botón que al presionarlo se resaltan en rojo aquellas cadenas coincidan con la que se esta buscando.
+
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/busqueda.png)
+
+
 
 ## Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:
