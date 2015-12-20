@@ -3,7 +3,7 @@ import Control.Monad.IO.Class
 import FileModule
 import ClipboardModule
 import SpellingModule
-import SyntaxHighlightModule
+--import SyntaxHighlightModule
 
 main :: IO ()
 main= do
@@ -51,7 +51,7 @@ main= do
     readFileIntoTextView "codigoPrueba2.hs" textview	
     
     --markSpelling textview
-    highlightSyntax textview
+    --highlightSyntax textview
 
     buffer <- get textview textViewBuffer
     tags <- textBufferGetTagTable buffer

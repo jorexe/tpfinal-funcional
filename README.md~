@@ -1,11 +1,11 @@
 # tp final-funcional
 
-***Jorge Gomez***
-***Fernando Bejarano***
-En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. 
+***Jorge Gomez,Fernando Bejarano***
 
-Se toma como base el tutorial: http://www.muitovar.com/gtk2hs/index.html
+En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. 
 Se emplea la librería gráfica GTK2HS.
+Se toma como base el tutorial: http://www.muitovar.com/gtk2hs/index.html
+
 ## Funcionalidades básicas
 Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a hacer CTRL+C), copiar lo que se haya seleccionado al clipboard.
 
@@ -13,26 +13,28 @@ Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se ten
 El texto del documento se carga en un TextView (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html)
  con letra negra.
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/base.png)
-En la parte superior se encuentran botones con las funcionalidades. En el borde izquierdo se muestran los número de línea.
+En la parte superior se encuentran botones con las funcionalidades. 
 
 ## Resaltador de sintaxis de haskell
 https://hackage.haskell.org/package/haskell-src-1.0.2.0/docs/Language-Haskell-Parser.html
 
 Se emplea la función "parseModule" del parser "Language.Haskell.Parser" que viene en Haskell para parsear el código que viene del archivo. Si se obtiene como resultado un "ParseOk" se resalta gráficamente el código. Si se obtiene "ParseFailed" no se resalta el código.
-La idea es que se vea forma similar a como lo realiza gedit, utilizando tags en el TextView para asignarle un color representativo a la sintaxis.
+La idea es que se vea forma similar a como lo realiza el editor de texto "gedit", utilizando tags en el TextView para asignarle un color representativo a la sintaxis.
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/gedit_haskell.png)
 
-Los colores que se emplean son los siguientes:
+Los colores que se emplean sobre la fuente de las letras son los siguientes:
 + nombre de función: negro en cursiva y subrayado.
 + comentario: azul.
 + tipo de dato y constructores: verde.
 + palabra reservada "data": marrón.
 + el resto: en negro sin subrayado ni cursiva.
+
+Esta funcionalidad se realiza en forma automática cuando se abre un archivo con extensión ".hs" (archivo fuente de Haskell). En forma adicional, se puede activar con un botón. Si luego de haberse realizado el resaltado de la sintaxis se realiza algún cambio sobre el texto, es necesario volver a presionar el botón para que se ajuste el resaltado al nuevo texto que se tiene.
 ## Corrector ortográfico
 Para detectar las palabras mal escritas, se emplea la librería Aspell para Haskell :https://hackage.haskell.org/package/haspell-1.1.0/docs/doc-index.html
 
-Para resaltar las palabras mal escritas se utilizarian tags en el TextView del aplicativo, asignandoles color rojo a las palabras que no se encuentren en el diccionario.
+Para resaltar las palabras mal escritas se utilizan tags en el TextView del aplicativo, asignandoles color de letra rojo a las palabras que no se encuentren en el diccionario.
 
 Antes de tocar el botón del corrector:
 
@@ -54,4 +56,37 @@ Se abre una ventana que permite elegir el nombre y la ubicación del archivo que
 
 ## Nuevo archivo.
 Se borra el contenido del buffer (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextBuffer.html#v%3AtextBufferDelete) de la ventana de edición de texto.
+
+## Copiar 
+Se copia en el clipboard, lo que se haya seleccionado de la ventana principal.
+
+## Pegar
+Se copia al buffer de la ventana de edición, el contenido del clipboard.
+
+## Colapsar definiciones.
+Cuando 
+
+## Macheo de paréntesis y de llaves.
+En el caso de se ubique el cursor al lado de una apertura de paréntesis, se resalta dicha apertura de paréntesis junto con el paréntesis que cierra. Por otra parte, si no se cierra el paréntesis que abre, no se lo resalta.
+Este mismo comportamiento se realiza con la apertura y cierre de llaves. Para el resaltado, se emplea el color amarillo como color de fondo del símbolo a resaltar; el color de la fuente no se modifica.
+Esta funcionalidad se puede apreciar en el siguiente prototipo:
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/parentesis.png)
+
+## Dependencias del proyecto
+El proyecto depende de las siguientes programas y librerías:
++ ghc
++ gtk
++ aspell
++ aspell-es
++ libaspell-dev
++ haspell
++ happy
++ haskell-src
+
+Las mismas se pueden instalar utilizando el script para Linux "setupEnviroment.sh" que se encuentra junto con los archivos del proyecto.
+
+## Compilación y ejecución del proyecto
+Antes de compilar el programa, se necesitan
+Para compilar el programa, se utiliza el compilador de Haskell "ghc". En el script de Linux "correr.sh" se puede ver como se compila y se ejecuta el programa. En el mismo, el ejecutable que se obtienen se llama "app".
+
 
