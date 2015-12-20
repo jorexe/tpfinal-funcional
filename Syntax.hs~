@@ -31,7 +31,7 @@ data HsDecl
 | HsClassDecl SrcLoc HsContext HsName [HsName] [HsDecl]
 | HsInstDecl SrcLoc HsContext HsQName [HsType] [HsDecl]
 | HsDefaultDecl SrcLoc [HsType]
-| HsTypeSig SrcLoc [HsName] HsQualType
+| HsTypeSig SrcLoc [HsName] HsQualType--declaracion de tipos de la funcion
 | HsFunBind [HsMatch]  --ACA ESTA LA FUNCION
 | HsPatBind SrcLoc HsPat HsRhs [HsDecl]
 | HsForeignImport SrcLoc String HsSafety String HsName HsType

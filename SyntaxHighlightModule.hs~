@@ -39,8 +39,21 @@ foldIO fun (x:xs)=do
 --
 process_hsdecl::TextBuffer-> HsDecl->IO()
 process_hsdecl buffer (HsFunBind hsMatchList)=foldIO (process_hsMatch buffer)  hsMatchList
-process_hsdecl buffer (HsTypeSig loc hsName _ )=foldIO (process_fun_declaration buffer loc ) hsName
+process_hsdecl buffer (HsTypeSig loc hsName hsQualType)= do 
+		foldIO (process_fun_declaration buffer loc ) hsName
+		process_hsQualType buffer hsQualType						
 process_hsdecl _ _ =return ()
+
+--
+process_hsQualType::TextBuffer->HsQualType->IO()
+process_hsQualType buffer (HsQualType _ hs_type)=process_hsType buffer hs_type
+
+--
+process_hsType::TextBuffer->HsType->IO()
+process_hsType buffer(HsTyFun hstype1 hstype2)=do
+					process_hsType buffer hstype1
+					process_hsType buffer hstype2
+process_hsType
 
 --procesa la declaración de tipos de la función(no es la función en sí con lo que devuelve)
 process_fun_declaration:: TextBuffer->SrcLoc->HsName->IO()
