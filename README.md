@@ -1,4 +1,9 @@
-# tpfinal-funcional
+# tp final-funcional
+
+***Jorge Gomez,Fernando Bejarano***
+
+En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. 
+
 Se toma como base el tutorial: http://www.muitovar.com/gtk2hs/index.html
 Se emplea la librería gráfica GTK2HS.
 ## Funcionalidades básicas

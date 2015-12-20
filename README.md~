@@ -1,4 +1,9 @@
-# tpfinal-funcional
+# tp final-funcional
+
+***Jorge Gomez***
+***Fernando Bejarano***
+En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. 
+
 Se toma como base el tutorial: http://www.muitovar.com/gtk2hs/index.html
 Se emplea la librería gráfica GTK2HS.
 ## Funcionalidades básicas
@@ -23,7 +28,7 @@ Los colores que se emplean son los siguientes:
 + comentario: azul.
 + tipo de dato y constructores: verde.
 + palabra reservada "data": marrón.
-+ 
++ el resto: en negro sin subrayado ni cursiva.
 ## Corrector ortográfico
 Para detectar las palabras mal escritas, se emplea la librería Aspell para Haskell :https://hackage.haskell.org/package/haspell-1.1.0/docs/doc-index.html
 
