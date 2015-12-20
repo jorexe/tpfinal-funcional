@@ -1,3 +1,5 @@
+--ver Syntax.hs para ver la sintaxis del parseo que usa la libreria
+
 module SyntaxHighlightModule where
 import Graphics.UI.Gtk
 import Control.Monad.IO.Class
@@ -14,20 +16,20 @@ highlightSyntax txtview=do
 			contents <- textBufferGetText txtBuffer start end False
 			
 			let parseResult=Language.Haskell.Parser.parseModule contents
-			processResult parseResult
+			processResult parseResult txtBuffer
 			putStrLn("texto parseado")
 
 --
-processResult::ParseResult HsModule-> IO()
-processResult (ParseOk module) = do
+processResult::ParseResult HsModule->TextBuffer-> IO()
+processResult (ParseOk modul) buffer = do
 				putStrLn("ParseOK")
-				putStrLn(show a)
-				processModule module
-processResult (ParseFailed a b) = putStrLn("Parse failed")
+				putStrLn(show modul)
+				processModule modul buffer
+processResult (ParseFailed a b) buffer= putStrLn("Parse failed")
 
 --
-processModule::HsModule->IO()
-processModule HsModule loc mod _ _ hsdeclList=foldIO process_hsdecl hsdecList
+processModule::HsModule->TextBuffer->IO()
+processModule (HsModule loc mod _ _ hsdeclList) buffer=foldIO (process_hsdecl buffer) hsdeclList
 
 --
 foldIO:: (a->IO()) -> [a] -> IO()
@@ -36,5 +38,34 @@ foldIO fun (x:xs)=do
 			fun x
 			foldIO fun xs
 --
-process_hsdecl:: [HsDecl]->IO()
-process_hsdecl
+process_hsdecl::TextBuffer-> HsDecl->IO()
+process_hsdecl buffer (HsFunBind hsMatchList)=foldIO (process_hsMatch buffer)  hsMatchList
+process_hsdecl _ _ =return ()
+
+--Procesa los datos de una función
+process_hsMatch::TextBuffer->HsMatch->IO()
+process_hsMatch buffer (HsMatch srcLoc hsName _ _ _)=do
+						putStrLn ("función: "++ (extractHsName hsName))
+						markFunction buffer srcLoc (extractHsName hsName)
+
+--
+extractHsName::HsName->String
+extractHsName (HsIdent str)=str
+extractHsName (HsSymbol str)=str
+
+--se marca declaración de función en el buffer
+
+markFunction::TextBuffer->SrcLoc-String->IO()
+markFunction buffer srcLoc name=do
+				let line=
+				start<-textBufferGetIterAtLine buffer line
+				end<-textIterCopy start
+				markFunctionRec buffer name start end ""
+
+
+--recibe: el buffer, el nombre de la función, iterador que apunta al comienzo del nombre de la funcion en el buffer, iterador que apunta al final del nombre de la función, cadena leida hasta el momento desde start en el buffer(cuando se llega a haber leido todo el nombre de la funcion, se marca dicho nombre sobre el buffer).
+markFunctionRec::TextBuffer->String->TextIter->TextIter->String->IO()
+markFunctionRec buffer name start end acum=if(name==acum)
+						then 
+							
+							
