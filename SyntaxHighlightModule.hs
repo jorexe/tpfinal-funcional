@@ -24,7 +24,7 @@ processResult::ParseResult HsModule->TextBuffer-> IO()
 processResult (ParseOk modul) buffer = do
 				putStrLn("ParseOK")
 				putStrLn(show modul)
-				processModule modul buffer
+				--processModule modul buffer
 processResult (ParseFailed a b) buffer= putStrLn("Parse failed")
 
 --
@@ -55,17 +55,33 @@ extractHsName (HsSymbol str)=str
 
 --se marca declaración de función en el buffer
 
-markFunction::TextBuffer->SrcLoc-String->IO()
+markFunction::TextBuffer->SrcLoc->String->IO()
 markFunction buffer srcLoc name=do
-				let line=
+				let line=srcLine srcLoc
+				let column=srcColumn srcLoc
 				start<-textBufferGetIterAtLine buffer line
+				textIterForwardChars start (column -1)
 				end<-textIterCopy start
 				markFunctionRec buffer name start end ""
 
 
 --recibe: el buffer, el nombre de la función, iterador que apunta al comienzo del nombre de la funcion en el buffer, iterador que apunta al final del nombre de la función, cadena leida hasta el momento desde start en el buffer(cuando se llega a haber leido todo el nombre de la funcion, se marca dicho nombre sobre el buffer).
 markFunctionRec::TextBuffer->String->TextIter->TextIter->String->IO()
-markFunctionRec buffer name start end acum=if(name==acum)
-						then 
+markFunctionRec buffer name start end acum=	if(name==acum)
+							then do
+								tags <- textBufferGetTagTable buffer
+								blackItalic <- textTagNew Nothing
+								blackItalic <- textTagNew Nothing
+								set blackItalic [
+      									textTagStyle := StyleItalic,
+      									textTagForegroundSet := True,
+									textTagForeground := ("black" :: String) 
+										]
+								textTagTableAdd tags blackItalic
+						else do
+							--se obtiene el siguiente caracter
+							textIterForwardChars end 1
+							contents <- textBufferGetText buffer start end False	
+							markFunctionRec buffer name start end contents
 							
 							

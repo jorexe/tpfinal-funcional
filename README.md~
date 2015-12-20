@@ -13,6 +13,7 @@ Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se ten
 El texto del documento se carga en un TextView (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html)
  con letra negra.
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/base.png)
+
 En la parte superior se encuentran botones con las funcionalidades. 
 
 ## Resaltador de sintaxis de haskell
@@ -64,7 +65,17 @@ Se copia en el clipboard, lo que se haya seleccionado de la ventana principal.
 Se copia al buffer de la ventana de edición, el contenido del clipboard.
 
 ## Colapsar definiciones.
-Cuando 
+Cuando se tiene el texto resaltado con la sintaxis de Haskell, se ofrece la posibilidad de colapsar las definiciones de funciones. Se muestra un botón con el símbolo "-" en el margen izquierdo de la línea donde esta definida la función. Esto se puede apreciar en el siguiente prototipo de la aplicación:
+
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/antesColapsar.png)
+
+
+Cuando se presiona dicho botón,  se colapsa la definición completa de la función y solo se deja el nombre; también se cambia el botón anterior por uno con el símbolo "+". En caso de que se presione el botón con el símbolo "+" se vuelve a mostrar la definición de la función. Esto se puede ver en el siguiente prototipo de la aplicación:
+
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/despuesColapsar.png)
+
+Para ocultar el texto, se emplean tags sobre el texto en el buffer que lo vuelven "invisible"(http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextTag.html#v%3AtextTagInvisible), aunque en realidad no se lo borra.
+
 
 ## Macheo de paréntesis y de llaves.
 En el caso de se ubique el cursor al lado de una apertura de paréntesis, se resalta dicha apertura de paréntesis junto con el paréntesis que cierra. Por otra parte, si no se cierra el paréntesis que abre, no se lo resalta.
@@ -72,6 +83,8 @@ Este mismo comportamiento se realiza con la apertura y cierre de llaves. Para el
 Esta funcionalidad se puede apreciar en el siguiente prototipo:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/parentesis.png)
+
+## Búsqueda de palabras
 
 ## Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:
@@ -87,7 +100,7 @@ El proyecto depende de las siguientes programas y librerías:
 Las mismas se pueden instalar utilizando el script para Linux "setupEnviroment.sh" que se encuentra junto con los archivos del proyecto.
 
 ## Compilación y ejecución del proyecto
-Antes de compilar el programa, se necesitan
+Antes de compilar el programa, se necesitan tener instaladas las dependencias descriptas en el punto anterior.
 Para compilar el programa, se utiliza el compilador de Haskell "ghc". En el script de Linux "correr.sh" se puede ver como se compila y se ejecuta el programa. En el mismo, el ejecutable que se obtienen se llama "app".
 
 
