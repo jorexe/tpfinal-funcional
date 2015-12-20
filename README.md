@@ -1,4 +1,4 @@
-# tp final-funcional
+# tp final-programación funcional
 
 ***Jorge Gomez,Fernando Bejarano***
 
@@ -12,7 +12,7 @@ Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se ten
 ## Ventana principal que contiene el texto
 El texto del documento se carga en un TextView (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html)
  con letra negra.
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/base.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/base.png)
 En la parte superior se encuentran botones con las funcionalidades. 
 
 ## Resaltador de sintaxis de haskell
@@ -39,11 +39,11 @@ Para resaltar las palabras mal escritas se utilizan tags en el TextView del apli
 Antes de tocar el botón del corrector:
 
 	
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/antes.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/haskellSintax/antes.png)
 
 Después de tocar el botón del corrector por primera vez.
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/despues.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/despues.png)
 
 
 NOTA:se puede editar mientras se este en modo de correción.
@@ -71,7 +71,7 @@ En el caso de se ubique el cursor al lado de una apertura de paréntesis, se res
 Este mismo comportamiento se realiza con la apertura y cierre de llaves. Para el resaltado, se emplea el color amarillo como color de fondo del símbolo a resaltar; el color de la fuente no se modifica.
 Esta funcionalidad se puede apreciar en el siguiente prototipo:
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/parentesis.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/parentesis.png)
 
 ## Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:
