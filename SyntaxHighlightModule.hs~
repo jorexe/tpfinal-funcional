@@ -71,18 +71,19 @@ process_fun_declaration buffer loc hsName=do
 
 --Procesa los datos de una función
 process_hsMatch::TextBuffer->HsMatch->IO()
-process_hsMatch buffer (HsMatch srcLoc hsName hsPat _ _)=do
+process_hsMatch buffer (HsMatch srcLoc hsName hsPat _ _) =do
 						tag<-blackItalic
 						markElement buffer srcLoc (extractHsName hsName) tag
-						foldIO (processHsPat buffer) hsPat
+						foldIO (processHsPat buffer srcLoc) hsPat
 
 --
-processHsPat::TextBuffer->HsPat->IO()
-processHsPat buffer (HsPParen hsPat)=processHsPat hsPat
-processHsPat buffer (HsPApp hsQName hsPat)=do
-					process_hsQName buffer hsQName
-					foldIO (processHsPat buffer) hsPat
-	
+processHsPat::TextBuffer->SrcLoc->HsPat->IO()
+processHsPat buffer location (HsPParen hsPat) =processHsPat buffer location hsPat 
+processHsPat buffer  location (HsPApp hsQName hsPat)=do
+					process_hsQName buffer hsQName location
+					foldIO (processHsPat buffer location) hsPat
+
+processHsPat _ _ _=return ()	
 
 --
 extractHsName::HsName->String
