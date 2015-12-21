@@ -42,7 +42,7 @@ data HsConDecl
 data HsBangType
 = HsBangedTy HsType
 | HsUnBangedTy HsType
-data HsMatch = HsMatch SrcLoc HsName [HsPat] HsRhs [HsDecl] --SrcLoc contiene linea y columna en el archivo. Hsname el nombre
+data HsMatch = HsMatch SrcLoc HsName [HsPat] HsRhs [HsDecl] --SrcLoc contiene linea y columna en el archivo. Hsname el nombre de la funcion. HsPat son los argumentos que recive la definicion.
 data HsRhs
 = HsUnGuardedRhs HsExp
 | HsGuardedRhss [HsGuardedRhs]

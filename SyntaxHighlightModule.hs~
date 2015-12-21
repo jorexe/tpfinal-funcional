@@ -41,24 +41,26 @@ process_hsdecl::TextBuffer-> HsDecl->IO()
 process_hsdecl buffer (HsFunBind hsMatchList)=foldIO (process_hsMatch buffer)  hsMatchList
 process_hsdecl buffer (HsTypeSig loc hsName hsQualType)= do 
 		foldIO (process_fun_declaration buffer loc ) hsName
-		process_hsQualType buffer hsQualType						
+		process_hsQualType buffer hsQualType loc						
 process_hsdecl _ _ =return ()
 
 --
-process_hsQualType::TextBuffer->HsQualType->IO()
-process_hsQualType buffer (HsQualType _ hs_type)=process_hsType buffer hs_type
+process_hsQualType::TextBuffer->HsQualType->SrcLoc->IO()
+process_hsQualType buffer (HsQualType _ hs_type) srcLoc=process_hsType buffer hs_type srcLoc
 
 --
-process_hsType::TextBuffer->HsType->IO()
-process_hsType buffer(HsTyFun hstype1 hstype2)=do
-					process_hsType buffer hstype1
-					process_hsType buffer hstype2
-process_hsType buffer (HsTyCon hsQName)=process_hsQName buffer hsQName
-
-process_hsType buffer _ = return ()
+process_hsType::TextBuffer->HsType->SrcLoc->IO()
+process_hsType buffer (HsTyFun hstype1 hstype2) srcLoc = do
+					process_hsType buffer hstype1 srcLoc
+					process_hsType buffer hstype2 srcLoc
+process_hsType buffer (HsTyCon hsQName) srcLoc = process_hsQName buffer hsQName srcLoc
+process_hsType buffer _  _= return ()
 --
-process_hsQName:: TextBuffer->HsQName->IO()
-process_hsQName buffer
+process_hsQName:: TextBuffer->HsQName->SrcLoc->IO()
+process_hsQName buffer (UnQual hsName) loc= do
+					tag<-greenTag
+					markElement buffer loc (extractHsName hsName) tag
+process_hsQName _ _ _ =return ()
 
 --procesa la declaración de tipos de la función(no es la función en sí con lo que devuelve)
 process_fun_declaration:: TextBuffer->SrcLoc->HsName->IO()
@@ -69,9 +71,18 @@ process_fun_declaration buffer loc hsName=do
 
 --Procesa los datos de una función
 process_hsMatch::TextBuffer->HsMatch->IO()
-process_hsMatch buffer (HsMatch srcLoc hsName _ _ _)=do
+process_hsMatch buffer (HsMatch srcLoc hsName hsPat _ _)=do
 						tag<-blackItalic
 						markElement buffer srcLoc (extractHsName hsName) tag
+						foldIO (processHsPat buffer) hsPat
+
+--
+processHsPat::TextBuffer->HsPat->IO()
+processHsPat buffer (HsPParen hsPat)=processHsPat hsPat
+processHsPat buffer (HsPApp hsQName hsPat)=do
+					process_hsQName buffer hsQName
+					foldIO (processHsPat buffer) hsPat
+	
 
 --
 extractHsName::HsName->String
@@ -83,17 +94,17 @@ extractHsName (HsSymbol str)=str
 markElement::TextBuffer->SrcLoc->String->TextTag->IO()
 markElement buffer srcLoc name tag=do
 				let line=(srcLine srcLoc)-1
-				let column=srcColumn srcLoc
+				let column=(srcColumn srcLoc)
 				start<-textBufferGetIterAtLine buffer line
 				textIterForwardChars start (column -1)
 				end<-textIterCopy start
-				putStrLn ("Elemento: "++name++" linea:" ++(show line))
+				putStrLn ("Elemento: "++name++" linea:" ++(show (line+1))++"columna:"++(show (column +1)))
 
 
 				tags <- textBufferGetTagTable buffer
 						
 				textTagTableAdd tags tag
-				markElementRec buffer name start end "" tag
+				markElementRec buffer name start end "" tag 0
 
 
 
@@ -119,26 +130,47 @@ blackItalic=do
 			return aux
 
 --recibe: el buffer, el nombre del elemento, iterador que apunta al comienzo del nombre del elemento en el buffer, iterador que apunta al final del nombre del elemento , cadena leida hasta el momento desde start en el buffer(cuando se llega a haber leido todo el nombre del elemento, se marca dicho nombre sobre el buffer).
-markElementRec::TextBuffer->String->TextIter->TextIter->String->TextTag->IO()
-markElementRec buffer name start end acum tag=do
+markElementRec::TextBuffer->String->TextIter->TextIter->String->TextTag->Int->IO()
+markElementRec buffer name start end acum tag nameOffset=do
 						startOffset<-textIterGetOffset start
 						endOffset<-textIterGetOffset end
 						top<-textBufferGetEndIter buffer
 						topOffset<-textIterGetOffset top
-						putStrLn ("start"++(show startOffset)++" end"++(show endOffset)++".Limit:"++(show topOffset)) 
+						putStrLn ("Name:"++name++" start"++(show startOffset)++" end"++(show endOffset)++".Limit:"++(show topOffset) ++" nameOffset"++(show nameOffset)++" acum: "++acum) 
 						if((compare name acum)== EQ)
 							then do
 								
 								startOffset<-textIterGetOffset start
 								endOffset<-textIterGetOffset end
-								putStrLn ("start"++(show startOffset)++" end"++(show endOffset) ++" elemento: "++name) 
+								putStrLn ("start"++(show startOffset)++" end"++(show endOffset) ++" elemento tageado: "++name) 
 								
 								textBufferApplyTag buffer tag start end
+								
+								--se busca siguiente ocurrencias
+								textIterForwardChars end 1
+								start<-textIterCopy end
+								markElementRec buffer name start end "" tag 0
 	
 						else do
-							--se obtiene el siguiente caracter
+							--posición caracter actual			
+							end'<-textIterCopy end
+							
 							textIterForwardChars end 1
-							contents <- textBufferGetText buffer start end False	
-							markElementRec buffer name start end contents tag
+
+							currentChar<-textBufferGetText buffer end' end False	
+							--se corta si se llega al final de linea
+							if( (compare currentChar "\n")==EQ)
+								then return ()
+							else  do
+								--el elemento buscado no esta en esta posición, se busca mas adelante
+								if( not( (compare currentChar [(name !! nameOffset)])==EQ))
+									then do
+								start<-textIterCopy end
+								markElementRec buffer name start end "" tag 0
+								
+								else    do
+									--se obtiene el siguiente caracter
+									contents <- textBufferGetText buffer start end False	
+									markElementRec buffer name start end contents tag (nameOffset +1)
 							
 							
