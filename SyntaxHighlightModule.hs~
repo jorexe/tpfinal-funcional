@@ -53,7 +53,12 @@ process_hsType::TextBuffer->HsType->IO()
 process_hsType buffer(HsTyFun hstype1 hstype2)=do
 					process_hsType buffer hstype1
 					process_hsType buffer hstype2
-process_hsType
+process_hsType buffer (HsTyCon hsQName)=process_hsQName buffer hsQName
+
+process_hsType buffer _ = return ()
+--
+process_hsQName:: TextBuffer->HsQName->IO()
+process_hsQName buffer
 
 --procesa la declaración de tipos de la función(no es la función en sí con lo que devuelve)
 process_fun_declaration:: TextBuffer->SrcLoc->HsName->IO()
