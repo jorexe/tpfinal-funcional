@@ -1,612 +1,2000 @@
 [H[2JLinking app ...
-Opening file: codigoPrueba2.hs
---Comentario
-data Punto =Punto2D Float Float | Punto3D Float Float Float 
+Opening file: codigoPrueba.hs
+--CODIGO HASKELL DE EJEMPLO PARA PROBAR EL RESALTADO DE SINTAXIS
+data Punto =Punto2D Float Float | Punto3D Float Float Float deriving (Show)
+
+modulo:: Punto -> Float
+modulo (Punto2D x y) = sqrt ( x^2 + y^2)
+modulo (Punto3D x y z)= sqrt ( x^2 + y^2 +z^2)
+	
+
+resta':: Punto ->Punto ->Punto
+resta' (Punto2D x1 y1) (Punto2D x2 y2) = Punto2D (x1-x2) (y1-y2)
+resta' (Punto3D x1 y1 z1) (Punto3D x2 y2 z2) = Punto3D (x1-x2) (y1-y2) (z1-z2)
 
 
-getX::Punto-> Float
-getX (Punto2D x y) = x
-getX (Punto3D x y z)=x
+distanciaA:: Punto ->Punto -> Float
+distanciaA punto1 punto2= modulo (resta' punto1 punto2)
 [highlightSyntax] ParseOK
-HsModule (SrcLoc {srcFilename = "<unknown>", srcLine = 2, srcColumn = 1}) (Module "Main") (Just [HsEVar (UnQual (HsIdent "main"))]) [] [HsDataDecl (SrcLoc {srcFilename = "<unknown>", srcLine = 2, srcColumn = 1}) [] (HsIdent "Punto") [] [HsConDecl (SrcLoc {srcFilename = "<unknown>", srcLine = 2, srcColumn = 13}) (HsIdent "Punto2D") [HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float"))),HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float")))],HsConDecl (SrcLoc {srcFilename = "<unknown>", srcLine = 2, srcColumn = 35}) (HsIdent "Punto3D") [HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float"))),HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float"))),HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float")))]] [],HsTypeSig (SrcLoc {srcFilename = "<unknown>", srcLine = 5, srcColumn = 1}) [HsIdent "getX"] (HsQualType [] (HsTyFun (HsTyCon (UnQual (HsIdent "Punto"))) (HsTyCon (UnQual (HsIdent "Float"))))),HsFunBind [HsMatch (SrcLoc {srcFilename = "<unknown>", srcLine = 6, srcColumn = 1}) (HsIdent "getX") [HsPParen (HsPApp (UnQual (HsIdent "Punto2D")) [HsPVar (HsIdent "x"),HsPVar (HsIdent "y")])] (HsUnGuardedRhs (HsVar (UnQual (HsIdent "x")))) [],HsMatch (SrcLoc {srcFilename = "<unknown>", srcLine = 7, srcColumn = 1}) (HsIdent "getX") [HsPParen (HsPApp (UnQual (HsIdent "Punto3D")) [HsPVar (HsIdent "x"),HsPVar (HsIdent "y"),HsPVar (HsIdent "z")])] (HsUnGuardedRhs (HsVar (UnQual (HsIdent "x")))) []]]
+HsModule (SrcLoc {srcFilename = "<unknown>", srcLine = 2, srcColumn = 1}) (Module "Main") (Just [HsEVar (UnQual (HsIdent "main"))]) [] [HsDataDecl (SrcLoc {srcFilename = "<unknown>", srcLine = 2, srcColumn = 1}) [] (HsIdent "Punto") [] [HsConDecl (SrcLoc {srcFilename = "<unknown>", srcLine = 2, srcColumn = 13}) (HsIdent "Punto2D") [HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float"))),HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float")))],HsConDecl (SrcLoc {srcFilename = "<unknown>", srcLine = 2, srcColumn = 35}) (HsIdent "Punto3D") [HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float"))),HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float"))),HsUnBangedTy (HsTyCon (UnQual (HsIdent "Float")))]] [UnQual (HsIdent "Show")],HsTypeSig (SrcLoc {srcFilename = "<unknown>", srcLine = 4, srcColumn = 1}) [HsIdent "modulo"] (HsQualType [] (HsTyFun (HsTyCon (UnQual (HsIdent "Punto"))) (HsTyCon (UnQual (HsIdent "Float"))))),HsFunBind [HsMatch (SrcLoc {srcFilename = "<unknown>", srcLine = 5, srcColumn = 1}) (HsIdent "modulo") [HsPParen (HsPApp (UnQual (HsIdent "Punto2D")) [HsPVar (HsIdent "x"),HsPVar (HsIdent "y")])] (HsUnGuardedRhs (HsApp (HsVar (UnQual (HsIdent "sqrt"))) (HsParen (HsInfixApp (HsInfixApp (HsInfixApp (HsVar (UnQual (HsIdent "x"))) (HsQVarOp (UnQual (HsSymbol "^"))) (HsLit (HsInt 2))) (HsQVarOp (UnQual (HsSymbol "+"))) (HsVar (UnQual (HsIdent "y")))) (HsQVarOp (UnQual (HsSymbol "^"))) (HsLit (HsInt 2)))))) [],HsMatch (SrcLoc {srcFilename = "<unknown>", srcLine = 6, srcColumn = 1}) (HsIdent "modulo") [HsPParen (HsPApp (UnQual (HsIdent "Punto3D")) [HsPVar (HsIdent "x"),HsPVar (HsIdent "y"),HsPVar (HsIdent "z")])] (HsUnGuardedRhs (HsApp (HsVar (UnQual (HsIdent "sqrt"))) (HsParen (HsInfixApp (HsInfixApp (HsInfixApp (HsInfixApp (HsInfixApp (HsVar (UnQual (HsIdent "x"))) (HsQVarOp (UnQual (HsSymbol "^"))) (HsLit (HsInt 2))) (HsQVarOp (UnQual (HsSymbol "+"))) (HsVar (UnQual (HsIdent "y")))) (HsQVarOp (UnQual (HsSymbol "^"))) (HsLit (HsInt 2))) (HsQVarOp (UnQual (HsSymbol "+"))) (HsVar (UnQual (HsIdent "z")))) (HsQVarOp (UnQual (HsSymbol "^"))) (HsLit (HsInt 2)))))) []],HsTypeSig (SrcLoc {srcFilename = "<unknown>", srcLine = 9, srcColumn = 1}) [HsIdent "resta'"] (HsQualType [] (HsTyFun (HsTyCon (UnQual (HsIdent "Punto"))) (HsTyFun (HsTyCon (UnQual (HsIdent "Punto"))) (HsTyCon (UnQual (HsIdent "Punto")))))),HsFunBind [HsMatch (SrcLoc {srcFilename = "<unknown>", srcLine = 10, srcColumn = 1}) (HsIdent "resta'") [HsPParen (HsPApp (UnQual (HsIdent "Punto2D")) [HsPVar (HsIdent "x1"),HsPVar (HsIdent "y1")]),HsPParen (HsPApp (UnQual (HsIdent "Punto2D")) [HsPVar (HsIdent "x2"),HsPVar (HsIdent "y2")])] (HsUnGuardedRhs (HsApp (HsApp (HsCon (UnQual (HsIdent "Punto2D"))) (HsParen (HsInfixApp (HsVar (UnQual (HsIdent "x1"))) (HsQVarOp (UnQual (HsSymbol "-"))) (HsVar (UnQual (HsIdent "x2")))))) (HsParen (HsInfixApp (HsVar (UnQual (HsIdent "y1"))) (HsQVarOp (UnQual (HsSymbol "-"))) (HsVar (UnQual (HsIdent "y2"))))))) [],HsMatch (SrcLoc {srcFilename = "<unknown>", srcLine = 11, srcColumn = 1}) (HsIdent "resta'") [HsPParen (HsPApp (UnQual (HsIdent "Punto3D")) [HsPVar (HsIdent "x1"),HsPVar (HsIdent "y1"),HsPVar (HsIdent "z1")]),HsPParen (HsPApp (UnQual (HsIdent "Punto3D")) [HsPVar (HsIdent "x2"),HsPVar (HsIdent "y2"),HsPVar (HsIdent "z2")])] (HsUnGuardedRhs (HsApp (HsApp (HsApp (HsCon (UnQual (HsIdent "Punto3D"))) (HsParen (HsInfixApp (HsVar (UnQual (HsIdent "x1"))) (HsQVarOp (UnQual (HsSymbol "-"))) (HsVar (UnQual (HsIdent "x2")))))) (HsParen (HsInfixApp (HsVar (UnQual (HsIdent "y1"))) (HsQVarOp (UnQual (HsSymbol "-"))) (HsVar (UnQual (HsIdent "y2")))))) (HsParen (HsInfixApp (HsVar (UnQual (HsIdent "z1"))) (HsQVarOp (UnQual (HsSymbol "-"))) (HsVar (UnQual (HsIdent "z2"))))))) []],HsTypeSig (SrcLoc {srcFilename = "<unknown>", srcLine = 14, srcColumn = 1}) [HsIdent "distanciaA"] (HsQualType [] (HsTyFun (HsTyCon (UnQual (HsIdent "Punto"))) (HsTyFun (HsTyCon (UnQual (HsIdent "Punto"))) (HsTyCon (UnQual (HsIdent "Float")))))),HsFunBind [HsMatch (SrcLoc {srcFilename = "<unknown>", srcLine = 15, srcColumn = 1}) (HsIdent "distanciaA") [HsPVar (HsIdent "punto1"),HsPVar (HsIdent "punto2")] (HsUnGuardedRhs (HsApp (HsVar (UnQual (HsIdent "modulo"))) (HsParen (HsApp (HsApp (HsVar (UnQual (HsIdent "resta'"))) (HsVar (UnQual (HsIdent "punto1")))) (HsVar (UnQual (HsIdent "punto2"))))))) []]]
 Elemento: data linea:2columna:2
-Name:data start13 end13.Limit:142 nameOffset0 acum: 
-Name:data start13 end14.Limit:142 nameOffset1 acum: d
-Name:data start13 end15.Limit:142 nameOffset2 acum: da
-Name:data start13 end16.Limit:142 nameOffset3 acum: dat
-Name:data start13 end17.Limit:142 nameOffset4 acum: data
-start13 end17 elemento tageado: data
-Name:data start18 end18.Limit:142 nameOffset0 acum: 
-Name:data start19 end19.Limit:142 nameOffset0 acum: 
-Name:data start20 end20.Limit:142 nameOffset0 acum: 
-Name:data start21 end21.Limit:142 nameOffset0 acum: 
-Name:data start22 end22.Limit:142 nameOffset0 acum: 
-Name:data start23 end23.Limit:142 nameOffset0 acum: 
-Name:data start24 end24.Limit:142 nameOffset0 acum: 
-Name:data start25 end25.Limit:142 nameOffset0 acum: 
-Name:data start26 end26.Limit:142 nameOffset0 acum: 
-Name:data start27 end27.Limit:142 nameOffset0 acum: 
-Name:data start28 end28.Limit:142 nameOffset0 acum: 
-Name:data start29 end29.Limit:142 nameOffset0 acum: 
-Name:data start30 end30.Limit:142 nameOffset0 acum: 
-Name:data start31 end31.Limit:142 nameOffset0 acum: 
-Name:data start32 end32.Limit:142 nameOffset0 acum: 
-Name:data start33 end33.Limit:142 nameOffset0 acum: 
-Name:data start34 end34.Limit:142 nameOffset0 acum: 
-Name:data start35 end35.Limit:142 nameOffset0 acum: 
-Name:data start36 end36.Limit:142 nameOffset0 acum: 
-Name:data start37 end37.Limit:142 nameOffset0 acum: 
-Name:data start38 end38.Limit:142 nameOffset0 acum: 
-Name:data start39 end39.Limit:142 nameOffset0 acum: 
-Name:data start40 end40.Limit:142 nameOffset0 acum: 
-Name:data start41 end41.Limit:142 nameOffset0 acum: 
-Name:data start42 end42.Limit:142 nameOffset0 acum: 
-Name:data start43 end43.Limit:142 nameOffset0 acum: 
-Name:data start44 end44.Limit:142 nameOffset0 acum: 
-Name:data start45 end45.Limit:142 nameOffset0 acum: 
-Name:data start46 end46.Limit:142 nameOffset0 acum: 
-Name:data start47 end47.Limit:142 nameOffset0 acum: 
-Name:data start48 end48.Limit:142 nameOffset0 acum: 
-Name:data start49 end49.Limit:142 nameOffset0 acum: 
-Name:data start50 end50.Limit:142 nameOffset0 acum: 
-Name:data start51 end51.Limit:142 nameOffset0 acum: 
-Name:data start52 end52.Limit:142 nameOffset0 acum: 
-Name:data start53 end53.Limit:142 nameOffset0 acum: 
-Name:data start54 end54.Limit:142 nameOffset0 acum: 
-Name:data start55 end55.Limit:142 nameOffset0 acum: 
-Name:data start56 end56.Limit:142 nameOffset0 acum: 
-Name:data start57 end57.Limit:142 nameOffset0 acum: 
-Name:data start58 end58.Limit:142 nameOffset0 acum: 
-Name:data start59 end59.Limit:142 nameOffset0 acum: 
-Name:data start60 end60.Limit:142 nameOffset0 acum: 
-Name:data start61 end61.Limit:142 nameOffset0 acum: 
-Name:data start62 end62.Limit:142 nameOffset0 acum: 
-Name:data start63 end63.Limit:142 nameOffset0 acum: 
-Name:data start64 end64.Limit:142 nameOffset0 acum: 
-Name:data start65 end65.Limit:142 nameOffset0 acum: 
-Name:data start66 end66.Limit:142 nameOffset0 acum: 
-Name:data start67 end67.Limit:142 nameOffset0 acum: 
-Name:data start68 end68.Limit:142 nameOffset0 acum: 
-Name:data start69 end69.Limit:142 nameOffset0 acum: 
-Name:data start70 end70.Limit:142 nameOffset0 acum: 
-Name:data start71 end71.Limit:142 nameOffset0 acum: 
-Name:data start72 end72.Limit:142 nameOffset0 acum: 
-Name:data start73 end73.Limit:142 nameOffset0 acum: 
+Name:data start65 end65.Limit:526 nameOffset0 acum: 
+Name:data start65 end66.Limit:526 nameOffset1 acum: d
+Name:data start65 end67.Limit:526 nameOffset2 acum: da
+Name:data start65 end68.Limit:526 nameOffset3 acum: dat
+Name:data start65 end69.Limit:526 nameOffset4 acum: data
+start65 end69 elemento tageado: data
+Name:data start70 end70.Limit:526 nameOffset0 acum: 
+Name:data start71 end71.Limit:526 nameOffset0 acum: 
+Name:data start72 end72.Limit:526 nameOffset0 acum: 
+Name:data start73 end73.Limit:526 nameOffset0 acum: 
+Name:data start74 end74.Limit:526 nameOffset0 acum: 
+Name:data start75 end75.Limit:526 nameOffset0 acum: 
+Name:data start76 end76.Limit:526 nameOffset0 acum: 
+Name:data start77 end77.Limit:526 nameOffset0 acum: 
+Name:data start78 end78.Limit:526 nameOffset0 acum: 
+Name:data start79 end79.Limit:526 nameOffset0 acum: 
+Name:data start80 end80.Limit:526 nameOffset0 acum: 
+Name:data start81 end81.Limit:526 nameOffset0 acum: 
+Name:data start82 end82.Limit:526 nameOffset0 acum: 
+Name:data start83 end83.Limit:526 nameOffset0 acum: 
+Name:data start84 end84.Limit:526 nameOffset0 acum: 
+Name:data start85 end85.Limit:526 nameOffset0 acum: 
+Name:data start86 end86.Limit:526 nameOffset0 acum: 
+Name:data start87 end87.Limit:526 nameOffset0 acum: 
+Name:data start88 end88.Limit:526 nameOffset0 acum: 
+Name:data start89 end89.Limit:526 nameOffset0 acum: 
+Name:data start90 end90.Limit:526 nameOffset0 acum: 
+Name:data start91 end91.Limit:526 nameOffset0 acum: 
+Name:data start92 end92.Limit:526 nameOffset0 acum: 
+Name:data start93 end93.Limit:526 nameOffset0 acum: 
+Name:data start94 end94.Limit:526 nameOffset0 acum: 
+Name:data start95 end95.Limit:526 nameOffset0 acum: 
+Name:data start96 end96.Limit:526 nameOffset0 acum: 
+Name:data start97 end97.Limit:526 nameOffset0 acum: 
+Name:data start98 end98.Limit:526 nameOffset0 acum: 
+Name:data start99 end99.Limit:526 nameOffset0 acum: 
+Name:data start100 end100.Limit:526 nameOffset0 acum: 
+Name:data start101 end101.Limit:526 nameOffset0 acum: 
+Name:data start102 end102.Limit:526 nameOffset0 acum: 
+Name:data start103 end103.Limit:526 nameOffset0 acum: 
+Name:data start104 end104.Limit:526 nameOffset0 acum: 
+Name:data start105 end105.Limit:526 nameOffset0 acum: 
+Name:data start106 end106.Limit:526 nameOffset0 acum: 
+Name:data start107 end107.Limit:526 nameOffset0 acum: 
+Name:data start108 end108.Limit:526 nameOffset0 acum: 
+Name:data start109 end109.Limit:526 nameOffset0 acum: 
+Name:data start110 end110.Limit:526 nameOffset0 acum: 
+Name:data start111 end111.Limit:526 nameOffset0 acum: 
+Name:data start112 end112.Limit:526 nameOffset0 acum: 
+Name:data start113 end113.Limit:526 nameOffset0 acum: 
+Name:data start114 end114.Limit:526 nameOffset0 acum: 
+Name:data start115 end115.Limit:526 nameOffset0 acum: 
+Name:data start116 end116.Limit:526 nameOffset0 acum: 
+Name:data start117 end117.Limit:526 nameOffset0 acum: 
+Name:data start118 end118.Limit:526 nameOffset0 acum: 
+Name:data start119 end119.Limit:526 nameOffset0 acum: 
+Name:data start120 end120.Limit:526 nameOffset0 acum: 
+Name:data start121 end121.Limit:526 nameOffset0 acum: 
+Name:data start122 end122.Limit:526 nameOffset0 acum: 
+Name:data start123 end123.Limit:526 nameOffset0 acum: 
+Name:data start124 end124.Limit:526 nameOffset0 acum: 
+Name:data start125 end125.Limit:526 nameOffset0 acum: 
+Name:data start125 end126.Limit:526 nameOffset1 acum: d
+Name:data start127 end127.Limit:526 nameOffset0 acum: 
+Name:data start128 end128.Limit:526 nameOffset0 acum: 
+Name:data start129 end129.Limit:526 nameOffset0 acum: 
+Name:data start130 end130.Limit:526 nameOffset0 acum: 
+Name:data start131 end131.Limit:526 nameOffset0 acum: 
+Name:data start132 end132.Limit:526 nameOffset0 acum: 
+Name:data start133 end133.Limit:526 nameOffset0 acum: 
+Name:data start134 end134.Limit:526 nameOffset0 acum: 
+Name:data start135 end135.Limit:526 nameOffset0 acum: 
+Name:data start136 end136.Limit:526 nameOffset0 acum: 
+Name:data start137 end137.Limit:526 nameOffset0 acum: 
+Name:data start138 end138.Limit:526 nameOffset0 acum: 
+Name:data start139 end139.Limit:526 nameOffset0 acum: 
+Name:data start140 end140.Limit:526 nameOffset0 acum: 
 Elemento: Punto linea:2columna:2
-Name:Punto start13 end13.Limit:142 nameOffset0 acum: 
-Name:Punto start14 end14.Limit:142 nameOffset0 acum: 
-Name:Punto start15 end15.Limit:142 nameOffset0 acum: 
-Name:Punto start16 end16.Limit:142 nameOffset0 acum: 
-Name:Punto start17 end17.Limit:142 nameOffset0 acum: 
-Name:Punto start18 end18.Limit:142 nameOffset0 acum: 
-Name:Punto start18 end19.Limit:142 nameOffset1 acum: P
-Name:Punto start18 end20.Limit:142 nameOffset2 acum: Pu
-Name:Punto start18 end21.Limit:142 nameOffset3 acum: Pun
-Name:Punto start18 end22.Limit:142 nameOffset4 acum: Punt
-Name:Punto start18 end23.Limit:142 nameOffset5 acum: Punto
-start18 end23 elemento tageado: Punto
-Name:Punto start24 end24.Limit:142 nameOffset0 acum: 
-Name:Punto start25 end25.Limit:142 nameOffset0 acum: 
-Name:Punto start25 end26.Limit:142 nameOffset1 acum: P
-Name:Punto start25 end27.Limit:142 nameOffset2 acum: Pu
-Name:Punto start25 end28.Limit:142 nameOffset3 acum: Pun
-Name:Punto start25 end29.Limit:142 nameOffset4 acum: Punt
-Name:Punto start25 end30.Limit:142 nameOffset5 acum: Punto
-start25 end30 elemento tageado: Punto
-Name:Punto start31 end31.Limit:142 nameOffset0 acum: 
-Name:Punto start32 end32.Limit:142 nameOffset0 acum: 
-Name:Punto start33 end33.Limit:142 nameOffset0 acum: 
-Name:Punto start34 end34.Limit:142 nameOffset0 acum: 
-Name:Punto start35 end35.Limit:142 nameOffset0 acum: 
-Name:Punto start36 end36.Limit:142 nameOffset0 acum: 
-Name:Punto start37 end37.Limit:142 nameOffset0 acum: 
-Name:Punto start38 end38.Limit:142 nameOffset0 acum: 
-Name:Punto start39 end39.Limit:142 nameOffset0 acum: 
-Name:Punto start40 end40.Limit:142 nameOffset0 acum: 
-Name:Punto start41 end41.Limit:142 nameOffset0 acum: 
-Name:Punto start42 end42.Limit:142 nameOffset0 acum: 
-Name:Punto start43 end43.Limit:142 nameOffset0 acum: 
-Name:Punto start44 end44.Limit:142 nameOffset0 acum: 
-Name:Punto start45 end45.Limit:142 nameOffset0 acum: 
-Name:Punto start46 end46.Limit:142 nameOffset0 acum: 
-Name:Punto start47 end47.Limit:142 nameOffset0 acum: 
-Name:Punto start47 end48.Limit:142 nameOffset1 acum: P
-Name:Punto start47 end49.Limit:142 nameOffset2 acum: Pu
-Name:Punto start47 end50.Limit:142 nameOffset3 acum: Pun
-Name:Punto start47 end51.Limit:142 nameOffset4 acum: Punt
-Name:Punto start47 end52.Limit:142 nameOffset5 acum: Punto
-start47 end52 elemento tageado: Punto
-Name:Punto start53 end53.Limit:142 nameOffset0 acum: 
-Name:Punto start54 end54.Limit:142 nameOffset0 acum: 
-Name:Punto start55 end55.Limit:142 nameOffset0 acum: 
-Name:Punto start56 end56.Limit:142 nameOffset0 acum: 
-Name:Punto start57 end57.Limit:142 nameOffset0 acum: 
-Name:Punto start58 end58.Limit:142 nameOffset0 acum: 
-Name:Punto start59 end59.Limit:142 nameOffset0 acum: 
-Name:Punto start60 end60.Limit:142 nameOffset0 acum: 
-Name:Punto start61 end61.Limit:142 nameOffset0 acum: 
-Name:Punto start62 end62.Limit:142 nameOffset0 acum: 
-Name:Punto start63 end63.Limit:142 nameOffset0 acum: 
-Name:Punto start64 end64.Limit:142 nameOffset0 acum: 
-Name:Punto start65 end65.Limit:142 nameOffset0 acum: 
-Name:Punto start66 end66.Limit:142 nameOffset0 acum: 
-Name:Punto start67 end67.Limit:142 nameOffset0 acum: 
-Name:Punto start68 end68.Limit:142 nameOffset0 acum: 
-Name:Punto start69 end69.Limit:142 nameOffset0 acum: 
-Name:Punto start70 end70.Limit:142 nameOffset0 acum: 
-Name:Punto start71 end71.Limit:142 nameOffset0 acum: 
-Name:Punto start72 end72.Limit:142 nameOffset0 acum: 
-Name:Punto start73 end73.Limit:142 nameOffset0 acum: 
+Name:Punto start65 end65.Limit:526 nameOffset0 acum: 
+Name:Punto start66 end66.Limit:526 nameOffset0 acum: 
+Name:Punto start67 end67.Limit:526 nameOffset0 acum: 
+Name:Punto start68 end68.Limit:526 nameOffset0 acum: 
+Name:Punto start69 end69.Limit:526 nameOffset0 acum: 
+Name:Punto start70 end70.Limit:526 nameOffset0 acum: 
+Name:Punto start70 end71.Limit:526 nameOffset1 acum: P
+Name:Punto start70 end72.Limit:526 nameOffset2 acum: Pu
+Name:Punto start70 end73.Limit:526 nameOffset3 acum: Pun
+Name:Punto start70 end74.Limit:526 nameOffset4 acum: Punt
+Name:Punto start70 end75.Limit:526 nameOffset5 acum: Punto
+start70 end75 elemento tageado: Punto
+Name:Punto start76 end76.Limit:526 nameOffset0 acum: 
+Name:Punto start77 end77.Limit:526 nameOffset0 acum: 
+Name:Punto start77 end78.Limit:526 nameOffset1 acum: P
+Name:Punto start77 end79.Limit:526 nameOffset2 acum: Pu
+Name:Punto start77 end80.Limit:526 nameOffset3 acum: Pun
+Name:Punto start77 end81.Limit:526 nameOffset4 acum: Punt
+Name:Punto start77 end82.Limit:526 nameOffset5 acum: Punto
+start77 end82 elemento tageado: Punto
+Name:Punto start83 end83.Limit:526 nameOffset0 acum: 
+Name:Punto start84 end84.Limit:526 nameOffset0 acum: 
+Name:Punto start85 end85.Limit:526 nameOffset0 acum: 
+Name:Punto start86 end86.Limit:526 nameOffset0 acum: 
+Name:Punto start87 end87.Limit:526 nameOffset0 acum: 
+Name:Punto start88 end88.Limit:526 nameOffset0 acum: 
+Name:Punto start89 end89.Limit:526 nameOffset0 acum: 
+Name:Punto start90 end90.Limit:526 nameOffset0 acum: 
+Name:Punto start91 end91.Limit:526 nameOffset0 acum: 
+Name:Punto start92 end92.Limit:526 nameOffset0 acum: 
+Name:Punto start93 end93.Limit:526 nameOffset0 acum: 
+Name:Punto start94 end94.Limit:526 nameOffset0 acum: 
+Name:Punto start95 end95.Limit:526 nameOffset0 acum: 
+Name:Punto start96 end96.Limit:526 nameOffset0 acum: 
+Name:Punto start97 end97.Limit:526 nameOffset0 acum: 
+Name:Punto start98 end98.Limit:526 nameOffset0 acum: 
+Name:Punto start99 end99.Limit:526 nameOffset0 acum: 
+Name:Punto start99 end100.Limit:526 nameOffset1 acum: P
+Name:Punto start99 end101.Limit:526 nameOffset2 acum: Pu
+Name:Punto start99 end102.Limit:526 nameOffset3 acum: Pun
+Name:Punto start99 end103.Limit:526 nameOffset4 acum: Punt
+Name:Punto start99 end104.Limit:526 nameOffset5 acum: Punto
+start99 end104 elemento tageado: Punto
+Name:Punto start105 end105.Limit:526 nameOffset0 acum: 
+Name:Punto start106 end106.Limit:526 nameOffset0 acum: 
+Name:Punto start107 end107.Limit:526 nameOffset0 acum: 
+Name:Punto start108 end108.Limit:526 nameOffset0 acum: 
+Name:Punto start109 end109.Limit:526 nameOffset0 acum: 
+Name:Punto start110 end110.Limit:526 nameOffset0 acum: 
+Name:Punto start111 end111.Limit:526 nameOffset0 acum: 
+Name:Punto start112 end112.Limit:526 nameOffset0 acum: 
+Name:Punto start113 end113.Limit:526 nameOffset0 acum: 
+Name:Punto start114 end114.Limit:526 nameOffset0 acum: 
+Name:Punto start115 end115.Limit:526 nameOffset0 acum: 
+Name:Punto start116 end116.Limit:526 nameOffset0 acum: 
+Name:Punto start117 end117.Limit:526 nameOffset0 acum: 
+Name:Punto start118 end118.Limit:526 nameOffset0 acum: 
+Name:Punto start119 end119.Limit:526 nameOffset0 acum: 
+Name:Punto start120 end120.Limit:526 nameOffset0 acum: 
+Name:Punto start121 end121.Limit:526 nameOffset0 acum: 
+Name:Punto start122 end122.Limit:526 nameOffset0 acum: 
+Name:Punto start123 end123.Limit:526 nameOffset0 acum: 
+Name:Punto start124 end124.Limit:526 nameOffset0 acum: 
+Name:Punto start125 end125.Limit:526 nameOffset0 acum: 
+Name:Punto start126 end126.Limit:526 nameOffset0 acum: 
+Name:Punto start127 end127.Limit:526 nameOffset0 acum: 
+Name:Punto start128 end128.Limit:526 nameOffset0 acum: 
+Name:Punto start129 end129.Limit:526 nameOffset0 acum: 
+Name:Punto start130 end130.Limit:526 nameOffset0 acum: 
+Name:Punto start131 end131.Limit:526 nameOffset0 acum: 
+Name:Punto start132 end132.Limit:526 nameOffset0 acum: 
+Name:Punto start133 end133.Limit:526 nameOffset0 acum: 
+Name:Punto start134 end134.Limit:526 nameOffset0 acum: 
+Name:Punto start135 end135.Limit:526 nameOffset0 acum: 
+Name:Punto start136 end136.Limit:526 nameOffset0 acum: 
+Name:Punto start137 end137.Limit:526 nameOffset0 acum: 
+Name:Punto start138 end138.Limit:526 nameOffset0 acum: 
+Name:Punto start139 end139.Limit:526 nameOffset0 acum: 
+Name:Punto start140 end140.Limit:526 nameOffset0 acum: 
 Elemento: Punto2D linea:2columna:14
-Name:Punto2D start25 end25.Limit:142 nameOffset0 acum: 
-Name:Punto2D start25 end26.Limit:142 nameOffset1 acum: P
-Name:Punto2D start25 end27.Limit:142 nameOffset2 acum: Pu
-Name:Punto2D start25 end28.Limit:142 nameOffset3 acum: Pun
-Name:Punto2D start25 end29.Limit:142 nameOffset4 acum: Punt
-Name:Punto2D start25 end30.Limit:142 nameOffset5 acum: Punto
-Name:Punto2D start25 end31.Limit:142 nameOffset6 acum: Punto2
-Name:Punto2D start25 end32.Limit:142 nameOffset7 acum: Punto2D
-start25 end32 elemento tageado: Punto2D
-Name:Punto2D start33 end33.Limit:142 nameOffset0 acum: 
-Name:Punto2D start34 end34.Limit:142 nameOffset0 acum: 
-Name:Punto2D start35 end35.Limit:142 nameOffset0 acum: 
-Name:Punto2D start36 end36.Limit:142 nameOffset0 acum: 
-Name:Punto2D start37 end37.Limit:142 nameOffset0 acum: 
-Name:Punto2D start38 end38.Limit:142 nameOffset0 acum: 
-Name:Punto2D start39 end39.Limit:142 nameOffset0 acum: 
-Name:Punto2D start40 end40.Limit:142 nameOffset0 acum: 
-Name:Punto2D start41 end41.Limit:142 nameOffset0 acum: 
-Name:Punto2D start42 end42.Limit:142 nameOffset0 acum: 
-Name:Punto2D start43 end43.Limit:142 nameOffset0 acum: 
-Name:Punto2D start44 end44.Limit:142 nameOffset0 acum: 
-Name:Punto2D start45 end45.Limit:142 nameOffset0 acum: 
-Name:Punto2D start46 end46.Limit:142 nameOffset0 acum: 
-Name:Punto2D start47 end47.Limit:142 nameOffset0 acum: 
-Name:Punto2D start47 end48.Limit:142 nameOffset1 acum: P
-Name:Punto2D start47 end49.Limit:142 nameOffset2 acum: Pu
-Name:Punto2D start47 end50.Limit:142 nameOffset3 acum: Pun
-Name:Punto2D start47 end51.Limit:142 nameOffset4 acum: Punt
-Name:Punto2D start47 end52.Limit:142 nameOffset5 acum: Punto
-Name:Punto2D start53 end53.Limit:142 nameOffset0 acum: 
-Name:Punto2D start54 end54.Limit:142 nameOffset0 acum: 
-Name:Punto2D start55 end55.Limit:142 nameOffset0 acum: 
-Name:Punto2D start56 end56.Limit:142 nameOffset0 acum: 
-Name:Punto2D start57 end57.Limit:142 nameOffset0 acum: 
-Name:Punto2D start58 end58.Limit:142 nameOffset0 acum: 
-Name:Punto2D start59 end59.Limit:142 nameOffset0 acum: 
-Name:Punto2D start60 end60.Limit:142 nameOffset0 acum: 
-Name:Punto2D start61 end61.Limit:142 nameOffset0 acum: 
-Name:Punto2D start62 end62.Limit:142 nameOffset0 acum: 
-Name:Punto2D start63 end63.Limit:142 nameOffset0 acum: 
-Name:Punto2D start64 end64.Limit:142 nameOffset0 acum: 
-Name:Punto2D start65 end65.Limit:142 nameOffset0 acum: 
-Name:Punto2D start66 end66.Limit:142 nameOffset0 acum: 
-Name:Punto2D start67 end67.Limit:142 nameOffset0 acum: 
-Name:Punto2D start68 end68.Limit:142 nameOffset0 acum: 
-Name:Punto2D start69 end69.Limit:142 nameOffset0 acum: 
-Name:Punto2D start70 end70.Limit:142 nameOffset0 acum: 
-Name:Punto2D start71 end71.Limit:142 nameOffset0 acum: 
-Name:Punto2D start72 end72.Limit:142 nameOffset0 acum: 
-Name:Punto2D start73 end73.Limit:142 nameOffset0 acum: 
+Name:Punto2D start77 end77.Limit:526 nameOffset0 acum: 
+Name:Punto2D start77 end78.Limit:526 nameOffset1 acum: P
+Name:Punto2D start77 end79.Limit:526 nameOffset2 acum: Pu
+Name:Punto2D start77 end80.Limit:526 nameOffset3 acum: Pun
+Name:Punto2D start77 end81.Limit:526 nameOffset4 acum: Punt
+Name:Punto2D start77 end82.Limit:526 nameOffset5 acum: Punto
+Name:Punto2D start77 end83.Limit:526 nameOffset6 acum: Punto2
+Name:Punto2D start77 end84.Limit:526 nameOffset7 acum: Punto2D
+start77 end84 elemento tageado: Punto2D
+Name:Punto2D start85 end85.Limit:526 nameOffset0 acum: 
+Name:Punto2D start86 end86.Limit:526 nameOffset0 acum: 
+Name:Punto2D start87 end87.Limit:526 nameOffset0 acum: 
+Name:Punto2D start88 end88.Limit:526 nameOffset0 acum: 
+Name:Punto2D start89 end89.Limit:526 nameOffset0 acum: 
+Name:Punto2D start90 end90.Limit:526 nameOffset0 acum: 
+Name:Punto2D start91 end91.Limit:526 nameOffset0 acum: 
+Name:Punto2D start92 end92.Limit:526 nameOffset0 acum: 
+Name:Punto2D start93 end93.Limit:526 nameOffset0 acum: 
+Name:Punto2D start94 end94.Limit:526 nameOffset0 acum: 
+Name:Punto2D start95 end95.Limit:526 nameOffset0 acum: 
+Name:Punto2D start96 end96.Limit:526 nameOffset0 acum: 
+Name:Punto2D start97 end97.Limit:526 nameOffset0 acum: 
+Name:Punto2D start98 end98.Limit:526 nameOffset0 acum: 
+Name:Punto2D start99 end99.Limit:526 nameOffset0 acum: 
+Name:Punto2D start99 end100.Limit:526 nameOffset1 acum: P
+Name:Punto2D start99 end101.Limit:526 nameOffset2 acum: Pu
+Name:Punto2D start99 end102.Limit:526 nameOffset3 acum: Pun
+Name:Punto2D start99 end103.Limit:526 nameOffset4 acum: Punt
+Name:Punto2D start99 end104.Limit:526 nameOffset5 acum: Punto
+Name:Punto2D start105 end105.Limit:526 nameOffset0 acum: 
+Name:Punto2D start106 end106.Limit:526 nameOffset0 acum: 
+Name:Punto2D start107 end107.Limit:526 nameOffset0 acum: 
+Name:Punto2D start108 end108.Limit:526 nameOffset0 acum: 
+Name:Punto2D start109 end109.Limit:526 nameOffset0 acum: 
+Name:Punto2D start110 end110.Limit:526 nameOffset0 acum: 
+Name:Punto2D start111 end111.Limit:526 nameOffset0 acum: 
+Name:Punto2D start112 end112.Limit:526 nameOffset0 acum: 
+Name:Punto2D start113 end113.Limit:526 nameOffset0 acum: 
+Name:Punto2D start114 end114.Limit:526 nameOffset0 acum: 
+Name:Punto2D start115 end115.Limit:526 nameOffset0 acum: 
+Name:Punto2D start116 end116.Limit:526 nameOffset0 acum: 
+Name:Punto2D start117 end117.Limit:526 nameOffset0 acum: 
+Name:Punto2D start118 end118.Limit:526 nameOffset0 acum: 
+Name:Punto2D start119 end119.Limit:526 nameOffset0 acum: 
+Name:Punto2D start120 end120.Limit:526 nameOffset0 acum: 
+Name:Punto2D start121 end121.Limit:526 nameOffset0 acum: 
+Name:Punto2D start122 end122.Limit:526 nameOffset0 acum: 
+Name:Punto2D start123 end123.Limit:526 nameOffset0 acum: 
+Name:Punto2D start124 end124.Limit:526 nameOffset0 acum: 
+Name:Punto2D start125 end125.Limit:526 nameOffset0 acum: 
+Name:Punto2D start126 end126.Limit:526 nameOffset0 acum: 
+Name:Punto2D start127 end127.Limit:526 nameOffset0 acum: 
+Name:Punto2D start128 end128.Limit:526 nameOffset0 acum: 
+Name:Punto2D start129 end129.Limit:526 nameOffset0 acum: 
+Name:Punto2D start130 end130.Limit:526 nameOffset0 acum: 
+Name:Punto2D start131 end131.Limit:526 nameOffset0 acum: 
+Name:Punto2D start132 end132.Limit:526 nameOffset0 acum: 
+Name:Punto2D start133 end133.Limit:526 nameOffset0 acum: 
+Name:Punto2D start134 end134.Limit:526 nameOffset0 acum: 
+Name:Punto2D start135 end135.Limit:526 nameOffset0 acum: 
+Name:Punto2D start136 end136.Limit:526 nameOffset0 acum: 
+Name:Punto2D start137 end137.Limit:526 nameOffset0 acum: 
+Name:Punto2D start138 end138.Limit:526 nameOffset0 acum: 
+Name:Punto2D start139 end139.Limit:526 nameOffset0 acum: 
+Name:Punto2D start140 end140.Limit:526 nameOffset0 acum: 
 Elemento: Float linea:2columna:14
-Name:Float start25 end25.Limit:142 nameOffset0 acum: 
-Name:Float start26 end26.Limit:142 nameOffset0 acum: 
-Name:Float start27 end27.Limit:142 nameOffset0 acum: 
-Name:Float start28 end28.Limit:142 nameOffset0 acum: 
-Name:Float start29 end29.Limit:142 nameOffset0 acum: 
-Name:Float start30 end30.Limit:142 nameOffset0 acum: 
-Name:Float start31 end31.Limit:142 nameOffset0 acum: 
-Name:Float start32 end32.Limit:142 nameOffset0 acum: 
-Name:Float start33 end33.Limit:142 nameOffset0 acum: 
-Name:Float start33 end34.Limit:142 nameOffset1 acum: F
-Name:Float start33 end35.Limit:142 nameOffset2 acum: Fl
-Name:Float start33 end36.Limit:142 nameOffset3 acum: Flo
-Name:Float start33 end37.Limit:142 nameOffset4 acum: Floa
-Name:Float start33 end38.Limit:142 nameOffset5 acum: Float
-start33 end38 elemento tageado: Float
-Name:Float start39 end39.Limit:142 nameOffset0 acum: 
-Name:Float start39 end40.Limit:142 nameOffset1 acum: F
-Name:Float start39 end41.Limit:142 nameOffset2 acum: Fl
-Name:Float start39 end42.Limit:142 nameOffset3 acum: Flo
-Name:Float start39 end43.Limit:142 nameOffset4 acum: Floa
-Name:Float start39 end44.Limit:142 nameOffset5 acum: Float
-start39 end44 elemento tageado: Float
-Name:Float start45 end45.Limit:142 nameOffset0 acum: 
-Name:Float start46 end46.Limit:142 nameOffset0 acum: 
-Name:Float start47 end47.Limit:142 nameOffset0 acum: 
-Name:Float start48 end48.Limit:142 nameOffset0 acum: 
-Name:Float start49 end49.Limit:142 nameOffset0 acum: 
-Name:Float start50 end50.Limit:142 nameOffset0 acum: 
-Name:Float start51 end51.Limit:142 nameOffset0 acum: 
-Name:Float start52 end52.Limit:142 nameOffset0 acum: 
-Name:Float start53 end53.Limit:142 nameOffset0 acum: 
-Name:Float start54 end54.Limit:142 nameOffset0 acum: 
-Name:Float start55 end55.Limit:142 nameOffset0 acum: 
-Name:Float start55 end56.Limit:142 nameOffset1 acum: F
-Name:Float start55 end57.Limit:142 nameOffset2 acum: Fl
-Name:Float start55 end58.Limit:142 nameOffset3 acum: Flo
-Name:Float start55 end59.Limit:142 nameOffset4 acum: Floa
-Name:Float start55 end60.Limit:142 nameOffset5 acum: Float
-start55 end60 elemento tageado: Float
-Name:Float start61 end61.Limit:142 nameOffset0 acum: 
-Name:Float start61 end62.Limit:142 nameOffset1 acum: F
-Name:Float start61 end63.Limit:142 nameOffset2 acum: Fl
-Name:Float start61 end64.Limit:142 nameOffset3 acum: Flo
-Name:Float start61 end65.Limit:142 nameOffset4 acum: Floa
-Name:Float start61 end66.Limit:142 nameOffset5 acum: Float
-start61 end66 elemento tageado: Float
-Name:Float start67 end67.Limit:142 nameOffset0 acum: 
-Name:Float start67 end68.Limit:142 nameOffset1 acum: F
-Name:Float start67 end69.Limit:142 nameOffset2 acum: Fl
-Name:Float start67 end70.Limit:142 nameOffset3 acum: Flo
-Name:Float start67 end71.Limit:142 nameOffset4 acum: Floa
-Name:Float start67 end72.Limit:142 nameOffset5 acum: Float
-start67 end72 elemento tageado: Float
-Name:Float start73 end73.Limit:142 nameOffset0 acum: 
+Name:Float start77 end77.Limit:526 nameOffset0 acum: 
+Name:Float start78 end78.Limit:526 nameOffset0 acum: 
+Name:Float start79 end79.Limit:526 nameOffset0 acum: 
+Name:Float start80 end80.Limit:526 nameOffset0 acum: 
+Name:Float start81 end81.Limit:526 nameOffset0 acum: 
+Name:Float start82 end82.Limit:526 nameOffset0 acum: 
+Name:Float start83 end83.Limit:526 nameOffset0 acum: 
+Name:Float start84 end84.Limit:526 nameOffset0 acum: 
+Name:Float start85 end85.Limit:526 nameOffset0 acum: 
+Name:Float start85 end86.Limit:526 nameOffset1 acum: F
+Name:Float start85 end87.Limit:526 nameOffset2 acum: Fl
+Name:Float start85 end88.Limit:526 nameOffset3 acum: Flo
+Name:Float start85 end89.Limit:526 nameOffset4 acum: Floa
+Name:Float start85 end90.Limit:526 nameOffset5 acum: Float
+start85 end90 elemento tageado: Float
+Name:Float start91 end91.Limit:526 nameOffset0 acum: 
+Name:Float start91 end92.Limit:526 nameOffset1 acum: F
+Name:Float start91 end93.Limit:526 nameOffset2 acum: Fl
+Name:Float start91 end94.Limit:526 nameOffset3 acum: Flo
+Name:Float start91 end95.Limit:526 nameOffset4 acum: Floa
+Name:Float start91 end96.Limit:526 nameOffset5 acum: Float
+start91 end96 elemento tageado: Float
+Name:Float start97 end97.Limit:526 nameOffset0 acum: 
+Name:Float start98 end98.Limit:526 nameOffset0 acum: 
+Name:Float start99 end99.Limit:526 nameOffset0 acum: 
+Name:Float start100 end100.Limit:526 nameOffset0 acum: 
+Name:Float start101 end101.Limit:526 nameOffset0 acum: 
+Name:Float start102 end102.Limit:526 nameOffset0 acum: 
+Name:Float start103 end103.Limit:526 nameOffset0 acum: 
+Name:Float start104 end104.Limit:526 nameOffset0 acum: 
+Name:Float start105 end105.Limit:526 nameOffset0 acum: 
+Name:Float start106 end106.Limit:526 nameOffset0 acum: 
+Name:Float start107 end107.Limit:526 nameOffset0 acum: 
+Name:Float start107 end108.Limit:526 nameOffset1 acum: F
+Name:Float start107 end109.Limit:526 nameOffset2 acum: Fl
+Name:Float start107 end110.Limit:526 nameOffset3 acum: Flo
+Name:Float start107 end111.Limit:526 nameOffset4 acum: Floa
+Name:Float start107 end112.Limit:526 nameOffset5 acum: Float
+start107 end112 elemento tageado: Float
+Name:Float start113 end113.Limit:526 nameOffset0 acum: 
+Name:Float start113 end114.Limit:526 nameOffset1 acum: F
+Name:Float start113 end115.Limit:526 nameOffset2 acum: Fl
+Name:Float start113 end116.Limit:526 nameOffset3 acum: Flo
+Name:Float start113 end117.Limit:526 nameOffset4 acum: Floa
+Name:Float start113 end118.Limit:526 nameOffset5 acum: Float
+start113 end118 elemento tageado: Float
+Name:Float start119 end119.Limit:526 nameOffset0 acum: 
+Name:Float start119 end120.Limit:526 nameOffset1 acum: F
+Name:Float start119 end121.Limit:526 nameOffset2 acum: Fl
+Name:Float start119 end122.Limit:526 nameOffset3 acum: Flo
+Name:Float start119 end123.Limit:526 nameOffset4 acum: Floa
+Name:Float start119 end124.Limit:526 nameOffset5 acum: Float
+start119 end124 elemento tageado: Float
+Name:Float start125 end125.Limit:526 nameOffset0 acum: 
+Name:Float start126 end126.Limit:526 nameOffset0 acum: 
+Name:Float start127 end127.Limit:526 nameOffset0 acum: 
+Name:Float start128 end128.Limit:526 nameOffset0 acum: 
+Name:Float start129 end129.Limit:526 nameOffset0 acum: 
+Name:Float start130 end130.Limit:526 nameOffset0 acum: 
+Name:Float start131 end131.Limit:526 nameOffset0 acum: 
+Name:Float start132 end132.Limit:526 nameOffset0 acum: 
+Name:Float start133 end133.Limit:526 nameOffset0 acum: 
+Name:Float start134 end134.Limit:526 nameOffset0 acum: 
+Name:Float start135 end135.Limit:526 nameOffset0 acum: 
+Name:Float start136 end136.Limit:526 nameOffset0 acum: 
+Name:Float start137 end137.Limit:526 nameOffset0 acum: 
+Name:Float start138 end138.Limit:526 nameOffset0 acum: 
+Name:Float start139 end139.Limit:526 nameOffset0 acum: 
+Name:Float start140 end140.Limit:526 nameOffset0 acum: 
 Elemento: Float linea:2columna:14
-Name:Float start25 end25.Limit:142 nameOffset0 acum: 
-Name:Float start26 end26.Limit:142 nameOffset0 acum: 
-Name:Float start27 end27.Limit:142 nameOffset0 acum: 
-Name:Float start28 end28.Limit:142 nameOffset0 acum: 
-Name:Float start29 end29.Limit:142 nameOffset0 acum: 
-Name:Float start30 end30.Limit:142 nameOffset0 acum: 
-Name:Float start31 end31.Limit:142 nameOffset0 acum: 
-Name:Float start32 end32.Limit:142 nameOffset0 acum: 
-Name:Float start33 end33.Limit:142 nameOffset0 acum: 
-Name:Float start33 end34.Limit:142 nameOffset1 acum: F
-Name:Float start33 end35.Limit:142 nameOffset2 acum: Fl
-Name:Float start33 end36.Limit:142 nameOffset3 acum: Flo
-Name:Float start33 end37.Limit:142 nameOffset4 acum: Floa
-Name:Float start33 end38.Limit:142 nameOffset5 acum: Float
-start33 end38 elemento tageado: Float
-Name:Float start39 end39.Limit:142 nameOffset0 acum: 
-Name:Float start39 end40.Limit:142 nameOffset1 acum: F
-Name:Float start39 end41.Limit:142 nameOffset2 acum: Fl
-Name:Float start39 end42.Limit:142 nameOffset3 acum: Flo
-Name:Float start39 end43.Limit:142 nameOffset4 acum: Floa
-Name:Float start39 end44.Limit:142 nameOffset5 acum: Float
-start39 end44 elemento tageado: Float
-Name:Float start45 end45.Limit:142 nameOffset0 acum: 
-Name:Float start46 end46.Limit:142 nameOffset0 acum: 
-Name:Float start47 end47.Limit:142 nameOffset0 acum: 
-Name:Float start48 end48.Limit:142 nameOffset0 acum: 
-Name:Float start49 end49.Limit:142 nameOffset0 acum: 
-Name:Float start50 end50.Limit:142 nameOffset0 acum: 
-Name:Float start51 end51.Limit:142 nameOffset0 acum: 
-Name:Float start52 end52.Limit:142 nameOffset0 acum: 
-Name:Float start53 end53.Limit:142 nameOffset0 acum: 
-Name:Float start54 end54.Limit:142 nameOffset0 acum: 
-Name:Float start55 end55.Limit:142 nameOffset0 acum: 
-Name:Float start55 end56.Limit:142 nameOffset1 acum: F
-Name:Float start55 end57.Limit:142 nameOffset2 acum: Fl
-Name:Float start55 end58.Limit:142 nameOffset3 acum: Flo
-Name:Float start55 end59.Limit:142 nameOffset4 acum: Floa
-Name:Float start55 end60.Limit:142 nameOffset5 acum: Float
-start55 end60 elemento tageado: Float
-Name:Float start61 end61.Limit:142 nameOffset0 acum: 
-Name:Float start61 end62.Limit:142 nameOffset1 acum: F
-Name:Float start61 end63.Limit:142 nameOffset2 acum: Fl
-Name:Float start61 end64.Limit:142 nameOffset3 acum: Flo
-Name:Float start61 end65.Limit:142 nameOffset4 acum: Floa
-Name:Float start61 end66.Limit:142 nameOffset5 acum: Float
-start61 end66 elemento tageado: Float
-Name:Float start67 end67.Limit:142 nameOffset0 acum: 
-Name:Float start67 end68.Limit:142 nameOffset1 acum: F
-Name:Float start67 end69.Limit:142 nameOffset2 acum: Fl
-Name:Float start67 end70.Limit:142 nameOffset3 acum: Flo
-Name:Float start67 end71.Limit:142 nameOffset4 acum: Floa
-Name:Float start67 end72.Limit:142 nameOffset5 acum: Float
-start67 end72 elemento tageado: Float
-Name:Float start73 end73.Limit:142 nameOffset0 acum: 
+Name:Float start77 end77.Limit:526 nameOffset0 acum: 
+Name:Float start78 end78.Limit:526 nameOffset0 acum: 
+Name:Float start79 end79.Limit:526 nameOffset0 acum: 
+Name:Float start80 end80.Limit:526 nameOffset0 acum: 
+Name:Float start81 end81.Limit:526 nameOffset0 acum: 
+Name:Float start82 end82.Limit:526 nameOffset0 acum: 
+Name:Float start83 end83.Limit:526 nameOffset0 acum: 
+Name:Float start84 end84.Limit:526 nameOffset0 acum: 
+Name:Float start85 end85.Limit:526 nameOffset0 acum: 
+Name:Float start85 end86.Limit:526 nameOffset1 acum: F
+Name:Float start85 end87.Limit:526 nameOffset2 acum: Fl
+Name:Float start85 end88.Limit:526 nameOffset3 acum: Flo
+Name:Float start85 end89.Limit:526 nameOffset4 acum: Floa
+Name:Float start85 end90.Limit:526 nameOffset5 acum: Float
+start85 end90 elemento tageado: Float
+Name:Float start91 end91.Limit:526 nameOffset0 acum: 
+Name:Float start91 end92.Limit:526 nameOffset1 acum: F
+Name:Float start91 end93.Limit:526 nameOffset2 acum: Fl
+Name:Float start91 end94.Limit:526 nameOffset3 acum: Flo
+Name:Float start91 end95.Limit:526 nameOffset4 acum: Floa
+Name:Float start91 end96.Limit:526 nameOffset5 acum: Float
+start91 end96 elemento tageado: Float
+Name:Float start97 end97.Limit:526 nameOffset0 acum: 
+Name:Float start98 end98.Limit:526 nameOffset0 acum: 
+Name:Float start99 end99.Limit:526 nameOffset0 acum: 
+Name:Float start100 end100.Limit:526 nameOffset0 acum: 
+Name:Float start101 end101.Limit:526 nameOffset0 acum: 
+Name:Float start102 end102.Limit:526 nameOffset0 acum: 
+Name:Float start103 end103.Limit:526 nameOffset0 acum: 
+Name:Float start104 end104.Limit:526 nameOffset0 acum: 
+Name:Float start105 end105.Limit:526 nameOffset0 acum: 
+Name:Float start106 end106.Limit:526 nameOffset0 acum: 
+Name:Float start107 end107.Limit:526 nameOffset0 acum: 
+Name:Float start107 end108.Limit:526 nameOffset1 acum: F
+Name:Float start107 end109.Limit:526 nameOffset2 acum: Fl
+Name:Float start107 end110.Limit:526 nameOffset3 acum: Flo
+Name:Float start107 end111.Limit:526 nameOffset4 acum: Floa
+Name:Float start107 end112.Limit:526 nameOffset5 acum: Float
+start107 end112 elemento tageado: Float
+Name:Float start113 end113.Limit:526 nameOffset0 acum: 
+Name:Float start113 end114.Limit:526 nameOffset1 acum: F
+Name:Float start113 end115.Limit:526 nameOffset2 acum: Fl
+Name:Float start113 end116.Limit:526 nameOffset3 acum: Flo
+Name:Float start113 end117.Limit:526 nameOffset4 acum: Floa
+Name:Float start113 end118.Limit:526 nameOffset5 acum: Float
+start113 end118 elemento tageado: Float
+Name:Float start119 end119.Limit:526 nameOffset0 acum: 
+Name:Float start119 end120.Limit:526 nameOffset1 acum: F
+Name:Float start119 end121.Limit:526 nameOffset2 acum: Fl
+Name:Float start119 end122.Limit:526 nameOffset3 acum: Flo
+Name:Float start119 end123.Limit:526 nameOffset4 acum: Floa
+Name:Float start119 end124.Limit:526 nameOffset5 acum: Float
+start119 end124 elemento tageado: Float
+Name:Float start125 end125.Limit:526 nameOffset0 acum: 
+Name:Float start126 end126.Limit:526 nameOffset0 acum: 
+Name:Float start127 end127.Limit:526 nameOffset0 acum: 
+Name:Float start128 end128.Limit:526 nameOffset0 acum: 
+Name:Float start129 end129.Limit:526 nameOffset0 acum: 
+Name:Float start130 end130.Limit:526 nameOffset0 acum: 
+Name:Float start131 end131.Limit:526 nameOffset0 acum: 
+Name:Float start132 end132.Limit:526 nameOffset0 acum: 
+Name:Float start133 end133.Limit:526 nameOffset0 acum: 
+Name:Float start134 end134.Limit:526 nameOffset0 acum: 
+Name:Float start135 end135.Limit:526 nameOffset0 acum: 
+Name:Float start136 end136.Limit:526 nameOffset0 acum: 
+Name:Float start137 end137.Limit:526 nameOffset0 acum: 
+Name:Float start138 end138.Limit:526 nameOffset0 acum: 
+Name:Float start139 end139.Limit:526 nameOffset0 acum: 
+Name:Float start140 end140.Limit:526 nameOffset0 acum: 
 Elemento: Punto3D linea:2columna:36
-Name:Punto3D start47 end47.Limit:142 nameOffset0 acum: 
-Name:Punto3D start47 end48.Limit:142 nameOffset1 acum: P
-Name:Punto3D start47 end49.Limit:142 nameOffset2 acum: Pu
-Name:Punto3D start47 end50.Limit:142 nameOffset3 acum: Pun
-Name:Punto3D start47 end51.Limit:142 nameOffset4 acum: Punt
-Name:Punto3D start47 end52.Limit:142 nameOffset5 acum: Punto
-Name:Punto3D start47 end53.Limit:142 nameOffset6 acum: Punto3
-Name:Punto3D start47 end54.Limit:142 nameOffset7 acum: Punto3D
-start47 end54 elemento tageado: Punto3D
-Name:Punto3D start55 end55.Limit:142 nameOffset0 acum: 
-Name:Punto3D start56 end56.Limit:142 nameOffset0 acum: 
-Name:Punto3D start57 end57.Limit:142 nameOffset0 acum: 
-Name:Punto3D start58 end58.Limit:142 nameOffset0 acum: 
-Name:Punto3D start59 end59.Limit:142 nameOffset0 acum: 
-Name:Punto3D start60 end60.Limit:142 nameOffset0 acum: 
-Name:Punto3D start61 end61.Limit:142 nameOffset0 acum: 
-Name:Punto3D start62 end62.Limit:142 nameOffset0 acum: 
-Name:Punto3D start63 end63.Limit:142 nameOffset0 acum: 
-Name:Punto3D start64 end64.Limit:142 nameOffset0 acum: 
-Name:Punto3D start65 end65.Limit:142 nameOffset0 acum: 
-Name:Punto3D start66 end66.Limit:142 nameOffset0 acum: 
-Name:Punto3D start67 end67.Limit:142 nameOffset0 acum: 
-Name:Punto3D start68 end68.Limit:142 nameOffset0 acum: 
-Name:Punto3D start69 end69.Limit:142 nameOffset0 acum: 
-Name:Punto3D start70 end70.Limit:142 nameOffset0 acum: 
-Name:Punto3D start71 end71.Limit:142 nameOffset0 acum: 
-Name:Punto3D start72 end72.Limit:142 nameOffset0 acum: 
-Name:Punto3D start73 end73.Limit:142 nameOffset0 acum: 
+Name:Punto3D start99 end99.Limit:526 nameOffset0 acum: 
+Name:Punto3D start99 end100.Limit:526 nameOffset1 acum: P
+Name:Punto3D start99 end101.Limit:526 nameOffset2 acum: Pu
+Name:Punto3D start99 end102.Limit:526 nameOffset3 acum: Pun
+Name:Punto3D start99 end103.Limit:526 nameOffset4 acum: Punt
+Name:Punto3D start99 end104.Limit:526 nameOffset5 acum: Punto
+Name:Punto3D start99 end105.Limit:526 nameOffset6 acum: Punto3
+Name:Punto3D start99 end106.Limit:526 nameOffset7 acum: Punto3D
+start99 end106 elemento tageado: Punto3D
+Name:Punto3D start107 end107.Limit:526 nameOffset0 acum: 
+Name:Punto3D start108 end108.Limit:526 nameOffset0 acum: 
+Name:Punto3D start109 end109.Limit:526 nameOffset0 acum: 
+Name:Punto3D start110 end110.Limit:526 nameOffset0 acum: 
+Name:Punto3D start111 end111.Limit:526 nameOffset0 acum: 
+Name:Punto3D start112 end112.Limit:526 nameOffset0 acum: 
+Name:Punto3D start113 end113.Limit:526 nameOffset0 acum: 
+Name:Punto3D start114 end114.Limit:526 nameOffset0 acum: 
+Name:Punto3D start115 end115.Limit:526 nameOffset0 acum: 
+Name:Punto3D start116 end116.Limit:526 nameOffset0 acum: 
+Name:Punto3D start117 end117.Limit:526 nameOffset0 acum: 
+Name:Punto3D start118 end118.Limit:526 nameOffset0 acum: 
+Name:Punto3D start119 end119.Limit:526 nameOffset0 acum: 
+Name:Punto3D start120 end120.Limit:526 nameOffset0 acum: 
+Name:Punto3D start121 end121.Limit:526 nameOffset0 acum: 
+Name:Punto3D start122 end122.Limit:526 nameOffset0 acum: 
+Name:Punto3D start123 end123.Limit:526 nameOffset0 acum: 
+Name:Punto3D start124 end124.Limit:526 nameOffset0 acum: 
+Name:Punto3D start125 end125.Limit:526 nameOffset0 acum: 
+Name:Punto3D start126 end126.Limit:526 nameOffset0 acum: 
+Name:Punto3D start127 end127.Limit:526 nameOffset0 acum: 
+Name:Punto3D start128 end128.Limit:526 nameOffset0 acum: 
+Name:Punto3D start129 end129.Limit:526 nameOffset0 acum: 
+Name:Punto3D start130 end130.Limit:526 nameOffset0 acum: 
+Name:Punto3D start131 end131.Limit:526 nameOffset0 acum: 
+Name:Punto3D start132 end132.Limit:526 nameOffset0 acum: 
+Name:Punto3D start133 end133.Limit:526 nameOffset0 acum: 
+Name:Punto3D start134 end134.Limit:526 nameOffset0 acum: 
+Name:Punto3D start135 end135.Limit:526 nameOffset0 acum: 
+Name:Punto3D start136 end136.Limit:526 nameOffset0 acum: 
+Name:Punto3D start137 end137.Limit:526 nameOffset0 acum: 
+Name:Punto3D start138 end138.Limit:526 nameOffset0 acum: 
+Name:Punto3D start139 end139.Limit:526 nameOffset0 acum: 
+Name:Punto3D start140 end140.Limit:526 nameOffset0 acum: 
 Elemento: Float linea:2columna:36
-Name:Float start47 end47.Limit:142 nameOffset0 acum: 
-Name:Float start48 end48.Limit:142 nameOffset0 acum: 
-Name:Float start49 end49.Limit:142 nameOffset0 acum: 
-Name:Float start50 end50.Limit:142 nameOffset0 acum: 
-Name:Float start51 end51.Limit:142 nameOffset0 acum: 
-Name:Float start52 end52.Limit:142 nameOffset0 acum: 
-Name:Float start53 end53.Limit:142 nameOffset0 acum: 
-Name:Float start54 end54.Limit:142 nameOffset0 acum: 
-Name:Float start55 end55.Limit:142 nameOffset0 acum: 
-Name:Float start55 end56.Limit:142 nameOffset1 acum: F
-Name:Float start55 end57.Limit:142 nameOffset2 acum: Fl
-Name:Float start55 end58.Limit:142 nameOffset3 acum: Flo
-Name:Float start55 end59.Limit:142 nameOffset4 acum: Floa
-Name:Float start55 end60.Limit:142 nameOffset5 acum: Float
-start55 end60 elemento tageado: Float
-Name:Float start61 end61.Limit:142 nameOffset0 acum: 
-Name:Float start61 end62.Limit:142 nameOffset1 acum: F
-Name:Float start61 end63.Limit:142 nameOffset2 acum: Fl
-Name:Float start61 end64.Limit:142 nameOffset3 acum: Flo
-Name:Float start61 end65.Limit:142 nameOffset4 acum: Floa
-Name:Float start61 end66.Limit:142 nameOffset5 acum: Float
-start61 end66 elemento tageado: Float
-Name:Float start67 end67.Limit:142 nameOffset0 acum: 
-Name:Float start67 end68.Limit:142 nameOffset1 acum: F
-Name:Float start67 end69.Limit:142 nameOffset2 acum: Fl
-Name:Float start67 end70.Limit:142 nameOffset3 acum: Flo
-Name:Float start67 end71.Limit:142 nameOffset4 acum: Floa
-Name:Float start67 end72.Limit:142 nameOffset5 acum: Float
-start67 end72 elemento tageado: Float
-Name:Float start73 end73.Limit:142 nameOffset0 acum: 
+Name:Float start99 end99.Limit:526 nameOffset0 acum: 
+Name:Float start100 end100.Limit:526 nameOffset0 acum: 
+Name:Float start101 end101.Limit:526 nameOffset0 acum: 
+Name:Float start102 end102.Limit:526 nameOffset0 acum: 
+Name:Float start103 end103.Limit:526 nameOffset0 acum: 
+Name:Float start104 end104.Limit:526 nameOffset0 acum: 
+Name:Float start105 end105.Limit:526 nameOffset0 acum: 
+Name:Float start106 end106.Limit:526 nameOffset0 acum: 
+Name:Float start107 end107.Limit:526 nameOffset0 acum: 
+Name:Float start107 end108.Limit:526 nameOffset1 acum: F
+Name:Float start107 end109.Limit:526 nameOffset2 acum: Fl
+Name:Float start107 end110.Limit:526 nameOffset3 acum: Flo
+Name:Float start107 end111.Limit:526 nameOffset4 acum: Floa
+Name:Float start107 end112.Limit:526 nameOffset5 acum: Float
+start107 end112 elemento tageado: Float
+Name:Float start113 end113.Limit:526 nameOffset0 acum: 
+Name:Float start113 end114.Limit:526 nameOffset1 acum: F
+Name:Float start113 end115.Limit:526 nameOffset2 acum: Fl
+Name:Float start113 end116.Limit:526 nameOffset3 acum: Flo
+Name:Float start113 end117.Limit:526 nameOffset4 acum: Floa
+Name:Float start113 end118.Limit:526 nameOffset5 acum: Float
+start113 end118 elemento tageado: Float
+Name:Float start119 end119.Limit:526 nameOffset0 acum: 
+Name:Float start119 end120.Limit:526 nameOffset1 acum: F
+Name:Float start119 end121.Limit:526 nameOffset2 acum: Fl
+Name:Float start119 end122.Limit:526 nameOffset3 acum: Flo
+Name:Float start119 end123.Limit:526 nameOffset4 acum: Floa
+Name:Float start119 end124.Limit:526 nameOffset5 acum: Float
+start119 end124 elemento tageado: Float
+Name:Float start125 end125.Limit:526 nameOffset0 acum: 
+Name:Float start126 end126.Limit:526 nameOffset0 acum: 
+Name:Float start127 end127.Limit:526 nameOffset0 acum: 
+Name:Float start128 end128.Limit:526 nameOffset0 acum: 
+Name:Float start129 end129.Limit:526 nameOffset0 acum: 
+Name:Float start130 end130.Limit:526 nameOffset0 acum: 
+Name:Float start131 end131.Limit:526 nameOffset0 acum: 
+Name:Float start132 end132.Limit:526 nameOffset0 acum: 
+Name:Float start133 end133.Limit:526 nameOffset0 acum: 
+Name:Float start134 end134.Limit:526 nameOffset0 acum: 
+Name:Float start135 end135.Limit:526 nameOffset0 acum: 
+Name:Float start136 end136.Limit:526 nameOffset0 acum: 
+Name:Float start137 end137.Limit:526 nameOffset0 acum: 
+Name:Float start138 end138.Limit:526 nameOffset0 acum: 
+Name:Float start139 end139.Limit:526 nameOffset0 acum: 
+Name:Float start140 end140.Limit:526 nameOffset0 acum: 
 Elemento: Float linea:2columna:36
-Name:Float start47 end47.Limit:142 nameOffset0 acum: 
-Name:Float start48 end48.Limit:142 nameOffset0 acum: 
-Name:Float start49 end49.Limit:142 nameOffset0 acum: 
-Name:Float start50 end50.Limit:142 nameOffset0 acum: 
-Name:Float start51 end51.Limit:142 nameOffset0 acum: 
-Name:Float start52 end52.Limit:142 nameOffset0 acum: 
-Name:Float start53 end53.Limit:142 nameOffset0 acum: 
-Name:Float start54 end54.Limit:142 nameOffset0 acum: 
-Name:Float start55 end55.Limit:142 nameOffset0 acum: 
-Name:Float start55 end56.Limit:142 nameOffset1 acum: F
-Name:Float start55 end57.Limit:142 nameOffset2 acum: Fl
-Name:Float start55 end58.Limit:142 nameOffset3 acum: Flo
-Name:Float start55 end59.Limit:142 nameOffset4 acum: Floa
-Name:Float start55 end60.Limit:142 nameOffset5 acum: Float
-start55 end60 elemento tageado: Float
-Name:Float start61 end61.Limit:142 nameOffset0 acum: 
-Name:Float start61 end62.Limit:142 nameOffset1 acum: F
-Name:Float start61 end63.Limit:142 nameOffset2 acum: Fl
-Name:Float start61 end64.Limit:142 nameOffset3 acum: Flo
-Name:Float start61 end65.Limit:142 nameOffset4 acum: Floa
-Name:Float start61 end66.Limit:142 nameOffset5 acum: Float
-start61 end66 elemento tageado: Float
-Name:Float start67 end67.Limit:142 nameOffset0 acum: 
-Name:Float start67 end68.Limit:142 nameOffset1 acum: F
-Name:Float start67 end69.Limit:142 nameOffset2 acum: Fl
-Name:Float start67 end70.Limit:142 nameOffset3 acum: Flo
-Name:Float start67 end71.Limit:142 nameOffset4 acum: Floa
-Name:Float start67 end72.Limit:142 nameOffset5 acum: Float
-start67 end72 elemento tageado: Float
-Name:Float start73 end73.Limit:142 nameOffset0 acum: 
+Name:Float start99 end99.Limit:526 nameOffset0 acum: 
+Name:Float start100 end100.Limit:526 nameOffset0 acum: 
+Name:Float start101 end101.Limit:526 nameOffset0 acum: 
+Name:Float start102 end102.Limit:526 nameOffset0 acum: 
+Name:Float start103 end103.Limit:526 nameOffset0 acum: 
+Name:Float start104 end104.Limit:526 nameOffset0 acum: 
+Name:Float start105 end105.Limit:526 nameOffset0 acum: 
+Name:Float start106 end106.Limit:526 nameOffset0 acum: 
+Name:Float start107 end107.Limit:526 nameOffset0 acum: 
+Name:Float start107 end108.Limit:526 nameOffset1 acum: F
+Name:Float start107 end109.Limit:526 nameOffset2 acum: Fl
+Name:Float start107 end110.Limit:526 nameOffset3 acum: Flo
+Name:Float start107 end111.Limit:526 nameOffset4 acum: Floa
+Name:Float start107 end112.Limit:526 nameOffset5 acum: Float
+start107 end112 elemento tageado: Float
+Name:Float start113 end113.Limit:526 nameOffset0 acum: 
+Name:Float start113 end114.Limit:526 nameOffset1 acum: F
+Name:Float start113 end115.Limit:526 nameOffset2 acum: Fl
+Name:Float start113 end116.Limit:526 nameOffset3 acum: Flo
+Name:Float start113 end117.Limit:526 nameOffset4 acum: Floa
+Name:Float start113 end118.Limit:526 nameOffset5 acum: Float
+start113 end118 elemento tageado: Float
+Name:Float start119 end119.Limit:526 nameOffset0 acum: 
+Name:Float start119 end120.Limit:526 nameOffset1 acum: F
+Name:Float start119 end121.Limit:526 nameOffset2 acum: Fl
+Name:Float start119 end122.Limit:526 nameOffset3 acum: Flo
+Name:Float start119 end123.Limit:526 nameOffset4 acum: Floa
+Name:Float start119 end124.Limit:526 nameOffset5 acum: Float
+start119 end124 elemento tageado: Float
+Name:Float start125 end125.Limit:526 nameOffset0 acum: 
+Name:Float start126 end126.Limit:526 nameOffset0 acum: 
+Name:Float start127 end127.Limit:526 nameOffset0 acum: 
+Name:Float start128 end128.Limit:526 nameOffset0 acum: 
+Name:Float start129 end129.Limit:526 nameOffset0 acum: 
+Name:Float start130 end130.Limit:526 nameOffset0 acum: 
+Name:Float start131 end131.Limit:526 nameOffset0 acum: 
+Name:Float start132 end132.Limit:526 nameOffset0 acum: 
+Name:Float start133 end133.Limit:526 nameOffset0 acum: 
+Name:Float start134 end134.Limit:526 nameOffset0 acum: 
+Name:Float start135 end135.Limit:526 nameOffset0 acum: 
+Name:Float start136 end136.Limit:526 nameOffset0 acum: 
+Name:Float start137 end137.Limit:526 nameOffset0 acum: 
+Name:Float start138 end138.Limit:526 nameOffset0 acum: 
+Name:Float start139 end139.Limit:526 nameOffset0 acum: 
+Name:Float start140 end140.Limit:526 nameOffset0 acum: 
 Elemento: Float linea:2columna:36
-Name:Float start47 end47.Limit:142 nameOffset0 acum: 
-Name:Float start48 end48.Limit:142 nameOffset0 acum: 
-Name:Float start49 end49.Limit:142 nameOffset0 acum: 
-Name:Float start50 end50.Limit:142 nameOffset0 acum: 
-Name:Float start51 end51.Limit:142 nameOffset0 acum: 
-Name:Float start52 end52.Limit:142 nameOffset0 acum: 
-Name:Float start53 end53.Limit:142 nameOffset0 acum: 
-Name:Float start54 end54.Limit:142 nameOffset0 acum: 
-Name:Float start55 end55.Limit:142 nameOffset0 acum: 
-Name:Float start55 end56.Limit:142 nameOffset1 acum: F
-Name:Float start55 end57.Limit:142 nameOffset2 acum: Fl
-Name:Float start55 end58.Limit:142 nameOffset3 acum: Flo
-Name:Float start55 end59.Limit:142 nameOffset4 acum: Floa
-Name:Float start55 end60.Limit:142 nameOffset5 acum: Float
-start55 end60 elemento tageado: Float
-Name:Float start61 end61.Limit:142 nameOffset0 acum: 
-Name:Float start61 end62.Limit:142 nameOffset1 acum: F
-Name:Float start61 end63.Limit:142 nameOffset2 acum: Fl
-Name:Float start61 end64.Limit:142 nameOffset3 acum: Flo
-Name:Float start61 end65.Limit:142 nameOffset4 acum: Floa
-Name:Float start61 end66.Limit:142 nameOffset5 acum: Float
-start61 end66 elemento tageado: Float
-Name:Float start67 end67.Limit:142 nameOffset0 acum: 
-Name:Float start67 end68.Limit:142 nameOffset1 acum: F
-Name:Float start67 end69.Limit:142 nameOffset2 acum: Fl
-Name:Float start67 end70.Limit:142 nameOffset3 acum: Flo
-Name:Float start67 end71.Limit:142 nameOffset4 acum: Floa
-Name:Float start67 end72.Limit:142 nameOffset5 acum: Float
-start67 end72 elemento tageado: Float
-Name:Float start73 end73.Limit:142 nameOffset0 acum: 
-Elemento: getX linea:5columna:2
-Name:getX start76 end76.Limit:142 nameOffset0 acum: 
-Name:getX start76 end77.Limit:142 nameOffset1 acum: g
-Name:getX start76 end78.Limit:142 nameOffset2 acum: ge
-Name:getX start76 end79.Limit:142 nameOffset3 acum: get
-Name:getX start76 end80.Limit:142 nameOffset4 acum: getX
-start76 end80 elemento tageado: getX
-Name:getX start81 end81.Limit:142 nameOffset0 acum: 
-Name:getX start82 end82.Limit:142 nameOffset0 acum: 
-Name:getX start83 end83.Limit:142 nameOffset0 acum: 
-Name:getX start84 end84.Limit:142 nameOffset0 acum: 
-Name:getX start85 end85.Limit:142 nameOffset0 acum: 
-Name:getX start86 end86.Limit:142 nameOffset0 acum: 
-Name:getX start87 end87.Limit:142 nameOffset0 acum: 
-Name:getX start88 end88.Limit:142 nameOffset0 acum: 
-Name:getX start89 end89.Limit:142 nameOffset0 acum: 
-Name:getX start90 end90.Limit:142 nameOffset0 acum: 
-Name:getX start91 end91.Limit:142 nameOffset0 acum: 
-Name:getX start92 end92.Limit:142 nameOffset0 acum: 
-Name:getX start93 end93.Limit:142 nameOffset0 acum: 
-Name:getX start94 end94.Limit:142 nameOffset0 acum: 
-Name:getX start95 end95.Limit:142 nameOffset0 acum: 
-Elemento: Punto linea:5columna:2
-Name:Punto start76 end76.Limit:142 nameOffset0 acum: 
-Name:Punto start77 end77.Limit:142 nameOffset0 acum: 
-Name:Punto start78 end78.Limit:142 nameOffset0 acum: 
-Name:Punto start79 end79.Limit:142 nameOffset0 acum: 
-Name:Punto start80 end80.Limit:142 nameOffset0 acum: 
-Name:Punto start81 end81.Limit:142 nameOffset0 acum: 
-Name:Punto start82 end82.Limit:142 nameOffset0 acum: 
-Name:Punto start82 end83.Limit:142 nameOffset1 acum: P
-Name:Punto start82 end84.Limit:142 nameOffset2 acum: Pu
-Name:Punto start82 end85.Limit:142 nameOffset3 acum: Pun
-Name:Punto start82 end86.Limit:142 nameOffset4 acum: Punt
-Name:Punto start82 end87.Limit:142 nameOffset5 acum: Punto
-start82 end87 elemento tageado: Punto
-Name:Punto start88 end88.Limit:142 nameOffset0 acum: 
-Name:Punto start89 end89.Limit:142 nameOffset0 acum: 
-Name:Punto start90 end90.Limit:142 nameOffset0 acum: 
-Name:Punto start91 end91.Limit:142 nameOffset0 acum: 
-Name:Punto start92 end92.Limit:142 nameOffset0 acum: 
-Name:Punto start93 end93.Limit:142 nameOffset0 acum: 
-Name:Punto start94 end94.Limit:142 nameOffset0 acum: 
-Name:Punto start95 end95.Limit:142 nameOffset0 acum: 
-Elemento: Float linea:5columna:2
-Name:Float start76 end76.Limit:142 nameOffset0 acum: 
-Name:Float start77 end77.Limit:142 nameOffset0 acum: 
-Name:Float start78 end78.Limit:142 nameOffset0 acum: 
-Name:Float start79 end79.Limit:142 nameOffset0 acum: 
-Name:Float start80 end80.Limit:142 nameOffset0 acum: 
-Name:Float start81 end81.Limit:142 nameOffset0 acum: 
-Name:Float start82 end82.Limit:142 nameOffset0 acum: 
-Name:Float start83 end83.Limit:142 nameOffset0 acum: 
-Name:Float start84 end84.Limit:142 nameOffset0 acum: 
-Name:Float start85 end85.Limit:142 nameOffset0 acum: 
-Name:Float start86 end86.Limit:142 nameOffset0 acum: 
-Name:Float start87 end87.Limit:142 nameOffset0 acum: 
-Name:Float start88 end88.Limit:142 nameOffset0 acum: 
-Name:Float start89 end89.Limit:142 nameOffset0 acum: 
-Name:Float start90 end90.Limit:142 nameOffset0 acum: 
-Name:Float start90 end91.Limit:142 nameOffset1 acum: F
-Name:Float start90 end92.Limit:142 nameOffset2 acum: Fl
-Name:Float start90 end93.Limit:142 nameOffset3 acum: Flo
-Name:Float start90 end94.Limit:142 nameOffset4 acum: Floa
-Name:Float start90 end95.Limit:142 nameOffset5 acum: Float
-start90 end95 elemento tageado: Float
-Name:Float start96 end96.Limit:142 nameOffset0 acum: 
-Name:Float start97 end97.Limit:142 nameOffset0 acum: 
-Name:Float start98 end98.Limit:142 nameOffset0 acum: 
-Name:Float start99 end99.Limit:142 nameOffset0 acum: 
-Name:Float start100 end100.Limit:142 nameOffset0 acum: 
-Name:Float start101 end101.Limit:142 nameOffset0 acum: 
-Name:Float start102 end102.Limit:142 nameOffset0 acum: 
-Name:Float start103 end103.Limit:142 nameOffset0 acum: 
-Name:Float start104 end104.Limit:142 nameOffset0 acum: 
-Name:Float start105 end105.Limit:142 nameOffset0 acum: 
-Name:Float start106 end106.Limit:142 nameOffset0 acum: 
-Name:Float start107 end107.Limit:142 nameOffset0 acum: 
-Name:Float start108 end108.Limit:142 nameOffset0 acum: 
-Name:Float start109 end109.Limit:142 nameOffset0 acum: 
-Name:Float start110 end110.Limit:142 nameOffset0 acum: 
-Name:Float start111 end111.Limit:142 nameOffset0 acum: 
-Name:Float start112 end112.Limit:142 nameOffset0 acum: 
-Name:Float start113 end113.Limit:142 nameOffset0 acum: 
-Name:Float start114 end114.Limit:142 nameOffset0 acum: 
-Name:Float start115 end115.Limit:142 nameOffset0 acum: 
-Name:Float start116 end116.Limit:142 nameOffset0 acum: 
-Name:Float start117 end117.Limit:142 nameOffset0 acum: 
-Name:Float start118 end118.Limit:142 nameOffset0 acum: 
-Elemento: getX linea:6columna:2
-Name:getX start96 end96.Limit:142 nameOffset0 acum: 
-Name:getX start96 end97.Limit:142 nameOffset1 acum: g
-Name:getX start96 end98.Limit:142 nameOffset2 acum: ge
-Name:getX start96 end99.Limit:142 nameOffset3 acum: get
-Name:getX start96 end100.Limit:142 nameOffset4 acum: getX
-start96 end100 elemento tageado: getX
-Name:getX start101 end101.Limit:142 nameOffset0 acum: 
-Name:getX start102 end102.Limit:142 nameOffset0 acum: 
-Name:getX start103 end103.Limit:142 nameOffset0 acum: 
-Name:getX start104 end104.Limit:142 nameOffset0 acum: 
-Name:getX start105 end105.Limit:142 nameOffset0 acum: 
-Name:getX start106 end106.Limit:142 nameOffset0 acum: 
-Name:getX start107 end107.Limit:142 nameOffset0 acum: 
-Name:getX start108 end108.Limit:142 nameOffset0 acum: 
-Name:getX start109 end109.Limit:142 nameOffset0 acum: 
-Name:getX start110 end110.Limit:142 nameOffset0 acum: 
-Name:getX start111 end111.Limit:142 nameOffset0 acum: 
-Name:getX start112 end112.Limit:142 nameOffset0 acum: 
-Name:getX start113 end113.Limit:142 nameOffset0 acum: 
-Name:getX start114 end114.Limit:142 nameOffset0 acum: 
-Name:getX start115 end115.Limit:142 nameOffset0 acum: 
-Name:getX start116 end116.Limit:142 nameOffset0 acum: 
-Name:getX start117 end117.Limit:142 nameOffset0 acum: 
-Name:getX start118 end118.Limit:142 nameOffset0 acum: 
-Elemento: Punto2D linea:6columna:2
-Name:Punto2D start96 end96.Limit:142 nameOffset0 acum: 
-Name:Punto2D start97 end97.Limit:142 nameOffset0 acum: 
-Name:Punto2D start98 end98.Limit:142 nameOffset0 acum: 
-Name:Punto2D start99 end99.Limit:142 nameOffset0 acum: 
-Name:Punto2D start100 end100.Limit:142 nameOffset0 acum: 
-Name:Punto2D start101 end101.Limit:142 nameOffset0 acum: 
-Name:Punto2D start102 end102.Limit:142 nameOffset0 acum: 
-Name:Punto2D start102 end103.Limit:142 nameOffset1 acum: P
-Name:Punto2D start102 end104.Limit:142 nameOffset2 acum: Pu
-Name:Punto2D start102 end105.Limit:142 nameOffset3 acum: Pun
-Name:Punto2D start102 end106.Limit:142 nameOffset4 acum: Punt
-Name:Punto2D start102 end107.Limit:142 nameOffset5 acum: Punto
-Name:Punto2D start102 end108.Limit:142 nameOffset6 acum: Punto2
-Name:Punto2D start102 end109.Limit:142 nameOffset7 acum: Punto2D
-start102 end109 elemento tageado: Punto2D
-Name:Punto2D start110 end110.Limit:142 nameOffset0 acum: 
-Name:Punto2D start111 end111.Limit:142 nameOffset0 acum: 
-Name:Punto2D start112 end112.Limit:142 nameOffset0 acum: 
-Name:Punto2D start113 end113.Limit:142 nameOffset0 acum: 
-Name:Punto2D start114 end114.Limit:142 nameOffset0 acum: 
-Name:Punto2D start115 end115.Limit:142 nameOffset0 acum: 
-Name:Punto2D start116 end116.Limit:142 nameOffset0 acum: 
-Name:Punto2D start117 end117.Limit:142 nameOffset0 acum: 
-Name:Punto2D start118 end118.Limit:142 nameOffset0 acum: 
-Elemento: getX linea:7columna:2
-Name:getX start119 end119.Limit:142 nameOffset0 acum: 
-Name:getX start119 end120.Limit:142 nameOffset1 acum: g
-Name:getX start119 end121.Limit:142 nameOffset2 acum: ge
-Name:getX start119 end122.Limit:142 nameOffset3 acum: get
-Name:getX start119 end123.Limit:142 nameOffset4 acum: getX
-start119 end123 elemento tageado: getX
-Name:getX start124 end124.Limit:142 nameOffset0 acum: 
-Name:getX start125 end125.Limit:142 nameOffset0 acum: 
-Name:getX start126 end126.Limit:142 nameOffset0 acum: 
-Name:getX start127 end127.Limit:142 nameOffset0 acum: 
-Name:getX start128 end128.Limit:142 nameOffset0 acum: 
-Name:getX start129 end129.Limit:142 nameOffset0 acum: 
-Name:getX start130 end130.Limit:142 nameOffset0 acum: 
-Name:getX start131 end131.Limit:142 nameOffset0 acum: 
-Name:getX start132 end132.Limit:142 nameOffset0 acum: 
-Name:getX start133 end133.Limit:142 nameOffset0 acum: 
-Name:getX start134 end134.Limit:142 nameOffset0 acum: 
-Name:getX start135 end135.Limit:142 nameOffset0 acum: 
-Name:getX start136 end136.Limit:142 nameOffset0 acum: 
-Name:getX start137 end137.Limit:142 nameOffset0 acum: 
-Name:getX start138 end138.Limit:142 nameOffset0 acum: 
-Name:getX start139 end139.Limit:142 nameOffset0 acum: 
-Name:getX start140 end140.Limit:142 nameOffset0 acum: 
-Name:getX start141 end141.Limit:142 nameOffset0 acum: 
-Elemento: Punto3D linea:7columna:2
-Name:Punto3D start119 end119.Limit:142 nameOffset0 acum: 
-Name:Punto3D start120 end120.Limit:142 nameOffset0 acum: 
-Name:Punto3D start121 end121.Limit:142 nameOffset0 acum: 
-Name:Punto3D start122 end122.Limit:142 nameOffset0 acum: 
-Name:Punto3D start123 end123.Limit:142 nameOffset0 acum: 
-Name:Punto3D start124 end124.Limit:142 nameOffset0 acum: 
-Name:Punto3D start125 end125.Limit:142 nameOffset0 acum: 
-Name:Punto3D start125 end126.Limit:142 nameOffset1 acum: P
-Name:Punto3D start125 end127.Limit:142 nameOffset2 acum: Pu
-Name:Punto3D start125 end128.Limit:142 nameOffset3 acum: Pun
-Name:Punto3D start125 end129.Limit:142 nameOffset4 acum: Punt
-Name:Punto3D start125 end130.Limit:142 nameOffset5 acum: Punto
-Name:Punto3D start125 end131.Limit:142 nameOffset6 acum: Punto3
-Name:Punto3D start125 end132.Limit:142 nameOffset7 acum: Punto3D
-start125 end132 elemento tageado: Punto3D
-Name:Punto3D start133 end133.Limit:142 nameOffset0 acum: 
-Name:Punto3D start134 end134.Limit:142 nameOffset0 acum: 
-Name:Punto3D start135 end135.Limit:142 nameOffset0 acum: 
-Name:Punto3D start136 end136.Limit:142 nameOffset0 acum: 
-Name:Punto3D start137 end137.Limit:142 nameOffset0 acum: 
-Name:Punto3D start138 end138.Limit:142 nameOffset0 acum: 
-Name:Punto3D start139 end139.Limit:142 nameOffset0 acum: 
-Name:Punto3D start140 end140.Limit:142 nameOffset0 acum: 
-Name:Punto3D start141 end141.Limit:142 nameOffset0 acum: 
+Name:Float start99 end99.Limit:526 nameOffset0 acum: 
+Name:Float start100 end100.Limit:526 nameOffset0 acum: 
+Name:Float start101 end101.Limit:526 nameOffset0 acum: 
+Name:Float start102 end102.Limit:526 nameOffset0 acum: 
+Name:Float start103 end103.Limit:526 nameOffset0 acum: 
+Name:Float start104 end104.Limit:526 nameOffset0 acum: 
+Name:Float start105 end105.Limit:526 nameOffset0 acum: 
+Name:Float start106 end106.Limit:526 nameOffset0 acum: 
+Name:Float start107 end107.Limit:526 nameOffset0 acum: 
+Name:Float start107 end108.Limit:526 nameOffset1 acum: F
+Name:Float start107 end109.Limit:526 nameOffset2 acum: Fl
+Name:Float start107 end110.Limit:526 nameOffset3 acum: Flo
+Name:Float start107 end111.Limit:526 nameOffset4 acum: Floa
+Name:Float start107 end112.Limit:526 nameOffset5 acum: Float
+start107 end112 elemento tageado: Float
+Name:Float start113 end113.Limit:526 nameOffset0 acum: 
+Name:Float start113 end114.Limit:526 nameOffset1 acum: F
+Name:Float start113 end115.Limit:526 nameOffset2 acum: Fl
+Name:Float start113 end116.Limit:526 nameOffset3 acum: Flo
+Name:Float start113 end117.Limit:526 nameOffset4 acum: Floa
+Name:Float start113 end118.Limit:526 nameOffset5 acum: Float
+start113 end118 elemento tageado: Float
+Name:Float start119 end119.Limit:526 nameOffset0 acum: 
+Name:Float start119 end120.Limit:526 nameOffset1 acum: F
+Name:Float start119 end121.Limit:526 nameOffset2 acum: Fl
+Name:Float start119 end122.Limit:526 nameOffset3 acum: Flo
+Name:Float start119 end123.Limit:526 nameOffset4 acum: Floa
+Name:Float start119 end124.Limit:526 nameOffset5 acum: Float
+start119 end124 elemento tageado: Float
+Name:Float start125 end125.Limit:526 nameOffset0 acum: 
+Name:Float start126 end126.Limit:526 nameOffset0 acum: 
+Name:Float start127 end127.Limit:526 nameOffset0 acum: 
+Name:Float start128 end128.Limit:526 nameOffset0 acum: 
+Name:Float start129 end129.Limit:526 nameOffset0 acum: 
+Name:Float start130 end130.Limit:526 nameOffset0 acum: 
+Name:Float start131 end131.Limit:526 nameOffset0 acum: 
+Name:Float start132 end132.Limit:526 nameOffset0 acum: 
+Name:Float start133 end133.Limit:526 nameOffset0 acum: 
+Name:Float start134 end134.Limit:526 nameOffset0 acum: 
+Name:Float start135 end135.Limit:526 nameOffset0 acum: 
+Name:Float start136 end136.Limit:526 nameOffset0 acum: 
+Name:Float start137 end137.Limit:526 nameOffset0 acum: 
+Name:Float start138 end138.Limit:526 nameOffset0 acum: 
+Name:Float start139 end139.Limit:526 nameOffset0 acum: 
+Name:Float start140 end140.Limit:526 nameOffset0 acum: 
+Elemento: modulo linea:4columna:2
+Name:modulo start142 end142.Limit:526 nameOffset0 acum: 
+Name:modulo start142 end143.Limit:526 nameOffset1 acum: m
+Name:modulo start142 end144.Limit:526 nameOffset2 acum: mo
+Name:modulo start142 end145.Limit:526 nameOffset3 acum: mod
+Name:modulo start142 end146.Limit:526 nameOffset4 acum: modu
+Name:modulo start142 end147.Limit:526 nameOffset5 acum: modul
+Name:modulo start142 end148.Limit:526 nameOffset6 acum: modulo
+start142 end148 elemento tageado: modulo
+Name:modulo start149 end149.Limit:526 nameOffset0 acum: 
+Name:modulo start150 end150.Limit:526 nameOffset0 acum: 
+Name:modulo start151 end151.Limit:526 nameOffset0 acum: 
+Name:modulo start152 end152.Limit:526 nameOffset0 acum: 
+Name:modulo start153 end153.Limit:526 nameOffset0 acum: 
+Name:modulo start154 end154.Limit:526 nameOffset0 acum: 
+Name:modulo start155 end155.Limit:526 nameOffset0 acum: 
+Name:modulo start156 end156.Limit:526 nameOffset0 acum: 
+Name:modulo start157 end157.Limit:526 nameOffset0 acum: 
+Name:modulo start158 end158.Limit:526 nameOffset0 acum: 
+Name:modulo start159 end159.Limit:526 nameOffset0 acum: 
+Name:modulo start160 end160.Limit:526 nameOffset0 acum: 
+Name:modulo start161 end161.Limit:526 nameOffset0 acum: 
+Name:modulo start162 end162.Limit:526 nameOffset0 acum: 
+Name:modulo start163 end163.Limit:526 nameOffset0 acum: 
+Name:modulo start164 end164.Limit:526 nameOffset0 acum: 
+Name:modulo start165 end165.Limit:526 nameOffset0 acum: 
+Elemento: Punto linea:4columna:2
+Name:Punto start142 end142.Limit:526 nameOffset0 acum: 
+Name:Punto start143 end143.Limit:526 nameOffset0 acum: 
+Name:Punto start144 end144.Limit:526 nameOffset0 acum: 
+Name:Punto start145 end145.Limit:526 nameOffset0 acum: 
+Name:Punto start146 end146.Limit:526 nameOffset0 acum: 
+Name:Punto start147 end147.Limit:526 nameOffset0 acum: 
+Name:Punto start148 end148.Limit:526 nameOffset0 acum: 
+Name:Punto start149 end149.Limit:526 nameOffset0 acum: 
+Name:Punto start150 end150.Limit:526 nameOffset0 acum: 
+Name:Punto start151 end151.Limit:526 nameOffset0 acum: 
+Name:Punto start151 end152.Limit:526 nameOffset1 acum: P
+Name:Punto start151 end153.Limit:526 nameOffset2 acum: Pu
+Name:Punto start151 end154.Limit:526 nameOffset3 acum: Pun
+Name:Punto start151 end155.Limit:526 nameOffset4 acum: Punt
+Name:Punto start151 end156.Limit:526 nameOffset5 acum: Punto
+start151 end156 elemento tageado: Punto
+Name:Punto start157 end157.Limit:526 nameOffset0 acum: 
+Name:Punto start158 end158.Limit:526 nameOffset0 acum: 
+Name:Punto start159 end159.Limit:526 nameOffset0 acum: 
+Name:Punto start160 end160.Limit:526 nameOffset0 acum: 
+Name:Punto start161 end161.Limit:526 nameOffset0 acum: 
+Name:Punto start162 end162.Limit:526 nameOffset0 acum: 
+Name:Punto start163 end163.Limit:526 nameOffset0 acum: 
+Name:Punto start164 end164.Limit:526 nameOffset0 acum: 
+Name:Punto start165 end165.Limit:526 nameOffset0 acum: 
+Elemento: Float linea:4columna:2
+Name:Float start142 end142.Limit:526 nameOffset0 acum: 
+Name:Float start143 end143.Limit:526 nameOffset0 acum: 
+Name:Float start144 end144.Limit:526 nameOffset0 acum: 
+Name:Float start145 end145.Limit:526 nameOffset0 acum: 
+Name:Float start146 end146.Limit:526 nameOffset0 acum: 
+Name:Float start147 end147.Limit:526 nameOffset0 acum: 
+Name:Float start148 end148.Limit:526 nameOffset0 acum: 
+Name:Float start149 end149.Limit:526 nameOffset0 acum: 
+Name:Float start150 end150.Limit:526 nameOffset0 acum: 
+Name:Float start151 end151.Limit:526 nameOffset0 acum: 
+Name:Float start152 end152.Limit:526 nameOffset0 acum: 
+Name:Float start153 end153.Limit:526 nameOffset0 acum: 
+Name:Float start154 end154.Limit:526 nameOffset0 acum: 
+Name:Float start155 end155.Limit:526 nameOffset0 acum: 
+Name:Float start156 end156.Limit:526 nameOffset0 acum: 
+Name:Float start157 end157.Limit:526 nameOffset0 acum: 
+Name:Float start158 end158.Limit:526 nameOffset0 acum: 
+Name:Float start159 end159.Limit:526 nameOffset0 acum: 
+Name:Float start160 end160.Limit:526 nameOffset0 acum: 
+Name:Float start160 end161.Limit:526 nameOffset1 acum: F
+Name:Float start160 end162.Limit:526 nameOffset2 acum: Fl
+Name:Float start160 end163.Limit:526 nameOffset3 acum: Flo
+Name:Float start160 end164.Limit:526 nameOffset4 acum: Floa
+Name:Float start160 end165.Limit:526 nameOffset5 acum: Float
+start160 end165 elemento tageado: Float
+Name:Float start166 end166.Limit:526 nameOffset0 acum: 
+Name:Float start167 end167.Limit:526 nameOffset0 acum: 
+Name:Float start168 end168.Limit:526 nameOffset0 acum: 
+Name:Float start169 end169.Limit:526 nameOffset0 acum: 
+Name:Float start170 end170.Limit:526 nameOffset0 acum: 
+Name:Float start171 end171.Limit:526 nameOffset0 acum: 
+Name:Float start172 end172.Limit:526 nameOffset0 acum: 
+Name:Float start173 end173.Limit:526 nameOffset0 acum: 
+Name:Float start174 end174.Limit:526 nameOffset0 acum: 
+Name:Float start175 end175.Limit:526 nameOffset0 acum: 
+Name:Float start176 end176.Limit:526 nameOffset0 acum: 
+Name:Float start177 end177.Limit:526 nameOffset0 acum: 
+Name:Float start178 end178.Limit:526 nameOffset0 acum: 
+Name:Float start179 end179.Limit:526 nameOffset0 acum: 
+Name:Float start180 end180.Limit:526 nameOffset0 acum: 
+Name:Float start181 end181.Limit:526 nameOffset0 acum: 
+Name:Float start182 end182.Limit:526 nameOffset0 acum: 
+Name:Float start183 end183.Limit:526 nameOffset0 acum: 
+Name:Float start184 end184.Limit:526 nameOffset0 acum: 
+Name:Float start185 end185.Limit:526 nameOffset0 acum: 
+Name:Float start186 end186.Limit:526 nameOffset0 acum: 
+Name:Float start187 end187.Limit:526 nameOffset0 acum: 
+Name:Float start188 end188.Limit:526 nameOffset0 acum: 
+Name:Float start189 end189.Limit:526 nameOffset0 acum: 
+Name:Float start190 end190.Limit:526 nameOffset0 acum: 
+Name:Float start191 end191.Limit:526 nameOffset0 acum: 
+Name:Float start192 end192.Limit:526 nameOffset0 acum: 
+Name:Float start193 end193.Limit:526 nameOffset0 acum: 
+Name:Float start194 end194.Limit:526 nameOffset0 acum: 
+Name:Float start195 end195.Limit:526 nameOffset0 acum: 
+Name:Float start196 end196.Limit:526 nameOffset0 acum: 
+Name:Float start197 end197.Limit:526 nameOffset0 acum: 
+Name:Float start198 end198.Limit:526 nameOffset0 acum: 
+Name:Float start199 end199.Limit:526 nameOffset0 acum: 
+Name:Float start200 end200.Limit:526 nameOffset0 acum: 
+Name:Float start201 end201.Limit:526 nameOffset0 acum: 
+Name:Float start202 end202.Limit:526 nameOffset0 acum: 
+Name:Float start203 end203.Limit:526 nameOffset0 acum: 
+Name:Float start204 end204.Limit:526 nameOffset0 acum: 
+Name:Float start205 end205.Limit:526 nameOffset0 acum: 
+Name:Float start206 end206.Limit:526 nameOffset0 acum: 
+Elemento: modulo linea:5columna:2
+Name:modulo start166 end166.Limit:526 nameOffset0 acum: 
+Name:modulo start166 end167.Limit:526 nameOffset1 acum: m
+Name:modulo start166 end168.Limit:526 nameOffset2 acum: mo
+Name:modulo start166 end169.Limit:526 nameOffset3 acum: mod
+Name:modulo start166 end170.Limit:526 nameOffset4 acum: modu
+Name:modulo start166 end171.Limit:526 nameOffset5 acum: modul
+Name:modulo start166 end172.Limit:526 nameOffset6 acum: modulo
+start166 end172 elemento tageado: modulo
+Name:modulo start173 end173.Limit:526 nameOffset0 acum: 
+Name:modulo start174 end174.Limit:526 nameOffset0 acum: 
+Name:modulo start175 end175.Limit:526 nameOffset0 acum: 
+Name:modulo start176 end176.Limit:526 nameOffset0 acum: 
+Name:modulo start177 end177.Limit:526 nameOffset0 acum: 
+Name:modulo start178 end178.Limit:526 nameOffset0 acum: 
+Name:modulo start179 end179.Limit:526 nameOffset0 acum: 
+Name:modulo start180 end180.Limit:526 nameOffset0 acum: 
+Name:modulo start181 end181.Limit:526 nameOffset0 acum: 
+Name:modulo start182 end182.Limit:526 nameOffset0 acum: 
+Name:modulo start183 end183.Limit:526 nameOffset0 acum: 
+Name:modulo start184 end184.Limit:526 nameOffset0 acum: 
+Name:modulo start185 end185.Limit:526 nameOffset0 acum: 
+Name:modulo start186 end186.Limit:526 nameOffset0 acum: 
+Name:modulo start187 end187.Limit:526 nameOffset0 acum: 
+Name:modulo start188 end188.Limit:526 nameOffset0 acum: 
+Name:modulo start189 end189.Limit:526 nameOffset0 acum: 
+Name:modulo start190 end190.Limit:526 nameOffset0 acum: 
+Name:modulo start191 end191.Limit:526 nameOffset0 acum: 
+Name:modulo start192 end192.Limit:526 nameOffset0 acum: 
+Name:modulo start193 end193.Limit:526 nameOffset0 acum: 
+Name:modulo start194 end194.Limit:526 nameOffset0 acum: 
+Name:modulo start195 end195.Limit:526 nameOffset0 acum: 
+Name:modulo start196 end196.Limit:526 nameOffset0 acum: 
+Name:modulo start197 end197.Limit:526 nameOffset0 acum: 
+Name:modulo start198 end198.Limit:526 nameOffset0 acum: 
+Name:modulo start199 end199.Limit:526 nameOffset0 acum: 
+Name:modulo start200 end200.Limit:526 nameOffset0 acum: 
+Name:modulo start201 end201.Limit:526 nameOffset0 acum: 
+Name:modulo start202 end202.Limit:526 nameOffset0 acum: 
+Name:modulo start203 end203.Limit:526 nameOffset0 acum: 
+Name:modulo start204 end204.Limit:526 nameOffset0 acum: 
+Name:modulo start205 end205.Limit:526 nameOffset0 acum: 
+Name:modulo start206 end206.Limit:526 nameOffset0 acum: 
+Elemento: Punto2D linea:5columna:2
+Name:Punto2D start166 end166.Limit:526 nameOffset0 acum: 
+Name:Punto2D start167 end167.Limit:526 nameOffset0 acum: 
+Name:Punto2D start168 end168.Limit:526 nameOffset0 acum: 
+Name:Punto2D start169 end169.Limit:526 nameOffset0 acum: 
+Name:Punto2D start170 end170.Limit:526 nameOffset0 acum: 
+Name:Punto2D start171 end171.Limit:526 nameOffset0 acum: 
+Name:Punto2D start172 end172.Limit:526 nameOffset0 acum: 
+Name:Punto2D start173 end173.Limit:526 nameOffset0 acum: 
+Name:Punto2D start174 end174.Limit:526 nameOffset0 acum: 
+Name:Punto2D start174 end175.Limit:526 nameOffset1 acum: P
+Name:Punto2D start174 end176.Limit:526 nameOffset2 acum: Pu
+Name:Punto2D start174 end177.Limit:526 nameOffset3 acum: Pun
+Name:Punto2D start174 end178.Limit:526 nameOffset4 acum: Punt
+Name:Punto2D start174 end179.Limit:526 nameOffset5 acum: Punto
+Name:Punto2D start174 end180.Limit:526 nameOffset6 acum: Punto2
+Name:Punto2D start174 end181.Limit:526 nameOffset7 acum: Punto2D
+start174 end181 elemento tageado: Punto2D
+Name:Punto2D start182 end182.Limit:526 nameOffset0 acum: 
+Name:Punto2D start183 end183.Limit:526 nameOffset0 acum: 
+Name:Punto2D start184 end184.Limit:526 nameOffset0 acum: 
+Name:Punto2D start185 end185.Limit:526 nameOffset0 acum: 
+Name:Punto2D start186 end186.Limit:526 nameOffset0 acum: 
+Name:Punto2D start187 end187.Limit:526 nameOffset0 acum: 
+Name:Punto2D start188 end188.Limit:526 nameOffset0 acum: 
+Name:Punto2D start189 end189.Limit:526 nameOffset0 acum: 
+Name:Punto2D start190 end190.Limit:526 nameOffset0 acum: 
+Name:Punto2D start191 end191.Limit:526 nameOffset0 acum: 
+Name:Punto2D start192 end192.Limit:526 nameOffset0 acum: 
+Name:Punto2D start193 end193.Limit:526 nameOffset0 acum: 
+Name:Punto2D start194 end194.Limit:526 nameOffset0 acum: 
+Name:Punto2D start195 end195.Limit:526 nameOffset0 acum: 
+Name:Punto2D start196 end196.Limit:526 nameOffset0 acum: 
+Name:Punto2D start197 end197.Limit:526 nameOffset0 acum: 
+Name:Punto2D start198 end198.Limit:526 nameOffset0 acum: 
+Name:Punto2D start199 end199.Limit:526 nameOffset0 acum: 
+Name:Punto2D start200 end200.Limit:526 nameOffset0 acum: 
+Name:Punto2D start201 end201.Limit:526 nameOffset0 acum: 
+Name:Punto2D start202 end202.Limit:526 nameOffset0 acum: 
+Name:Punto2D start203 end203.Limit:526 nameOffset0 acum: 
+Name:Punto2D start204 end204.Limit:526 nameOffset0 acum: 
+Name:Punto2D start205 end205.Limit:526 nameOffset0 acum: 
+Name:Punto2D start206 end206.Limit:526 nameOffset0 acum: 
+Elemento: modulo linea:6columna:2
+Name:modulo start207 end207.Limit:526 nameOffset0 acum: 
+Name:modulo start207 end208.Limit:526 nameOffset1 acum: m
+Name:modulo start207 end209.Limit:526 nameOffset2 acum: mo
+Name:modulo start207 end210.Limit:526 nameOffset3 acum: mod
+Name:modulo start207 end211.Limit:526 nameOffset4 acum: modu
+Name:modulo start207 end212.Limit:526 nameOffset5 acum: modul
+Name:modulo start207 end213.Limit:526 nameOffset6 acum: modulo
+start207 end213 elemento tageado: modulo
+Name:modulo start214 end214.Limit:526 nameOffset0 acum: 
+Name:modulo start215 end215.Limit:526 nameOffset0 acum: 
+Name:modulo start216 end216.Limit:526 nameOffset0 acum: 
+Name:modulo start217 end217.Limit:526 nameOffset0 acum: 
+Name:modulo start218 end218.Limit:526 nameOffset0 acum: 
+Name:modulo start219 end219.Limit:526 nameOffset0 acum: 
+Name:modulo start220 end220.Limit:526 nameOffset0 acum: 
+Name:modulo start221 end221.Limit:526 nameOffset0 acum: 
+Name:modulo start222 end222.Limit:526 nameOffset0 acum: 
+Name:modulo start223 end223.Limit:526 nameOffset0 acum: 
+Name:modulo start224 end224.Limit:526 nameOffset0 acum: 
+Name:modulo start225 end225.Limit:526 nameOffset0 acum: 
+Name:modulo start226 end226.Limit:526 nameOffset0 acum: 
+Name:modulo start227 end227.Limit:526 nameOffset0 acum: 
+Name:modulo start228 end228.Limit:526 nameOffset0 acum: 
+Name:modulo start229 end229.Limit:526 nameOffset0 acum: 
+Name:modulo start230 end230.Limit:526 nameOffset0 acum: 
+Name:modulo start231 end231.Limit:526 nameOffset0 acum: 
+Name:modulo start232 end232.Limit:526 nameOffset0 acum: 
+Name:modulo start233 end233.Limit:526 nameOffset0 acum: 
+Name:modulo start234 end234.Limit:526 nameOffset0 acum: 
+Name:modulo start235 end235.Limit:526 nameOffset0 acum: 
+Name:modulo start236 end236.Limit:526 nameOffset0 acum: 
+Name:modulo start237 end237.Limit:526 nameOffset0 acum: 
+Name:modulo start238 end238.Limit:526 nameOffset0 acum: 
+Name:modulo start239 end239.Limit:526 nameOffset0 acum: 
+Name:modulo start240 end240.Limit:526 nameOffset0 acum: 
+Name:modulo start241 end241.Limit:526 nameOffset0 acum: 
+Name:modulo start242 end242.Limit:526 nameOffset0 acum: 
+Name:modulo start243 end243.Limit:526 nameOffset0 acum: 
+Name:modulo start244 end244.Limit:526 nameOffset0 acum: 
+Name:modulo start245 end245.Limit:526 nameOffset0 acum: 
+Name:modulo start246 end246.Limit:526 nameOffset0 acum: 
+Name:modulo start247 end247.Limit:526 nameOffset0 acum: 
+Name:modulo start248 end248.Limit:526 nameOffset0 acum: 
+Name:modulo start249 end249.Limit:526 nameOffset0 acum: 
+Name:modulo start250 end250.Limit:526 nameOffset0 acum: 
+Name:modulo start251 end251.Limit:526 nameOffset0 acum: 
+Name:modulo start252 end252.Limit:526 nameOffset0 acum: 
+Name:modulo start253 end253.Limit:526 nameOffset0 acum: 
+Elemento: Punto3D linea:6columna:2
+Name:Punto3D start207 end207.Limit:526 nameOffset0 acum: 
+Name:Punto3D start208 end208.Limit:526 nameOffset0 acum: 
+Name:Punto3D start209 end209.Limit:526 nameOffset0 acum: 
+Name:Punto3D start210 end210.Limit:526 nameOffset0 acum: 
+Name:Punto3D start211 end211.Limit:526 nameOffset0 acum: 
+Name:Punto3D start212 end212.Limit:526 nameOffset0 acum: 
+Name:Punto3D start213 end213.Limit:526 nameOffset0 acum: 
+Name:Punto3D start214 end214.Limit:526 nameOffset0 acum: 
+Name:Punto3D start215 end215.Limit:526 nameOffset0 acum: 
+Name:Punto3D start215 end216.Limit:526 nameOffset1 acum: P
+Name:Punto3D start215 end217.Limit:526 nameOffset2 acum: Pu
+Name:Punto3D start215 end218.Limit:526 nameOffset3 acum: Pun
+Name:Punto3D start215 end219.Limit:526 nameOffset4 acum: Punt
+Name:Punto3D start215 end220.Limit:526 nameOffset5 acum: Punto
+Name:Punto3D start215 end221.Limit:526 nameOffset6 acum: Punto3
+Name:Punto3D start215 end222.Limit:526 nameOffset7 acum: Punto3D
+start215 end222 elemento tageado: Punto3D
+Name:Punto3D start223 end223.Limit:526 nameOffset0 acum: 
+Name:Punto3D start224 end224.Limit:526 nameOffset0 acum: 
+Name:Punto3D start225 end225.Limit:526 nameOffset0 acum: 
+Name:Punto3D start226 end226.Limit:526 nameOffset0 acum: 
+Name:Punto3D start227 end227.Limit:526 nameOffset0 acum: 
+Name:Punto3D start228 end228.Limit:526 nameOffset0 acum: 
+Name:Punto3D start229 end229.Limit:526 nameOffset0 acum: 
+Name:Punto3D start230 end230.Limit:526 nameOffset0 acum: 
+Name:Punto3D start231 end231.Limit:526 nameOffset0 acum: 
+Name:Punto3D start232 end232.Limit:526 nameOffset0 acum: 
+Name:Punto3D start233 end233.Limit:526 nameOffset0 acum: 
+Name:Punto3D start234 end234.Limit:526 nameOffset0 acum: 
+Name:Punto3D start235 end235.Limit:526 nameOffset0 acum: 
+Name:Punto3D start236 end236.Limit:526 nameOffset0 acum: 
+Name:Punto3D start237 end237.Limit:526 nameOffset0 acum: 
+Name:Punto3D start238 end238.Limit:526 nameOffset0 acum: 
+Name:Punto3D start239 end239.Limit:526 nameOffset0 acum: 
+Name:Punto3D start240 end240.Limit:526 nameOffset0 acum: 
+Name:Punto3D start241 end241.Limit:526 nameOffset0 acum: 
+Name:Punto3D start242 end242.Limit:526 nameOffset0 acum: 
+Name:Punto3D start243 end243.Limit:526 nameOffset0 acum: 
+Name:Punto3D start244 end244.Limit:526 nameOffset0 acum: 
+Name:Punto3D start245 end245.Limit:526 nameOffset0 acum: 
+Name:Punto3D start246 end246.Limit:526 nameOffset0 acum: 
+Name:Punto3D start247 end247.Limit:526 nameOffset0 acum: 
+Name:Punto3D start248 end248.Limit:526 nameOffset0 acum: 
+Name:Punto3D start249 end249.Limit:526 nameOffset0 acum: 
+Name:Punto3D start250 end250.Limit:526 nameOffset0 acum: 
+Name:Punto3D start251 end251.Limit:526 nameOffset0 acum: 
+Name:Punto3D start252 end252.Limit:526 nameOffset0 acum: 
+Name:Punto3D start253 end253.Limit:526 nameOffset0 acum: 
+Elemento: resta' linea:9columna:2
+Name:resta' start257 end257.Limit:526 nameOffset0 acum: 
+Name:resta' start257 end258.Limit:526 nameOffset1 acum: r
+Name:resta' start257 end259.Limit:526 nameOffset2 acum: re
+Name:resta' start257 end260.Limit:526 nameOffset3 acum: res
+Name:resta' start257 end261.Limit:526 nameOffset4 acum: rest
+Name:resta' start257 end262.Limit:526 nameOffset5 acum: resta
+Name:resta' start257 end263.Limit:526 nameOffset6 acum: resta'
+start257 end263 elemento tageado: resta'
+Name:resta' start264 end264.Limit:526 nameOffset0 acum: 
+Name:resta' start265 end265.Limit:526 nameOffset0 acum: 
+Name:resta' start266 end266.Limit:526 nameOffset0 acum: 
+Name:resta' start267 end267.Limit:526 nameOffset0 acum: 
+Name:resta' start268 end268.Limit:526 nameOffset0 acum: 
+Name:resta' start269 end269.Limit:526 nameOffset0 acum: 
+Name:resta' start270 end270.Limit:526 nameOffset0 acum: 
+Name:resta' start271 end271.Limit:526 nameOffset0 acum: 
+Name:resta' start272 end272.Limit:526 nameOffset0 acum: 
+Name:resta' start273 end273.Limit:526 nameOffset0 acum: 
+Name:resta' start274 end274.Limit:526 nameOffset0 acum: 
+Name:resta' start275 end275.Limit:526 nameOffset0 acum: 
+Name:resta' start276 end276.Limit:526 nameOffset0 acum: 
+Name:resta' start277 end277.Limit:526 nameOffset0 acum: 
+Name:resta' start278 end278.Limit:526 nameOffset0 acum: 
+Name:resta' start279 end279.Limit:526 nameOffset0 acum: 
+Name:resta' start280 end280.Limit:526 nameOffset0 acum: 
+Name:resta' start281 end281.Limit:526 nameOffset0 acum: 
+Name:resta' start282 end282.Limit:526 nameOffset0 acum: 
+Name:resta' start283 end283.Limit:526 nameOffset0 acum: 
+Name:resta' start284 end284.Limit:526 nameOffset0 acum: 
+Name:resta' start285 end285.Limit:526 nameOffset0 acum: 
+Name:resta' start286 end286.Limit:526 nameOffset0 acum: 
+Name:resta' start287 end287.Limit:526 nameOffset0 acum: 
+Elemento: Punto linea:9columna:2
+Name:Punto start257 end257.Limit:526 nameOffset0 acum: 
+Name:Punto start258 end258.Limit:526 nameOffset0 acum: 
+Name:Punto start259 end259.Limit:526 nameOffset0 acum: 
+Name:Punto start260 end260.Limit:526 nameOffset0 acum: 
+Name:Punto start261 end261.Limit:526 nameOffset0 acum: 
+Name:Punto start262 end262.Limit:526 nameOffset0 acum: 
+Name:Punto start263 end263.Limit:526 nameOffset0 acum: 
+Name:Punto start264 end264.Limit:526 nameOffset0 acum: 
+Name:Punto start265 end265.Limit:526 nameOffset0 acum: 
+Name:Punto start266 end266.Limit:526 nameOffset0 acum: 
+Name:Punto start266 end267.Limit:526 nameOffset1 acum: P
+Name:Punto start266 end268.Limit:526 nameOffset2 acum: Pu
+Name:Punto start266 end269.Limit:526 nameOffset3 acum: Pun
+Name:Punto start266 end270.Limit:526 nameOffset4 acum: Punt
+Name:Punto start266 end271.Limit:526 nameOffset5 acum: Punto
+start266 end271 elemento tageado: Punto
+Name:Punto start272 end272.Limit:526 nameOffset0 acum: 
+Name:Punto start273 end273.Limit:526 nameOffset0 acum: 
+Name:Punto start274 end274.Limit:526 nameOffset0 acum: 
+Name:Punto start274 end275.Limit:526 nameOffset1 acum: P
+Name:Punto start274 end276.Limit:526 nameOffset2 acum: Pu
+Name:Punto start274 end277.Limit:526 nameOffset3 acum: Pun
+Name:Punto start274 end278.Limit:526 nameOffset4 acum: Punt
+Name:Punto start274 end279.Limit:526 nameOffset5 acum: Punto
+start274 end279 elemento tageado: Punto
+Name:Punto start280 end280.Limit:526 nameOffset0 acum: 
+Name:Punto start281 end281.Limit:526 nameOffset0 acum: 
+Name:Punto start282 end282.Limit:526 nameOffset0 acum: 
+Name:Punto start282 end283.Limit:526 nameOffset1 acum: P
+Name:Punto start282 end284.Limit:526 nameOffset2 acum: Pu
+Name:Punto start282 end285.Limit:526 nameOffset3 acum: Pun
+Name:Punto start282 end286.Limit:526 nameOffset4 acum: Punt
+Name:Punto start282 end287.Limit:526 nameOffset5 acum: Punto
+start282 end287 elemento tageado: Punto
+Name:Punto start288 end288.Limit:526 nameOffset0 acum: 
+Name:Punto start289 end289.Limit:526 nameOffset0 acum: 
+Name:Punto start290 end290.Limit:526 nameOffset0 acum: 
+Name:Punto start291 end291.Limit:526 nameOffset0 acum: 
+Name:Punto start292 end292.Limit:526 nameOffset0 acum: 
+Name:Punto start293 end293.Limit:526 nameOffset0 acum: 
+Name:Punto start294 end294.Limit:526 nameOffset0 acum: 
+Name:Punto start295 end295.Limit:526 nameOffset0 acum: 
+Name:Punto start296 end296.Limit:526 nameOffset0 acum: 
+Name:Punto start296 end297.Limit:526 nameOffset1 acum: P
+Name:Punto start296 end298.Limit:526 nameOffset2 acum: Pu
+Name:Punto start296 end299.Limit:526 nameOffset3 acum: Pun
+Name:Punto start296 end300.Limit:526 nameOffset4 acum: Punt
+Name:Punto start296 end301.Limit:526 nameOffset5 acum: Punto
+start296 end301 elemento tageado: Punto
+Name:Punto start302 end302.Limit:526 nameOffset0 acum: 
+Name:Punto start303 end303.Limit:526 nameOffset0 acum: 
+Name:Punto start304 end304.Limit:526 nameOffset0 acum: 
+Name:Punto start305 end305.Limit:526 nameOffset0 acum: 
+Name:Punto start306 end306.Limit:526 nameOffset0 acum: 
+Name:Punto start307 end307.Limit:526 nameOffset0 acum: 
+Name:Punto start308 end308.Limit:526 nameOffset0 acum: 
+Name:Punto start309 end309.Limit:526 nameOffset0 acum: 
+Name:Punto start310 end310.Limit:526 nameOffset0 acum: 
+Name:Punto start311 end311.Limit:526 nameOffset0 acum: 
+Name:Punto start312 end312.Limit:526 nameOffset0 acum: 
+Name:Punto start312 end313.Limit:526 nameOffset1 acum: P
+Name:Punto start312 end314.Limit:526 nameOffset2 acum: Pu
+Name:Punto start312 end315.Limit:526 nameOffset3 acum: Pun
+Name:Punto start312 end316.Limit:526 nameOffset4 acum: Punt
+Name:Punto start312 end317.Limit:526 nameOffset5 acum: Punto
+start312 end317 elemento tageado: Punto
+Name:Punto start318 end318.Limit:526 nameOffset0 acum: 
+Name:Punto start319 end319.Limit:526 nameOffset0 acum: 
+Name:Punto start320 end320.Limit:526 nameOffset0 acum: 
+Name:Punto start321 end321.Limit:526 nameOffset0 acum: 
+Name:Punto start322 end322.Limit:526 nameOffset0 acum: 
+Name:Punto start323 end323.Limit:526 nameOffset0 acum: 
+Name:Punto start324 end324.Limit:526 nameOffset0 acum: 
+Name:Punto start325 end325.Limit:526 nameOffset0 acum: 
+Name:Punto start326 end326.Limit:526 nameOffset0 acum: 
+Name:Punto start327 end327.Limit:526 nameOffset0 acum: 
+Name:Punto start328 end328.Limit:526 nameOffset0 acum: 
+Name:Punto start329 end329.Limit:526 nameOffset0 acum: 
+Name:Punto start329 end330.Limit:526 nameOffset1 acum: P
+Name:Punto start329 end331.Limit:526 nameOffset2 acum: Pu
+Name:Punto start329 end332.Limit:526 nameOffset3 acum: Pun
+Name:Punto start329 end333.Limit:526 nameOffset4 acum: Punt
+Name:Punto start329 end334.Limit:526 nameOffset5 acum: Punto
+start329 end334 elemento tageado: Punto
+Name:Punto start335 end335.Limit:526 nameOffset0 acum: 
+Name:Punto start336 end336.Limit:526 nameOffset0 acum: 
+Name:Punto start337 end337.Limit:526 nameOffset0 acum: 
+Name:Punto start338 end338.Limit:526 nameOffset0 acum: 
+Name:Punto start339 end339.Limit:526 nameOffset0 acum: 
+Name:Punto start340 end340.Limit:526 nameOffset0 acum: 
+Name:Punto start341 end341.Limit:526 nameOffset0 acum: 
+Name:Punto start342 end342.Limit:526 nameOffset0 acum: 
+Name:Punto start343 end343.Limit:526 nameOffset0 acum: 
+Name:Punto start344 end344.Limit:526 nameOffset0 acum: 
+Name:Punto start345 end345.Limit:526 nameOffset0 acum: 
+Name:Punto start346 end346.Limit:526 nameOffset0 acum: 
+Name:Punto start347 end347.Limit:526 nameOffset0 acum: 
+Name:Punto start348 end348.Limit:526 nameOffset0 acum: 
+Name:Punto start349 end349.Limit:526 nameOffset0 acum: 
+Name:Punto start350 end350.Limit:526 nameOffset0 acum: 
+Name:Punto start351 end351.Limit:526 nameOffset0 acum: 
+Name:Punto start352 end352.Limit:526 nameOffset0 acum: 
+Elemento: Punto linea:9columna:2
+Name:Punto start257 end257.Limit:526 nameOffset0 acum: 
+Name:Punto start258 end258.Limit:526 nameOffset0 acum: 
+Name:Punto start259 end259.Limit:526 nameOffset0 acum: 
+Name:Punto start260 end260.Limit:526 nameOffset0 acum: 
+Name:Punto start261 end261.Limit:526 nameOffset0 acum: 
+Name:Punto start262 end262.Limit:526 nameOffset0 acum: 
+Name:Punto start263 end263.Limit:526 nameOffset0 acum: 
+Name:Punto start264 end264.Limit:526 nameOffset0 acum: 
+Name:Punto start265 end265.Limit:526 nameOffset0 acum: 
+Name:Punto start266 end266.Limit:526 nameOffset0 acum: 
+Name:Punto start266 end267.Limit:526 nameOffset1 acum: P
+Name:Punto start266 end268.Limit:526 nameOffset2 acum: Pu
+Name:Punto start266 end269.Limit:526 nameOffset3 acum: Pun
+Name:Punto start266 end270.Limit:526 nameOffset4 acum: Punt
+Name:Punto start266 end271.Limit:526 nameOffset5 acum: Punto
+start266 end271 elemento tageado: Punto
+Name:Punto start272 end272.Limit:526 nameOffset0 acum: 
+Name:Punto start273 end273.Limit:526 nameOffset0 acum: 
+Name:Punto start274 end274.Limit:526 nameOffset0 acum: 
+Name:Punto start274 end275.Limit:526 nameOffset1 acum: P
+Name:Punto start274 end276.Limit:526 nameOffset2 acum: Pu
+Name:Punto start274 end277.Limit:526 nameOffset3 acum: Pun
+Name:Punto start274 end278.Limit:526 nameOffset4 acum: Punt
+Name:Punto start274 end279.Limit:526 nameOffset5 acum: Punto
+start274 end279 elemento tageado: Punto
+Name:Punto start280 end280.Limit:526 nameOffset0 acum: 
+Name:Punto start281 end281.Limit:526 nameOffset0 acum: 
+Name:Punto start282 end282.Limit:526 nameOffset0 acum: 
+Name:Punto start282 end283.Limit:526 nameOffset1 acum: P
+Name:Punto start282 end284.Limit:526 nameOffset2 acum: Pu
+Name:Punto start282 end285.Limit:526 nameOffset3 acum: Pun
+Name:Punto start282 end286.Limit:526 nameOffset4 acum: Punt
+Name:Punto start282 end287.Limit:526 nameOffset5 acum: Punto
+start282 end287 elemento tageado: Punto
+Name:Punto start288 end288.Limit:526 nameOffset0 acum: 
+Name:Punto start289 end289.Limit:526 nameOffset0 acum: 
+Name:Punto start290 end290.Limit:526 nameOffset0 acum: 
+Name:Punto start291 end291.Limit:526 nameOffset0 acum: 
+Name:Punto start292 end292.Limit:526 nameOffset0 acum: 
+Name:Punto start293 end293.Limit:526 nameOffset0 acum: 
+Name:Punto start294 end294.Limit:526 nameOffset0 acum: 
+Name:Punto start295 end295.Limit:526 nameOffset0 acum: 
+Name:Punto start296 end296.Limit:526 nameOffset0 acum: 
+Name:Punto start296 end297.Limit:526 nameOffset1 acum: P
+Name:Punto start296 end298.Limit:526 nameOffset2 acum: Pu
+Name:Punto start296 end299.Limit:526 nameOffset3 acum: Pun
+Name:Punto start296 end300.Limit:526 nameOffset4 acum: Punt
+Name:Punto start296 end301.Limit:526 nameOffset5 acum: Punto
+start296 end301 elemento tageado: Punto
+Name:Punto start302 end302.Limit:526 nameOffset0 acum: 
+Name:Punto start303 end303.Limit:526 nameOffset0 acum: 
+Name:Punto start304 end304.Limit:526 nameOffset0 acum: 
+Name:Punto start305 end305.Limit:526 nameOffset0 acum: 
+Name:Punto start306 end306.Limit:526 nameOffset0 acum: 
+Name:Punto start307 end307.Limit:526 nameOffset0 acum: 
+Name:Punto start308 end308.Limit:526 nameOffset0 acum: 
+Name:Punto start309 end309.Limit:526 nameOffset0 acum: 
+Name:Punto start310 end310.Limit:526 nameOffset0 acum: 
+Name:Punto start311 end311.Limit:526 nameOffset0 acum: 
+Name:Punto start312 end312.Limit:526 nameOffset0 acum: 
+Name:Punto start312 end313.Limit:526 nameOffset1 acum: P
+Name:Punto start312 end314.Limit:526 nameOffset2 acum: Pu
+Name:Punto start312 end315.Limit:526 nameOffset3 acum: Pun
+Name:Punto start312 end316.Limit:526 nameOffset4 acum: Punt
+Name:Punto start312 end317.Limit:526 nameOffset5 acum: Punto
+start312 end317 elemento tageado: Punto
+Name:Punto start318 end318.Limit:526 nameOffset0 acum: 
+Name:Punto start319 end319.Limit:526 nameOffset0 acum: 
+Name:Punto start320 end320.Limit:526 nameOffset0 acum: 
+Name:Punto start321 end321.Limit:526 nameOffset0 acum: 
+Name:Punto start322 end322.Limit:526 nameOffset0 acum: 
+Name:Punto start323 end323.Limit:526 nameOffset0 acum: 
+Name:Punto start324 end324.Limit:526 nameOffset0 acum: 
+Name:Punto start325 end325.Limit:526 nameOffset0 acum: 
+Name:Punto start326 end326.Limit:526 nameOffset0 acum: 
+Name:Punto start327 end327.Limit:526 nameOffset0 acum: 
+Name:Punto start328 end328.Limit:526 nameOffset0 acum: 
+Name:Punto start329 end329.Limit:526 nameOffset0 acum: 
+Name:Punto start329 end330.Limit:526 nameOffset1 acum: P
+Name:Punto start329 end331.Limit:526 nameOffset2 acum: Pu
+Name:Punto start329 end332.Limit:526 nameOffset3 acum: Pun
+Name:Punto start329 end333.Limit:526 nameOffset4 acum: Punt
+Name:Punto start329 end334.Limit:526 nameOffset5 acum: Punto
+start329 end334 elemento tageado: Punto
+Name:Punto start335 end335.Limit:526 nameOffset0 acum: 
+Name:Punto start336 end336.Limit:526 nameOffset0 acum: 
+Name:Punto start337 end337.Limit:526 nameOffset0 acum: 
+Name:Punto start338 end338.Limit:526 nameOffset0 acum: 
+Name:Punto start339 end339.Limit:526 nameOffset0 acum: 
+Name:Punto start340 end340.Limit:526 nameOffset0 acum: 
+Name:Punto start341 end341.Limit:526 nameOffset0 acum: 
+Name:Punto start342 end342.Limit:526 nameOffset0 acum: 
+Name:Punto start343 end343.Limit:526 nameOffset0 acum: 
+Name:Punto start344 end344.Limit:526 nameOffset0 acum: 
+Name:Punto start345 end345.Limit:526 nameOffset0 acum: 
+Name:Punto start346 end346.Limit:526 nameOffset0 acum: 
+Name:Punto start347 end347.Limit:526 nameOffset0 acum: 
+Name:Punto start348 end348.Limit:526 nameOffset0 acum: 
+Name:Punto start349 end349.Limit:526 nameOffset0 acum: 
+Name:Punto start350 end350.Limit:526 nameOffset0 acum: 
+Name:Punto start351 end351.Limit:526 nameOffset0 acum: 
+Name:Punto start352 end352.Limit:526 nameOffset0 acum: 
+Elemento: Punto linea:9columna:2
+Name:Punto start257 end257.Limit:526 nameOffset0 acum: 
+Name:Punto start258 end258.Limit:526 nameOffset0 acum: 
+Name:Punto start259 end259.Limit:526 nameOffset0 acum: 
+Name:Punto start260 end260.Limit:526 nameOffset0 acum: 
+Name:Punto start261 end261.Limit:526 nameOffset0 acum: 
+Name:Punto start262 end262.Limit:526 nameOffset0 acum: 
+Name:Punto start263 end263.Limit:526 nameOffset0 acum: 
+Name:Punto start264 end264.Limit:526 nameOffset0 acum: 
+Name:Punto start265 end265.Limit:526 nameOffset0 acum: 
+Name:Punto start266 end266.Limit:526 nameOffset0 acum: 
+Name:Punto start266 end267.Limit:526 nameOffset1 acum: P
+Name:Punto start266 end268.Limit:526 nameOffset2 acum: Pu
+Name:Punto start266 end269.Limit:526 nameOffset3 acum: Pun
+Name:Punto start266 end270.Limit:526 nameOffset4 acum: Punt
+Name:Punto start266 end271.Limit:526 nameOffset5 acum: Punto
+start266 end271 elemento tageado: Punto
+Name:Punto start272 end272.Limit:526 nameOffset0 acum: 
+Name:Punto start273 end273.Limit:526 nameOffset0 acum: 
+Name:Punto start274 end274.Limit:526 nameOffset0 acum: 
+Name:Punto start274 end275.Limit:526 nameOffset1 acum: P
+Name:Punto start274 end276.Limit:526 nameOffset2 acum: Pu
+Name:Punto start274 end277.Limit:526 nameOffset3 acum: Pun
+Name:Punto start274 end278.Limit:526 nameOffset4 acum: Punt
+Name:Punto start274 end279.Limit:526 nameOffset5 acum: Punto
+start274 end279 elemento tageado: Punto
+Name:Punto start280 end280.Limit:526 nameOffset0 acum: 
+Name:Punto start281 end281.Limit:526 nameOffset0 acum: 
+Name:Punto start282 end282.Limit:526 nameOffset0 acum: 
+Name:Punto start282 end283.Limit:526 nameOffset1 acum: P
+Name:Punto start282 end284.Limit:526 nameOffset2 acum: Pu
+Name:Punto start282 end285.Limit:526 nameOffset3 acum: Pun
+Name:Punto start282 end286.Limit:526 nameOffset4 acum: Punt
+Name:Punto start282 end287.Limit:526 nameOffset5 acum: Punto
+start282 end287 elemento tageado: Punto
+Name:Punto start288 end288.Limit:526 nameOffset0 acum: 
+Name:Punto start289 end289.Limit:526 nameOffset0 acum: 
+Name:Punto start290 end290.Limit:526 nameOffset0 acum: 
+Name:Punto start291 end291.Limit:526 nameOffset0 acum: 
+Name:Punto start292 end292.Limit:526 nameOffset0 acum: 
+Name:Punto start293 end293.Limit:526 nameOffset0 acum: 
+Name:Punto start294 end294.Limit:526 nameOffset0 acum: 
+Name:Punto start295 end295.Limit:526 nameOffset0 acum: 
+Name:Punto start296 end296.Limit:526 nameOffset0 acum: 
+Name:Punto start296 end297.Limit:526 nameOffset1 acum: P
+Name:Punto start296 end298.Limit:526 nameOffset2 acum: Pu
+Name:Punto start296 end299.Limit:526 nameOffset3 acum: Pun
+Name:Punto start296 end300.Limit:526 nameOffset4 acum: Punt
+Name:Punto start296 end301.Limit:526 nameOffset5 acum: Punto
+start296 end301 elemento tageado: Punto
+Name:Punto start302 end302.Limit:526 nameOffset0 acum: 
+Name:Punto start303 end303.Limit:526 nameOffset0 acum: 
+Name:Punto start304 end304.Limit:526 nameOffset0 acum: 
+Name:Punto start305 end305.Limit:526 nameOffset0 acum: 
+Name:Punto start306 end306.Limit:526 nameOffset0 acum: 
+Name:Punto start307 end307.Limit:526 nameOffset0 acum: 
+Name:Punto start308 end308.Limit:526 nameOffset0 acum: 
+Name:Punto start309 end309.Limit:526 nameOffset0 acum: 
+Name:Punto start310 end310.Limit:526 nameOffset0 acum: 
+Name:Punto start311 end311.Limit:526 nameOffset0 acum: 
+Name:Punto start312 end312.Limit:526 nameOffset0 acum: 
+Name:Punto start312 end313.Limit:526 nameOffset1 acum: P
+Name:Punto start312 end314.Limit:526 nameOffset2 acum: Pu
+Name:Punto start312 end315.Limit:526 nameOffset3 acum: Pun
+Name:Punto start312 end316.Limit:526 nameOffset4 acum: Punt
+Name:Punto start312 end317.Limit:526 nameOffset5 acum: Punto
+start312 end317 elemento tageado: Punto
+Name:Punto start318 end318.Limit:526 nameOffset0 acum: 
+Name:Punto start319 end319.Limit:526 nameOffset0 acum: 
+Name:Punto start320 end320.Limit:526 nameOffset0 acum: 
+Name:Punto start321 end321.Limit:526 nameOffset0 acum: 
+Name:Punto start322 end322.Limit:526 nameOffset0 acum: 
+Name:Punto start323 end323.Limit:526 nameOffset0 acum: 
+Name:Punto start324 end324.Limit:526 nameOffset0 acum: 
+Name:Punto start325 end325.Limit:526 nameOffset0 acum: 
+Name:Punto start326 end326.Limit:526 nameOffset0 acum: 
+Name:Punto start327 end327.Limit:526 nameOffset0 acum: 
+Name:Punto start328 end328.Limit:526 nameOffset0 acum: 
+Name:Punto start329 end329.Limit:526 nameOffset0 acum: 
+Name:Punto start329 end330.Limit:526 nameOffset1 acum: P
+Name:Punto start329 end331.Limit:526 nameOffset2 acum: Pu
+Name:Punto start329 end332.Limit:526 nameOffset3 acum: Pun
+Name:Punto start329 end333.Limit:526 nameOffset4 acum: Punt
+Name:Punto start329 end334.Limit:526 nameOffset5 acum: Punto
+start329 end334 elemento tageado: Punto
+Name:Punto start335 end335.Limit:526 nameOffset0 acum: 
+Name:Punto start336 end336.Limit:526 nameOffset0 acum: 
+Name:Punto start337 end337.Limit:526 nameOffset0 acum: 
+Name:Punto start338 end338.Limit:526 nameOffset0 acum: 
+Name:Punto start339 end339.Limit:526 nameOffset0 acum: 
+Name:Punto start340 end340.Limit:526 nameOffset0 acum: 
+Name:Punto start341 end341.Limit:526 nameOffset0 acum: 
+Name:Punto start342 end342.Limit:526 nameOffset0 acum: 
+Name:Punto start343 end343.Limit:526 nameOffset0 acum: 
+Name:Punto start344 end344.Limit:526 nameOffset0 acum: 
+Name:Punto start345 end345.Limit:526 nameOffset0 acum: 
+Name:Punto start346 end346.Limit:526 nameOffset0 acum: 
+Name:Punto start347 end347.Limit:526 nameOffset0 acum: 
+Name:Punto start348 end348.Limit:526 nameOffset0 acum: 
+Name:Punto start349 end349.Limit:526 nameOffset0 acum: 
+Name:Punto start350 end350.Limit:526 nameOffset0 acum: 
+Name:Punto start351 end351.Limit:526 nameOffset0 acum: 
+Name:Punto start352 end352.Limit:526 nameOffset0 acum: 
+Elemento: resta' linea:10columna:2
+Name:resta' start288 end288.Limit:526 nameOffset0 acum: 
+Name:resta' start288 end289.Limit:526 nameOffset1 acum: r
+Name:resta' start288 end290.Limit:526 nameOffset2 acum: re
+Name:resta' start288 end291.Limit:526 nameOffset3 acum: res
+Name:resta' start288 end292.Limit:526 nameOffset4 acum: rest
+Name:resta' start288 end293.Limit:526 nameOffset5 acum: resta
+Name:resta' start288 end294.Limit:526 nameOffset6 acum: resta'
+start288 end294 elemento tageado: resta'
+Name:resta' start295 end295.Limit:526 nameOffset0 acum: 
+Name:resta' start296 end296.Limit:526 nameOffset0 acum: 
+Name:resta' start297 end297.Limit:526 nameOffset0 acum: 
+Name:resta' start298 end298.Limit:526 nameOffset0 acum: 
+Name:resta' start299 end299.Limit:526 nameOffset0 acum: 
+Name:resta' start300 end300.Limit:526 nameOffset0 acum: 
+Name:resta' start301 end301.Limit:526 nameOffset0 acum: 
+Name:resta' start302 end302.Limit:526 nameOffset0 acum: 
+Name:resta' start303 end303.Limit:526 nameOffset0 acum: 
+Name:resta' start304 end304.Limit:526 nameOffset0 acum: 
+Name:resta' start305 end305.Limit:526 nameOffset0 acum: 
+Name:resta' start306 end306.Limit:526 nameOffset0 acum: 
+Name:resta' start307 end307.Limit:526 nameOffset0 acum: 
+Name:resta' start308 end308.Limit:526 nameOffset0 acum: 
+Name:resta' start309 end309.Limit:526 nameOffset0 acum: 
+Name:resta' start310 end310.Limit:526 nameOffset0 acum: 
+Name:resta' start311 end311.Limit:526 nameOffset0 acum: 
+Name:resta' start312 end312.Limit:526 nameOffset0 acum: 
+Name:resta' start313 end313.Limit:526 nameOffset0 acum: 
+Name:resta' start314 end314.Limit:526 nameOffset0 acum: 
+Name:resta' start315 end315.Limit:526 nameOffset0 acum: 
+Name:resta' start316 end316.Limit:526 nameOffset0 acum: 
+Name:resta' start317 end317.Limit:526 nameOffset0 acum: 
+Name:resta' start318 end318.Limit:526 nameOffset0 acum: 
+Name:resta' start319 end319.Limit:526 nameOffset0 acum: 
+Name:resta' start320 end320.Limit:526 nameOffset0 acum: 
+Name:resta' start321 end321.Limit:526 nameOffset0 acum: 
+Name:resta' start322 end322.Limit:526 nameOffset0 acum: 
+Name:resta' start323 end323.Limit:526 nameOffset0 acum: 
+Name:resta' start324 end324.Limit:526 nameOffset0 acum: 
+Name:resta' start325 end325.Limit:526 nameOffset0 acum: 
+Name:resta' start326 end326.Limit:526 nameOffset0 acum: 
+Name:resta' start327 end327.Limit:526 nameOffset0 acum: 
+Name:resta' start328 end328.Limit:526 nameOffset0 acum: 
+Name:resta' start329 end329.Limit:526 nameOffset0 acum: 
+Name:resta' start330 end330.Limit:526 nameOffset0 acum: 
+Name:resta' start331 end331.Limit:526 nameOffset0 acum: 
+Name:resta' start332 end332.Limit:526 nameOffset0 acum: 
+Name:resta' start333 end333.Limit:526 nameOffset0 acum: 
+Name:resta' start334 end334.Limit:526 nameOffset0 acum: 
+Name:resta' start335 end335.Limit:526 nameOffset0 acum: 
+Name:resta' start336 end336.Limit:526 nameOffset0 acum: 
+Name:resta' start337 end337.Limit:526 nameOffset0 acum: 
+Name:resta' start338 end338.Limit:526 nameOffset0 acum: 
+Name:resta' start339 end339.Limit:526 nameOffset0 acum: 
+Name:resta' start340 end340.Limit:526 nameOffset0 acum: 
+Name:resta' start341 end341.Limit:526 nameOffset0 acum: 
+Name:resta' start342 end342.Limit:526 nameOffset0 acum: 
+Name:resta' start343 end343.Limit:526 nameOffset0 acum: 
+Name:resta' start344 end344.Limit:526 nameOffset0 acum: 
+Name:resta' start345 end345.Limit:526 nameOffset0 acum: 
+Name:resta' start346 end346.Limit:526 nameOffset0 acum: 
+Name:resta' start347 end347.Limit:526 nameOffset0 acum: 
+Name:resta' start348 end348.Limit:526 nameOffset0 acum: 
+Name:resta' start349 end349.Limit:526 nameOffset0 acum: 
+Name:resta' start350 end350.Limit:526 nameOffset0 acum: 
+Name:resta' start351 end351.Limit:526 nameOffset0 acum: 
+Name:resta' start352 end352.Limit:526 nameOffset0 acum: 
+Elemento: Punto2D linea:10columna:2
+Name:Punto2D start288 end288.Limit:526 nameOffset0 acum: 
+Name:Punto2D start289 end289.Limit:526 nameOffset0 acum: 
+Name:Punto2D start290 end290.Limit:526 nameOffset0 acum: 
+Name:Punto2D start291 end291.Limit:526 nameOffset0 acum: 
+Name:Punto2D start292 end292.Limit:526 nameOffset0 acum: 
+Name:Punto2D start293 end293.Limit:526 nameOffset0 acum: 
+Name:Punto2D start294 end294.Limit:526 nameOffset0 acum: 
+Name:Punto2D start295 end295.Limit:526 nameOffset0 acum: 
+Name:Punto2D start296 end296.Limit:526 nameOffset0 acum: 
+Name:Punto2D start296 end297.Limit:526 nameOffset1 acum: P
+Name:Punto2D start296 end298.Limit:526 nameOffset2 acum: Pu
+Name:Punto2D start296 end299.Limit:526 nameOffset3 acum: Pun
+Name:Punto2D start296 end300.Limit:526 nameOffset4 acum: Punt
+Name:Punto2D start296 end301.Limit:526 nameOffset5 acum: Punto
+Name:Punto2D start296 end302.Limit:526 nameOffset6 acum: Punto2
+Name:Punto2D start296 end303.Limit:526 nameOffset7 acum: Punto2D
+start296 end303 elemento tageado: Punto2D
+Name:Punto2D start304 end304.Limit:526 nameOffset0 acum: 
+Name:Punto2D start305 end305.Limit:526 nameOffset0 acum: 
+Name:Punto2D start306 end306.Limit:526 nameOffset0 acum: 
+Name:Punto2D start307 end307.Limit:526 nameOffset0 acum: 
+Name:Punto2D start308 end308.Limit:526 nameOffset0 acum: 
+Name:Punto2D start309 end309.Limit:526 nameOffset0 acum: 
+Name:Punto2D start310 end310.Limit:526 nameOffset0 acum: 
+Name:Punto2D start311 end311.Limit:526 nameOffset0 acum: 
+Name:Punto2D start312 end312.Limit:526 nameOffset0 acum: 
+Name:Punto2D start312 end313.Limit:526 nameOffset1 acum: P
+Name:Punto2D start312 end314.Limit:526 nameOffset2 acum: Pu
+Name:Punto2D start312 end315.Limit:526 nameOffset3 acum: Pun
+Name:Punto2D start312 end316.Limit:526 nameOffset4 acum: Punt
+Name:Punto2D start312 end317.Limit:526 nameOffset5 acum: Punto
+Name:Punto2D start312 end318.Limit:526 nameOffset6 acum: Punto2
+Name:Punto2D start312 end319.Limit:526 nameOffset7 acum: Punto2D
+start312 end319 elemento tageado: Punto2D
+Name:Punto2D start320 end320.Limit:526 nameOffset0 acum: 
+Name:Punto2D start321 end321.Limit:526 nameOffset0 acum: 
+Name:Punto2D start322 end322.Limit:526 nameOffset0 acum: 
+Name:Punto2D start323 end323.Limit:526 nameOffset0 acum: 
+Name:Punto2D start324 end324.Limit:526 nameOffset0 acum: 
+Name:Punto2D start325 end325.Limit:526 nameOffset0 acum: 
+Name:Punto2D start326 end326.Limit:526 nameOffset0 acum: 
+Name:Punto2D start327 end327.Limit:526 nameOffset0 acum: 
+Name:Punto2D start328 end328.Limit:526 nameOffset0 acum: 
+Name:Punto2D start329 end329.Limit:526 nameOffset0 acum: 
+Name:Punto2D start329 end330.Limit:526 nameOffset1 acum: P
+Name:Punto2D start329 end331.Limit:526 nameOffset2 acum: Pu
+Name:Punto2D start329 end332.Limit:526 nameOffset3 acum: Pun
+Name:Punto2D start329 end333.Limit:526 nameOffset4 acum: Punt
+Name:Punto2D start329 end334.Limit:526 nameOffset5 acum: Punto
+Name:Punto2D start329 end335.Limit:526 nameOffset6 acum: Punto2
+Name:Punto2D start329 end336.Limit:526 nameOffset7 acum: Punto2D
+start329 end336 elemento tageado: Punto2D
+Name:Punto2D start337 end337.Limit:526 nameOffset0 acum: 
+Name:Punto2D start338 end338.Limit:526 nameOffset0 acum: 
+Name:Punto2D start339 end339.Limit:526 nameOffset0 acum: 
+Name:Punto2D start340 end340.Limit:526 nameOffset0 acum: 
+Name:Punto2D start341 end341.Limit:526 nameOffset0 acum: 
+Name:Punto2D start342 end342.Limit:526 nameOffset0 acum: 
+Name:Punto2D start343 end343.Limit:526 nameOffset0 acum: 
+Name:Punto2D start344 end344.Limit:526 nameOffset0 acum: 
+Name:Punto2D start345 end345.Limit:526 nameOffset0 acum: 
+Name:Punto2D start346 end346.Limit:526 nameOffset0 acum: 
+Name:Punto2D start347 end347.Limit:526 nameOffset0 acum: 
+Name:Punto2D start348 end348.Limit:526 nameOffset0 acum: 
+Name:Punto2D start349 end349.Limit:526 nameOffset0 acum: 
+Name:Punto2D start350 end350.Limit:526 nameOffset0 acum: 
+Name:Punto2D start351 end351.Limit:526 nameOffset0 acum: 
+Name:Punto2D start352 end352.Limit:526 nameOffset0 acum: 
+Elemento: Punto2D linea:10columna:2
+Name:Punto2D start288 end288.Limit:526 nameOffset0 acum: 
+Name:Punto2D start289 end289.Limit:526 nameOffset0 acum: 
+Name:Punto2D start290 end290.Limit:526 nameOffset0 acum: 
+Name:Punto2D start291 end291.Limit:526 nameOffset0 acum: 
+Name:Punto2D start292 end292.Limit:526 nameOffset0 acum: 
+Name:Punto2D start293 end293.Limit:526 nameOffset0 acum: 
+Name:Punto2D start294 end294.Limit:526 nameOffset0 acum: 
+Name:Punto2D start295 end295.Limit:526 nameOffset0 acum: 
+Name:Punto2D start296 end296.Limit:526 nameOffset0 acum: 
+Name:Punto2D start296 end297.Limit:526 nameOffset1 acum: P
+Name:Punto2D start296 end298.Limit:526 nameOffset2 acum: Pu
+Name:Punto2D start296 end299.Limit:526 nameOffset3 acum: Pun
+Name:Punto2D start296 end300.Limit:526 nameOffset4 acum: Punt
+Name:Punto2D start296 end301.Limit:526 nameOffset5 acum: Punto
+Name:Punto2D start296 end302.Limit:526 nameOffset6 acum: Punto2
+Name:Punto2D start296 end303.Limit:526 nameOffset7 acum: Punto2D
+start296 end303 elemento tageado: Punto2D
+Name:Punto2D start304 end304.Limit:526 nameOffset0 acum: 
+Name:Punto2D start305 end305.Limit:526 nameOffset0 acum: 
+Name:Punto2D start306 end306.Limit:526 nameOffset0 acum: 
+Name:Punto2D start307 end307.Limit:526 nameOffset0 acum: 
+Name:Punto2D start308 end308.Limit:526 nameOffset0 acum: 
+Name:Punto2D start309 end309.Limit:526 nameOffset0 acum: 
+Name:Punto2D start310 end310.Limit:526 nameOffset0 acum: 
+Name:Punto2D start311 end311.Limit:526 nameOffset0 acum: 
+Name:Punto2D start312 end312.Limit:526 nameOffset0 acum: 
+Name:Punto2D start312 end313.Limit:526 nameOffset1 acum: P
+Name:Punto2D start312 end314.Limit:526 nameOffset2 acum: Pu
+Name:Punto2D start312 end315.Limit:526 nameOffset3 acum: Pun
+Name:Punto2D start312 end316.Limit:526 nameOffset4 acum: Punt
+Name:Punto2D start312 end317.Limit:526 nameOffset5 acum: Punto
+Name:Punto2D start312 end318.Limit:526 nameOffset6 acum: Punto2
+Name:Punto2D start312 end319.Limit:526 nameOffset7 acum: Punto2D
+start312 end319 elemento tageado: Punto2D
+Name:Punto2D start320 end320.Limit:526 nameOffset0 acum: 
+Name:Punto2D start321 end321.Limit:526 nameOffset0 acum: 
+Name:Punto2D start322 end322.Limit:526 nameOffset0 acum: 
+Name:Punto2D start323 end323.Limit:526 nameOffset0 acum: 
+Name:Punto2D start324 end324.Limit:526 nameOffset0 acum: 
+Name:Punto2D start325 end325.Limit:526 nameOffset0 acum: 
+Name:Punto2D start326 end326.Limit:526 nameOffset0 acum: 
+Name:Punto2D start327 end327.Limit:526 nameOffset0 acum: 
+Name:Punto2D start328 end328.Limit:526 nameOffset0 acum: 
+Name:Punto2D start329 end329.Limit:526 nameOffset0 acum: 
+Name:Punto2D start329 end330.Limit:526 nameOffset1 acum: P
+Name:Punto2D start329 end331.Limit:526 nameOffset2 acum: Pu
+Name:Punto2D start329 end332.Limit:526 nameOffset3 acum: Pun
+Name:Punto2D start329 end333.Limit:526 nameOffset4 acum: Punt
+Name:Punto2D start329 end334.Limit:526 nameOffset5 acum: Punto
+Name:Punto2D start329 end335.Limit:526 nameOffset6 acum: Punto2
+Name:Punto2D start329 end336.Limit:526 nameOffset7 acum: Punto2D
+start329 end336 elemento tageado: Punto2D
+Name:Punto2D start337 end337.Limit:526 nameOffset0 acum: 
+Name:Punto2D start338 end338.Limit:526 nameOffset0 acum: 
+Name:Punto2D start339 end339.Limit:526 nameOffset0 acum: 
+Name:Punto2D start340 end340.Limit:526 nameOffset0 acum: 
+Name:Punto2D start341 end341.Limit:526 nameOffset0 acum: 
+Name:Punto2D start342 end342.Limit:526 nameOffset0 acum: 
+Name:Punto2D start343 end343.Limit:526 nameOffset0 acum: 
+Name:Punto2D start344 end344.Limit:526 nameOffset0 acum: 
+Name:Punto2D start345 end345.Limit:526 nameOffset0 acum: 
+Name:Punto2D start346 end346.Limit:526 nameOffset0 acum: 
+Name:Punto2D start347 end347.Limit:526 nameOffset0 acum: 
+Name:Punto2D start348 end348.Limit:526 nameOffset0 acum: 
+Name:Punto2D start349 end349.Limit:526 nameOffset0 acum: 
+Name:Punto2D start350 end350.Limit:526 nameOffset0 acum: 
+Name:Punto2D start351 end351.Limit:526 nameOffset0 acum: 
+Name:Punto2D start352 end352.Limit:526 nameOffset0 acum: 
+Elemento: resta' linea:11columna:2
+Name:resta' start353 end353.Limit:526 nameOffset0 acum: 
+Name:resta' start353 end354.Limit:526 nameOffset1 acum: r
+Name:resta' start353 end355.Limit:526 nameOffset2 acum: re
+Name:resta' start353 end356.Limit:526 nameOffset3 acum: res
+Name:resta' start353 end357.Limit:526 nameOffset4 acum: rest
+Name:resta' start353 end358.Limit:526 nameOffset5 acum: resta
+Name:resta' start353 end359.Limit:526 nameOffset6 acum: resta'
+start353 end359 elemento tageado: resta'
+Name:resta' start360 end360.Limit:526 nameOffset0 acum: 
+Name:resta' start361 end361.Limit:526 nameOffset0 acum: 
+Name:resta' start362 end362.Limit:526 nameOffset0 acum: 
+Name:resta' start363 end363.Limit:526 nameOffset0 acum: 
+Name:resta' start364 end364.Limit:526 nameOffset0 acum: 
+Name:resta' start365 end365.Limit:526 nameOffset0 acum: 
+Name:resta' start366 end366.Limit:526 nameOffset0 acum: 
+Name:resta' start367 end367.Limit:526 nameOffset0 acum: 
+Name:resta' start368 end368.Limit:526 nameOffset0 acum: 
+Name:resta' start369 end369.Limit:526 nameOffset0 acum: 
+Name:resta' start370 end370.Limit:526 nameOffset0 acum: 
+Name:resta' start371 end371.Limit:526 nameOffset0 acum: 
+Name:resta' start372 end372.Limit:526 nameOffset0 acum: 
+Name:resta' start373 end373.Limit:526 nameOffset0 acum: 
+Name:resta' start374 end374.Limit:526 nameOffset0 acum: 
+Name:resta' start375 end375.Limit:526 nameOffset0 acum: 
+Name:resta' start376 end376.Limit:526 nameOffset0 acum: 
+Name:resta' start377 end377.Limit:526 nameOffset0 acum: 
+Name:resta' start378 end378.Limit:526 nameOffset0 acum: 
+Name:resta' start379 end379.Limit:526 nameOffset0 acum: 
+Name:resta' start380 end380.Limit:526 nameOffset0 acum: 
+Name:resta' start381 end381.Limit:526 nameOffset0 acum: 
+Name:resta' start382 end382.Limit:526 nameOffset0 acum: 
+Name:resta' start383 end383.Limit:526 nameOffset0 acum: 
+Name:resta' start384 end384.Limit:526 nameOffset0 acum: 
+Name:resta' start385 end385.Limit:526 nameOffset0 acum: 
+Name:resta' start386 end386.Limit:526 nameOffset0 acum: 
+Name:resta' start387 end387.Limit:526 nameOffset0 acum: 
+Name:resta' start388 end388.Limit:526 nameOffset0 acum: 
+Name:resta' start389 end389.Limit:526 nameOffset0 acum: 
+Name:resta' start390 end390.Limit:526 nameOffset0 acum: 
+Name:resta' start391 end391.Limit:526 nameOffset0 acum: 
+Name:resta' start392 end392.Limit:526 nameOffset0 acum: 
+Name:resta' start393 end393.Limit:526 nameOffset0 acum: 
+Name:resta' start394 end394.Limit:526 nameOffset0 acum: 
+Name:resta' start395 end395.Limit:526 nameOffset0 acum: 
+Name:resta' start396 end396.Limit:526 nameOffset0 acum: 
+Name:resta' start397 end397.Limit:526 nameOffset0 acum: 
+Name:resta' start398 end398.Limit:526 nameOffset0 acum: 
+Name:resta' start399 end399.Limit:526 nameOffset0 acum: 
+Name:resta' start400 end400.Limit:526 nameOffset0 acum: 
+Name:resta' start401 end401.Limit:526 nameOffset0 acum: 
+Name:resta' start402 end402.Limit:526 nameOffset0 acum: 
+Name:resta' start403 end403.Limit:526 nameOffset0 acum: 
+Name:resta' start404 end404.Limit:526 nameOffset0 acum: 
+Name:resta' start405 end405.Limit:526 nameOffset0 acum: 
+Name:resta' start406 end406.Limit:526 nameOffset0 acum: 
+Name:resta' start407 end407.Limit:526 nameOffset0 acum: 
+Name:resta' start408 end408.Limit:526 nameOffset0 acum: 
+Name:resta' start409 end409.Limit:526 nameOffset0 acum: 
+Name:resta' start410 end410.Limit:526 nameOffset0 acum: 
+Name:resta' start411 end411.Limit:526 nameOffset0 acum: 
+Name:resta' start412 end412.Limit:526 nameOffset0 acum: 
+Name:resta' start413 end413.Limit:526 nameOffset0 acum: 
+Name:resta' start414 end414.Limit:526 nameOffset0 acum: 
+Name:resta' start415 end415.Limit:526 nameOffset0 acum: 
+Name:resta' start416 end416.Limit:526 nameOffset0 acum: 
+Name:resta' start417 end417.Limit:526 nameOffset0 acum: 
+Name:resta' start418 end418.Limit:526 nameOffset0 acum: 
+Name:resta' start419 end419.Limit:526 nameOffset0 acum: 
+Name:resta' start420 end420.Limit:526 nameOffset0 acum: 
+Name:resta' start421 end421.Limit:526 nameOffset0 acum: 
+Name:resta' start422 end422.Limit:526 nameOffset0 acum: 
+Name:resta' start423 end423.Limit:526 nameOffset0 acum: 
+Name:resta' start424 end424.Limit:526 nameOffset0 acum: 
+Name:resta' start425 end425.Limit:526 nameOffset0 acum: 
+Name:resta' start426 end426.Limit:526 nameOffset0 acum: 
+Name:resta' start427 end427.Limit:526 nameOffset0 acum: 
+Name:resta' start428 end428.Limit:526 nameOffset0 acum: 
+Name:resta' start429 end429.Limit:526 nameOffset0 acum: 
+Name:resta' start430 end430.Limit:526 nameOffset0 acum: 
+Name:resta' start431 end431.Limit:526 nameOffset0 acum: 
+Elemento: Punto3D linea:11columna:2
+Name:Punto3D start353 end353.Limit:526 nameOffset0 acum: 
+Name:Punto3D start354 end354.Limit:526 nameOffset0 acum: 
+Name:Punto3D start355 end355.Limit:526 nameOffset0 acum: 
+Name:Punto3D start356 end356.Limit:526 nameOffset0 acum: 
+Name:Punto3D start357 end357.Limit:526 nameOffset0 acum: 
+Name:Punto3D start358 end358.Limit:526 nameOffset0 acum: 
+Name:Punto3D start359 end359.Limit:526 nameOffset0 acum: 
+Name:Punto3D start360 end360.Limit:526 nameOffset0 acum: 
+Name:Punto3D start361 end361.Limit:526 nameOffset0 acum: 
+Name:Punto3D start361 end362.Limit:526 nameOffset1 acum: P
+Name:Punto3D start361 end363.Limit:526 nameOffset2 acum: Pu
+Name:Punto3D start361 end364.Limit:526 nameOffset3 acum: Pun
+Name:Punto3D start361 end365.Limit:526 nameOffset4 acum: Punt
+Name:Punto3D start361 end366.Limit:526 nameOffset5 acum: Punto
+Name:Punto3D start361 end367.Limit:526 nameOffset6 acum: Punto3
+Name:Punto3D start361 end368.Limit:526 nameOffset7 acum: Punto3D
+start361 end368 elemento tageado: Punto3D
+Name:Punto3D start369 end369.Limit:526 nameOffset0 acum: 
+Name:Punto3D start370 end370.Limit:526 nameOffset0 acum: 
+Name:Punto3D start371 end371.Limit:526 nameOffset0 acum: 
+Name:Punto3D start372 end372.Limit:526 nameOffset0 acum: 
+Name:Punto3D start373 end373.Limit:526 nameOffset0 acum: 
+Name:Punto3D start374 end374.Limit:526 nameOffset0 acum: 
+Name:Punto3D start375 end375.Limit:526 nameOffset0 acum: 
+Name:Punto3D start376 end376.Limit:526 nameOffset0 acum: 
+Name:Punto3D start377 end377.Limit:526 nameOffset0 acum: 
+Name:Punto3D start378 end378.Limit:526 nameOffset0 acum: 
+Name:Punto3D start379 end379.Limit:526 nameOffset0 acum: 
+Name:Punto3D start380 end380.Limit:526 nameOffset0 acum: 
+Name:Punto3D start380 end381.Limit:526 nameOffset1 acum: P
+Name:Punto3D start380 end382.Limit:526 nameOffset2 acum: Pu
+Name:Punto3D start380 end383.Limit:526 nameOffset3 acum: Pun
+Name:Punto3D start380 end384.Limit:526 nameOffset4 acum: Punt
+Name:Punto3D start380 end385.Limit:526 nameOffset5 acum: Punto
+Name:Punto3D start380 end386.Limit:526 nameOffset6 acum: Punto3
+Name:Punto3D start380 end387.Limit:526 nameOffset7 acum: Punto3D
+start380 end387 elemento tageado: Punto3D
+Name:Punto3D start388 end388.Limit:526 nameOffset0 acum: 
+Name:Punto3D start389 end389.Limit:526 nameOffset0 acum: 
+Name:Punto3D start390 end390.Limit:526 nameOffset0 acum: 
+Name:Punto3D start391 end391.Limit:526 nameOffset0 acum: 
+Name:Punto3D start392 end392.Limit:526 nameOffset0 acum: 
+Name:Punto3D start393 end393.Limit:526 nameOffset0 acum: 
+Name:Punto3D start394 end394.Limit:526 nameOffset0 acum: 
+Name:Punto3D start395 end395.Limit:526 nameOffset0 acum: 
+Name:Punto3D start396 end396.Limit:526 nameOffset0 acum: 
+Name:Punto3D start397 end397.Limit:526 nameOffset0 acum: 
+Name:Punto3D start398 end398.Limit:526 nameOffset0 acum: 
+Name:Punto3D start399 end399.Limit:526 nameOffset0 acum: 
+Name:Punto3D start400 end400.Limit:526 nameOffset0 acum: 
+Name:Punto3D start400 end401.Limit:526 nameOffset1 acum: P
+Name:Punto3D start400 end402.Limit:526 nameOffset2 acum: Pu
+Name:Punto3D start400 end403.Limit:526 nameOffset3 acum: Pun
+Name:Punto3D start400 end404.Limit:526 nameOffset4 acum: Punt
+Name:Punto3D start400 end405.Limit:526 nameOffset5 acum: Punto
+Name:Punto3D start400 end406.Limit:526 nameOffset6 acum: Punto3
+Name:Punto3D start400 end407.Limit:526 nameOffset7 acum: Punto3D
+start400 end407 elemento tageado: Punto3D
+Name:Punto3D start408 end408.Limit:526 nameOffset0 acum: 
+Name:Punto3D start409 end409.Limit:526 nameOffset0 acum: 
+Name:Punto3D start410 end410.Limit:526 nameOffset0 acum: 
+Name:Punto3D start411 end411.Limit:526 nameOffset0 acum: 
+Name:Punto3D start412 end412.Limit:526 nameOffset0 acum: 
+Name:Punto3D start413 end413.Limit:526 nameOffset0 acum: 
+Name:Punto3D start414 end414.Limit:526 nameOffset0 acum: 
+Name:Punto3D start415 end415.Limit:526 nameOffset0 acum: 
+Name:Punto3D start416 end416.Limit:526 nameOffset0 acum: 
+Name:Punto3D start417 end417.Limit:526 nameOffset0 acum: 
+Name:Punto3D start418 end418.Limit:526 nameOffset0 acum: 
+Name:Punto3D start419 end419.Limit:526 nameOffset0 acum: 
+Name:Punto3D start420 end420.Limit:526 nameOffset0 acum: 
+Name:Punto3D start421 end421.Limit:526 nameOffset0 acum: 
+Name:Punto3D start422 end422.Limit:526 nameOffset0 acum: 
+Name:Punto3D start423 end423.Limit:526 nameOffset0 acum: 
+Name:Punto3D start424 end424.Limit:526 nameOffset0 acum: 
+Name:Punto3D start425 end425.Limit:526 nameOffset0 acum: 
+Name:Punto3D start426 end426.Limit:526 nameOffset0 acum: 
+Name:Punto3D start427 end427.Limit:526 nameOffset0 acum: 
+Name:Punto3D start428 end428.Limit:526 nameOffset0 acum: 
+Name:Punto3D start429 end429.Limit:526 nameOffset0 acum: 
+Name:Punto3D start430 end430.Limit:526 nameOffset0 acum: 
+Name:Punto3D start431 end431.Limit:526 nameOffset0 acum: 
+Elemento: Punto3D linea:11columna:2
+Name:Punto3D start353 end353.Limit:526 nameOffset0 acum: 
+Name:Punto3D start354 end354.Limit:526 nameOffset0 acum: 
+Name:Punto3D start355 end355.Limit:526 nameOffset0 acum: 
+Name:Punto3D start356 end356.Limit:526 nameOffset0 acum: 
+Name:Punto3D start357 end357.Limit:526 nameOffset0 acum: 
+Name:Punto3D start358 end358.Limit:526 nameOffset0 acum: 
+Name:Punto3D start359 end359.Limit:526 nameOffset0 acum: 
+Name:Punto3D start360 end360.Limit:526 nameOffset0 acum: 
+Name:Punto3D start361 end361.Limit:526 nameOffset0 acum: 
+Name:Punto3D start361 end362.Limit:526 nameOffset1 acum: P
+Name:Punto3D start361 end363.Limit:526 nameOffset2 acum: Pu
+Name:Punto3D start361 end364.Limit:526 nameOffset3 acum: Pun
+Name:Punto3D start361 end365.Limit:526 nameOffset4 acum: Punt
+Name:Punto3D start361 end366.Limit:526 nameOffset5 acum: Punto
+Name:Punto3D start361 end367.Limit:526 nameOffset6 acum: Punto3
+Name:Punto3D start361 end368.Limit:526 nameOffset7 acum: Punto3D
+start361 end368 elemento tageado: Punto3D
+Name:Punto3D start369 end369.Limit:526 nameOffset0 acum: 
+Name:Punto3D start370 end370.Limit:526 nameOffset0 acum: 
+Name:Punto3D start371 end371.Limit:526 nameOffset0 acum: 
+Name:Punto3D start372 end372.Limit:526 nameOffset0 acum: 
+Name:Punto3D start373 end373.Limit:526 nameOffset0 acum: 
+Name:Punto3D start374 end374.Limit:526 nameOffset0 acum: 
+Name:Punto3D start375 end375.Limit:526 nameOffset0 acum: 
+Name:Punto3D start376 end376.Limit:526 nameOffset0 acum: 
+Name:Punto3D start377 end377.Limit:526 nameOffset0 acum: 
+Name:Punto3D start378 end378.Limit:526 nameOffset0 acum: 
+Name:Punto3D start379 end379.Limit:526 nameOffset0 acum: 
+Name:Punto3D start380 end380.Limit:526 nameOffset0 acum: 
+Name:Punto3D start380 end381.Limit:526 nameOffset1 acum: P
+Name:Punto3D start380 end382.Limit:526 nameOffset2 acum: Pu
+Name:Punto3D start380 end383.Limit:526 nameOffset3 acum: Pun
+Name:Punto3D start380 end384.Limit:526 nameOffset4 acum: Punt
+Name:Punto3D start380 end385.Limit:526 nameOffset5 acum: Punto
+Name:Punto3D start380 end386.Limit:526 nameOffset6 acum: Punto3
+Name:Punto3D start380 end387.Limit:526 nameOffset7 acum: Punto3D
+start380 end387 elemento tageado: Punto3D
+Name:Punto3D start388 end388.Limit:526 nameOffset0 acum: 
+Name:Punto3D start389 end389.Limit:526 nameOffset0 acum: 
+Name:Punto3D start390 end390.Limit:526 nameOffset0 acum: 
+Name:Punto3D start391 end391.Limit:526 nameOffset0 acum: 
+Name:Punto3D start392 end392.Limit:526 nameOffset0 acum: 
+Name:Punto3D start393 end393.Limit:526 nameOffset0 acum: 
+Name:Punto3D start394 end394.Limit:526 nameOffset0 acum: 
+Name:Punto3D start395 end395.Limit:526 nameOffset0 acum: 
+Name:Punto3D start396 end396.Limit:526 nameOffset0 acum: 
+Name:Punto3D start397 end397.Limit:526 nameOffset0 acum: 
+Name:Punto3D start398 end398.Limit:526 nameOffset0 acum: 
+Name:Punto3D start399 end399.Limit:526 nameOffset0 acum: 
+Name:Punto3D start400 end400.Limit:526 nameOffset0 acum: 
+Name:Punto3D start400 end401.Limit:526 nameOffset1 acum: P
+Name:Punto3D start400 end402.Limit:526 nameOffset2 acum: Pu
+Name:Punto3D start400 end403.Limit:526 nameOffset3 acum: Pun
+Name:Punto3D start400 end404.Limit:526 nameOffset4 acum: Punt
+Name:Punto3D start400 end405.Limit:526 nameOffset5 acum: Punto
+Name:Punto3D start400 end406.Limit:526 nameOffset6 acum: Punto3
+Name:Punto3D start400 end407.Limit:526 nameOffset7 acum: Punto3D
+start400 end407 elemento tageado: Punto3D
+Name:Punto3D start408 end408.Limit:526 nameOffset0 acum: 
+Name:Punto3D start409 end409.Limit:526 nameOffset0 acum: 
+Name:Punto3D start410 end410.Limit:526 nameOffset0 acum: 
+Name:Punto3D start411 end411.Limit:526 nameOffset0 acum: 
+Name:Punto3D start412 end412.Limit:526 nameOffset0 acum: 
+Name:Punto3D start413 end413.Limit:526 nameOffset0 acum: 
+Name:Punto3D start414 end414.Limit:526 nameOffset0 acum: 
+Name:Punto3D start415 end415.Limit:526 nameOffset0 acum: 
+Name:Punto3D start416 end416.Limit:526 nameOffset0 acum: 
+Name:Punto3D start417 end417.Limit:526 nameOffset0 acum: 
+Name:Punto3D start418 end418.Limit:526 nameOffset0 acum: 
+Name:Punto3D start419 end419.Limit:526 nameOffset0 acum: 
+Name:Punto3D start420 end420.Limit:526 nameOffset0 acum: 
+Name:Punto3D start421 end421.Limit:526 nameOffset0 acum: 
+Name:Punto3D start422 end422.Limit:526 nameOffset0 acum: 
+Name:Punto3D start423 end423.Limit:526 nameOffset0 acum: 
+Name:Punto3D start424 end424.Limit:526 nameOffset0 acum: 
+Name:Punto3D start425 end425.Limit:526 nameOffset0 acum: 
+Name:Punto3D start426 end426.Limit:526 nameOffset0 acum: 
+Name:Punto3D start427 end427.Limit:526 nameOffset0 acum: 
+Name:Punto3D start428 end428.Limit:526 nameOffset0 acum: 
+Name:Punto3D start429 end429.Limit:526 nameOffset0 acum: 
+Name:Punto3D start430 end430.Limit:526 nameOffset0 acum: 
+Name:Punto3D start431 end431.Limit:526 nameOffset0 acum: 
+Elemento: distanciaA linea:14columna:2
+Name:distanciaA start434 end434.Limit:526 nameOffset0 acum: 
+Name:distanciaA start434 end435.Limit:526 nameOffset1 acum: d
+Name:distanciaA start434 end436.Limit:526 nameOffset2 acum: di
+Name:distanciaA start434 end437.Limit:526 nameOffset3 acum: dis
+Name:distanciaA start434 end438.Limit:526 nameOffset4 acum: dist
+Name:distanciaA start434 end439.Limit:526 nameOffset5 acum: dista
+Name:distanciaA start434 end440.Limit:526 nameOffset6 acum: distan
+Name:distanciaA start434 end441.Limit:526 nameOffset7 acum: distanc
+Name:distanciaA start434 end442.Limit:526 nameOffset8 acum: distanci
+Name:distanciaA start434 end443.Limit:526 nameOffset9 acum: distancia
+Name:distanciaA start434 end444.Limit:526 nameOffset10 acum: distanciaA
+start434 end444 elemento tageado: distanciaA
+Name:distanciaA start445 end445.Limit:526 nameOffset0 acum: 
+Name:distanciaA start446 end446.Limit:526 nameOffset0 acum: 
+Name:distanciaA start447 end447.Limit:526 nameOffset0 acum: 
+Name:distanciaA start448 end448.Limit:526 nameOffset0 acum: 
+Name:distanciaA start449 end449.Limit:526 nameOffset0 acum: 
+Name:distanciaA start450 end450.Limit:526 nameOffset0 acum: 
+Name:distanciaA start451 end451.Limit:526 nameOffset0 acum: 
+Name:distanciaA start452 end452.Limit:526 nameOffset0 acum: 
+Name:distanciaA start453 end453.Limit:526 nameOffset0 acum: 
+Name:distanciaA start454 end454.Limit:526 nameOffset0 acum: 
+Name:distanciaA start455 end455.Limit:526 nameOffset0 acum: 
+Name:distanciaA start456 end456.Limit:526 nameOffset0 acum: 
+Name:distanciaA start457 end457.Limit:526 nameOffset0 acum: 
+Name:distanciaA start458 end458.Limit:526 nameOffset0 acum: 
+Name:distanciaA start459 end459.Limit:526 nameOffset0 acum: 
+Name:distanciaA start460 end460.Limit:526 nameOffset0 acum: 
+Name:distanciaA start461 end461.Limit:526 nameOffset0 acum: 
+Name:distanciaA start462 end462.Limit:526 nameOffset0 acum: 
+Name:distanciaA start463 end463.Limit:526 nameOffset0 acum: 
+Name:distanciaA start464 end464.Limit:526 nameOffset0 acum: 
+Name:distanciaA start465 end465.Limit:526 nameOffset0 acum: 
+Name:distanciaA start466 end466.Limit:526 nameOffset0 acum: 
+Name:distanciaA start467 end467.Limit:526 nameOffset0 acum: 
+Name:distanciaA start468 end468.Limit:526 nameOffset0 acum: 
+Name:distanciaA start469 end469.Limit:526 nameOffset0 acum: 
+Elemento: Punto linea:14columna:2
+Name:Punto start434 end434.Limit:526 nameOffset0 acum: 
+Name:Punto start435 end435.Limit:526 nameOffset0 acum: 
+Name:Punto start436 end436.Limit:526 nameOffset0 acum: 
+Name:Punto start437 end437.Limit:526 nameOffset0 acum: 
+Name:Punto start438 end438.Limit:526 nameOffset0 acum: 
+Name:Punto start439 end439.Limit:526 nameOffset0 acum: 
+Name:Punto start440 end440.Limit:526 nameOffset0 acum: 
+Name:Punto start441 end441.Limit:526 nameOffset0 acum: 
+Name:Punto start442 end442.Limit:526 nameOffset0 acum: 
+Name:Punto start443 end443.Limit:526 nameOffset0 acum: 
+Name:Punto start444 end444.Limit:526 nameOffset0 acum: 
+Name:Punto start445 end445.Limit:526 nameOffset0 acum: 
+Name:Punto start446 end446.Limit:526 nameOffset0 acum: 
+Name:Punto start447 end447.Limit:526 nameOffset0 acum: 
+Name:Punto start447 end448.Limit:526 nameOffset1 acum: P
+Name:Punto start447 end449.Limit:526 nameOffset2 acum: Pu
+Name:Punto start447 end450.Limit:526 nameOffset3 acum: Pun
+Name:Punto start447 end451.Limit:526 nameOffset4 acum: Punt
+Name:Punto start447 end452.Limit:526 nameOffset5 acum: Punto
+start447 end452 elemento tageado: Punto
+Name:Punto start453 end453.Limit:526 nameOffset0 acum: 
+Name:Punto start454 end454.Limit:526 nameOffset0 acum: 
+Name:Punto start455 end455.Limit:526 nameOffset0 acum: 
+Name:Punto start455 end456.Limit:526 nameOffset1 acum: P
+Name:Punto start455 end457.Limit:526 nameOffset2 acum: Pu
+Name:Punto start455 end458.Limit:526 nameOffset3 acum: Pun
+Name:Punto start455 end459.Limit:526 nameOffset4 acum: Punt
+Name:Punto start455 end460.Limit:526 nameOffset5 acum: Punto
+start455 end460 elemento tageado: Punto
+Name:Punto start461 end461.Limit:526 nameOffset0 acum: 
+Name:Punto start462 end462.Limit:526 nameOffset0 acum: 
+Name:Punto start463 end463.Limit:526 nameOffset0 acum: 
+Name:Punto start464 end464.Limit:526 nameOffset0 acum: 
+Name:Punto start465 end465.Limit:526 nameOffset0 acum: 
+Name:Punto start466 end466.Limit:526 nameOffset0 acum: 
+Name:Punto start467 end467.Limit:526 nameOffset0 acum: 
+Name:Punto start468 end468.Limit:526 nameOffset0 acum: 
+Name:Punto start469 end469.Limit:526 nameOffset0 acum: 
+Elemento: Punto linea:14columna:2
+Name:Punto start434 end434.Limit:526 nameOffset0 acum: 
+Name:Punto start435 end435.Limit:526 nameOffset0 acum: 
+Name:Punto start436 end436.Limit:526 nameOffset0 acum: 
+Name:Punto start437 end437.Limit:526 nameOffset0 acum: 
+Name:Punto start438 end438.Limit:526 nameOffset0 acum: 
+Name:Punto start439 end439.Limit:526 nameOffset0 acum: 
+Name:Punto start440 end440.Limit:526 nameOffset0 acum: 
+Name:Punto start441 end441.Limit:526 nameOffset0 acum: 
+Name:Punto start442 end442.Limit:526 nameOffset0 acum: 
+Name:Punto start443 end443.Limit:526 nameOffset0 acum: 
+Name:Punto start444 end444.Limit:526 nameOffset0 acum: 
+Name:Punto start445 end445.Limit:526 nameOffset0 acum: 
+Name:Punto start446 end446.Limit:526 nameOffset0 acum: 
+Name:Punto start447 end447.Limit:526 nameOffset0 acum: 
+Name:Punto start447 end448.Limit:526 nameOffset1 acum: P
+Name:Punto start447 end449.Limit:526 nameOffset2 acum: Pu
+Name:Punto start447 end450.Limit:526 nameOffset3 acum: Pun
+Name:Punto start447 end451.Limit:526 nameOffset4 acum: Punt
+Name:Punto start447 end452.Limit:526 nameOffset5 acum: Punto
+start447 end452 elemento tageado: Punto
+Name:Punto start453 end453.Limit:526 nameOffset0 acum: 
+Name:Punto start454 end454.Limit:526 nameOffset0 acum: 
+Name:Punto start455 end455.Limit:526 nameOffset0 acum: 
+Name:Punto start455 end456.Limit:526 nameOffset1 acum: P
+Name:Punto start455 end457.Limit:526 nameOffset2 acum: Pu
+Name:Punto start455 end458.Limit:526 nameOffset3 acum: Pun
+Name:Punto start455 end459.Limit:526 nameOffset4 acum: Punt
+Name:Punto start455 end460.Limit:526 nameOffset5 acum: Punto
+start455 end460 elemento tageado: Punto
+Name:Punto start461 end461.Limit:526 nameOffset0 acum: 
+Name:Punto start462 end462.Limit:526 nameOffset0 acum: 
+Name:Punto start463 end463.Limit:526 nameOffset0 acum: 
+Name:Punto start464 end464.Limit:526 nameOffset0 acum: 
+Name:Punto start465 end465.Limit:526 nameOffset0 acum: 
+Name:Punto start466 end466.Limit:526 nameOffset0 acum: 
+Name:Punto start467 end467.Limit:526 nameOffset0 acum: 
+Name:Punto start468 end468.Limit:526 nameOffset0 acum: 
+Name:Punto start469 end469.Limit:526 nameOffset0 acum: 
+Elemento: Float linea:14columna:2
+Name:Float start434 end434.Limit:526 nameOffset0 acum: 
+Name:Float start435 end435.Limit:526 nameOffset0 acum: 
+Name:Float start436 end436.Limit:526 nameOffset0 acum: 
+Name:Float start437 end437.Limit:526 nameOffset0 acum: 
+Name:Float start438 end438.Limit:526 nameOffset0 acum: 
+Name:Float start439 end439.Limit:526 nameOffset0 acum: 
+Name:Float start440 end440.Limit:526 nameOffset0 acum: 
+Name:Float start441 end441.Limit:526 nameOffset0 acum: 
+Name:Float start442 end442.Limit:526 nameOffset0 acum: 
+Name:Float start443 end443.Limit:526 nameOffset0 acum: 
+Name:Float start444 end444.Limit:526 nameOffset0 acum: 
+Name:Float start445 end445.Limit:526 nameOffset0 acum: 
+Name:Float start446 end446.Limit:526 nameOffset0 acum: 
+Name:Float start447 end447.Limit:526 nameOffset0 acum: 
+Name:Float start448 end448.Limit:526 nameOffset0 acum: 
+Name:Float start449 end449.Limit:526 nameOffset0 acum: 
+Name:Float start450 end450.Limit:526 nameOffset0 acum: 
+Name:Float start451 end451.Limit:526 nameOffset0 acum: 
+Name:Float start452 end452.Limit:526 nameOffset0 acum: 
+Name:Float start453 end453.Limit:526 nameOffset0 acum: 
+Name:Float start454 end454.Limit:526 nameOffset0 acum: 
+Name:Float start455 end455.Limit:526 nameOffset0 acum: 
+Name:Float start456 end456.Limit:526 nameOffset0 acum: 
+Name:Float start457 end457.Limit:526 nameOffset0 acum: 
+Name:Float start458 end458.Limit:526 nameOffset0 acum: 
+Name:Float start459 end459.Limit:526 nameOffset0 acum: 
+Name:Float start460 end460.Limit:526 nameOffset0 acum: 
+Name:Float start461 end461.Limit:526 nameOffset0 acum: 
+Name:Float start462 end462.Limit:526 nameOffset0 acum: 
+Name:Float start463 end463.Limit:526 nameOffset0 acum: 
+Name:Float start464 end464.Limit:526 nameOffset0 acum: 
+Name:Float start464 end465.Limit:526 nameOffset1 acum: F
+Name:Float start464 end466.Limit:526 nameOffset2 acum: Fl
+Name:Float start464 end467.Limit:526 nameOffset3 acum: Flo
+Name:Float start464 end468.Limit:526 nameOffset4 acum: Floa
+Name:Float start464 end469.Limit:526 nameOffset5 acum: Float
+start464 end469 elemento tageado: Float
+Name:Float start470 end470.Limit:526 nameOffset0 acum: 
+Name:Float start471 end471.Limit:526 nameOffset0 acum: 
+Name:Float start472 end472.Limit:526 nameOffset0 acum: 
+Name:Float start473 end473.Limit:526 nameOffset0 acum: 
+Name:Float start474 end474.Limit:526 nameOffset0 acum: 
+Name:Float start475 end475.Limit:526 nameOffset0 acum: 
+Name:Float start476 end476.Limit:526 nameOffset0 acum: 
+Name:Float start477 end477.Limit:526 nameOffset0 acum: 
+Name:Float start478 end478.Limit:526 nameOffset0 acum: 
+Name:Float start479 end479.Limit:526 nameOffset0 acum: 
+Name:Float start480 end480.Limit:526 nameOffset0 acum: 
+Name:Float start481 end481.Limit:526 nameOffset0 acum: 
+Name:Float start482 end482.Limit:526 nameOffset0 acum: 
+Name:Float start483 end483.Limit:526 nameOffset0 acum: 
+Name:Float start484 end484.Limit:526 nameOffset0 acum: 
+Name:Float start485 end485.Limit:526 nameOffset0 acum: 
+Name:Float start486 end486.Limit:526 nameOffset0 acum: 
+Name:Float start487 end487.Limit:526 nameOffset0 acum: 
+Name:Float start488 end488.Limit:526 nameOffset0 acum: 
+Name:Float start489 end489.Limit:526 nameOffset0 acum: 
+Name:Float start490 end490.Limit:526 nameOffset0 acum: 
+Name:Float start491 end491.Limit:526 nameOffset0 acum: 
+Name:Float start492 end492.Limit:526 nameOffset0 acum: 
+Name:Float start493 end493.Limit:526 nameOffset0 acum: 
+Name:Float start494 end494.Limit:526 nameOffset0 acum: 
+Name:Float start495 end495.Limit:526 nameOffset0 acum: 
+Name:Float start496 end496.Limit:526 nameOffset0 acum: 
+Name:Float start497 end497.Limit:526 nameOffset0 acum: 
+Name:Float start498 end498.Limit:526 nameOffset0 acum: 
+Name:Float start499 end499.Limit:526 nameOffset0 acum: 
+Name:Float start500 end500.Limit:526 nameOffset0 acum: 
+Name:Float start501 end501.Limit:526 nameOffset0 acum: 
+Name:Float start502 end502.Limit:526 nameOffset0 acum: 
+Name:Float start503 end503.Limit:526 nameOffset0 acum: 
+Name:Float start504 end504.Limit:526 nameOffset0 acum: 
+Name:Float start505 end505.Limit:526 nameOffset0 acum: 
+Name:Float start506 end506.Limit:526 nameOffset0 acum: 
+Name:Float start507 end507.Limit:526 nameOffset0 acum: 
+Name:Float start508 end508.Limit:526 nameOffset0 acum: 
+Name:Float start509 end509.Limit:526 nameOffset0 acum: 
+Name:Float start510 end510.Limit:526 nameOffset0 acum: 
+Name:Float start511 end511.Limit:526 nameOffset0 acum: 
+Name:Float start512 end512.Limit:526 nameOffset0 acum: 
+Name:Float start513 end513.Limit:526 nameOffset0 acum: 
+Name:Float start514 end514.Limit:526 nameOffset0 acum: 
+Name:Float start515 end515.Limit:526 nameOffset0 acum: 
+Name:Float start516 end516.Limit:526 nameOffset0 acum: 
+Name:Float start517 end517.Limit:526 nameOffset0 acum: 
+Name:Float start518 end518.Limit:526 nameOffset0 acum: 
+Name:Float start519 end519.Limit:526 nameOffset0 acum: 
+Name:Float start520 end520.Limit:526 nameOffset0 acum: 
+Name:Float start521 end521.Limit:526 nameOffset0 acum: 
+Name:Float start522 end522.Limit:526 nameOffset0 acum: 
+Name:Float start523 end523.Limit:526 nameOffset0 acum: 
+Name:Float start524 end524.Limit:526 nameOffset0 acum: 
+Name:Float start525 end525.Limit:526 nameOffset0 acum: 
+Elemento: distanciaA linea:15columna:2
+Name:distanciaA start470 end470.Limit:526 nameOffset0 acum: 
+Name:distanciaA start470 end471.Limit:526 nameOffset1 acum: d
+Name:distanciaA start470 end472.Limit:526 nameOffset2 acum: di
+Name:distanciaA start470 end473.Limit:526 nameOffset3 acum: dis
+Name:distanciaA start470 end474.Limit:526 nameOffset4 acum: dist
+Name:distanciaA start470 end475.Limit:526 nameOffset5 acum: dista
+Name:distanciaA start470 end476.Limit:526 nameOffset6 acum: distan
+Name:distanciaA start470 end477.Limit:526 nameOffset7 acum: distanc
+Name:distanciaA start470 end478.Limit:526 nameOffset8 acum: distanci
+Name:distanciaA start470 end479.Limit:526 nameOffset9 acum: distancia
+Name:distanciaA start470 end480.Limit:526 nameOffset10 acum: distanciaA
+start470 end480 elemento tageado: distanciaA
+Name:distanciaA start481 end481.Limit:526 nameOffset0 acum: 
+Name:distanciaA start482 end482.Limit:526 nameOffset0 acum: 
+Name:distanciaA start483 end483.Limit:526 nameOffset0 acum: 
+Name:distanciaA start484 end484.Limit:526 nameOffset0 acum: 
+Name:distanciaA start485 end485.Limit:526 nameOffset0 acum: 
+Name:distanciaA start486 end486.Limit:526 nameOffset0 acum: 
+Name:distanciaA start487 end487.Limit:526 nameOffset0 acum: 
+Name:distanciaA start488 end488.Limit:526 nameOffset0 acum: 
+Name:distanciaA start489 end489.Limit:526 nameOffset0 acum: 
+Name:distanciaA start490 end490.Limit:526 nameOffset0 acum: 
+Name:distanciaA start491 end491.Limit:526 nameOffset0 acum: 
+Name:distanciaA start492 end492.Limit:526 nameOffset0 acum: 
+Name:distanciaA start493 end493.Limit:526 nameOffset0 acum: 
+Name:distanciaA start494 end494.Limit:526 nameOffset0 acum: 
+Name:distanciaA start495 end495.Limit:526 nameOffset0 acum: 
+Name:distanciaA start496 end496.Limit:526 nameOffset0 acum: 
+Name:distanciaA start497 end497.Limit:526 nameOffset0 acum: 
+Name:distanciaA start498 end498.Limit:526 nameOffset0 acum: 
+Name:distanciaA start498 end499.Limit:526 nameOffset1 acum: d
+Name:distanciaA start500 end500.Limit:526 nameOffset0 acum: 
+Name:distanciaA start501 end501.Limit:526 nameOffset0 acum: 
+Name:distanciaA start502 end502.Limit:526 nameOffset0 acum: 
+Name:distanciaA start503 end503.Limit:526 nameOffset0 acum: 
+Name:distanciaA start504 end504.Limit:526 nameOffset0 acum: 
+Name:distanciaA start505 end505.Limit:526 nameOffset0 acum: 
+Name:distanciaA start506 end506.Limit:526 nameOffset0 acum: 
+Name:distanciaA start507 end507.Limit:526 nameOffset0 acum: 
+Name:distanciaA start508 end508.Limit:526 nameOffset0 acum: 
+Name:distanciaA start509 end509.Limit:526 nameOffset0 acum: 
+Name:distanciaA start510 end510.Limit:526 nameOffset0 acum: 
+Name:distanciaA start511 end511.Limit:526 nameOffset0 acum: 
+Name:distanciaA start512 end512.Limit:526 nameOffset0 acum: 
+Name:distanciaA start513 end513.Limit:526 nameOffset0 acum: 
+Name:distanciaA start514 end514.Limit:526 nameOffset0 acum: 
+Name:distanciaA start515 end515.Limit:526 nameOffset0 acum: 
+Name:distanciaA start516 end516.Limit:526 nameOffset0 acum: 
+Name:distanciaA start517 end517.Limit:526 nameOffset0 acum: 
+Name:distanciaA start518 end518.Limit:526 nameOffset0 acum: 
+Name:distanciaA start519 end519.Limit:526 nameOffset0 acum: 
+Name:distanciaA start520 end520.Limit:526 nameOffset0 acum: 
+Name:distanciaA start521 end521.Limit:526 nameOffset0 acum: 
+Name:distanciaA start522 end522.Limit:526 nameOffset0 acum: 
+Name:distanciaA start523 end523.Limit:526 nameOffset0 acum: 
+Name:distanciaA start524 end524.Limit:526 nameOffset0 acum: 
+Name:distanciaA start525 end525.Limit:526 nameOffset0 acum: 
+[markComments] start
+[markCommentRec] start0 end0.Limit:526 acum: 
+[markCommentRec] start0 end1.Limit:526 acum: -
+[markCommentRec] start0 end2.Limit:526 acum: --
+[markCommentRec] start0 end3.Limit:526 acum: --
+[markCommentRec] start0 end4.Limit:526 acum: --
+[markCommentRec] start0 end5.Limit:526 acum: --
+[markCommentRec] start0 end6.Limit:526 acum: --
+[markCommentRec] start0 end7.Limit:526 acum: --
+[markCommentRec] start0 end8.Limit:526 acum: --
+[markCommentRec] start0 end9.Limit:526 acum: --
+[markCommentRec] start0 end10.Limit:526 acum: --
+[markCommentRec] start0 end11.Limit:526 acum: --
+[markCommentRec] start0 end12.Limit:526 acum: --
+[markCommentRec] start0 end13.Limit:526 acum: --
+[markCommentRec] start0 end14.Limit:526 acum: --
+[markCommentRec] start0 end15.Limit:526 acum: --
+[markCommentRec] start0 end16.Limit:526 acum: --
+[markCommentRec] start0 end17.Limit:526 acum: --
+[markCommentRec] start0 end18.Limit:526 acum: --
+[markCommentRec] start0 end19.Limit:526 acum: --
+[markCommentRec] start0 end20.Limit:526 acum: --
+[markCommentRec] start0 end21.Limit:526 acum: --
+[markCommentRec] start0 end22.Limit:526 acum: --
+[markCommentRec] start0 end23.Limit:526 acum: --
+[markCommentRec] start0 end24.Limit:526 acum: --
+[markCommentRec] start0 end25.Limit:526 acum: --
+[markCommentRec] start0 end26.Limit:526 acum: --
+[markCommentRec] start0 end27.Limit:526 acum: --
+[markCommentRec] start0 end28.Limit:526 acum: --
+[markCommentRec] start0 end29.Limit:526 acum: --
+[markCommentRec] start0 end30.Limit:526 acum: --
+[markCommentRec] start0 end31.Limit:526 acum: --
+[markCommentRec] start0 end32.Limit:526 acum: --
+[markCommentRec] start0 end33.Limit:526 acum: --
+[markCommentRec] start0 end34.Limit:526 acum: --
+[markCommentRec] start0 end35.Limit:526 acum: --
+[markCommentRec] start0 end36.Limit:526 acum: --
+[markCommentRec] start0 end37.Limit:526 acum: --
+[markCommentRec] start0 end38.Limit:526 acum: --
+[markCommentRec] start0 end39.Limit:526 acum: --
+[markCommentRec] start0 end40.Limit:526 acum: --
+[markCommentRec] start0 end41.Limit:526 acum: --
+[markCommentRec] start0 end42.Limit:526 acum: --
+[markCommentRec] start0 end43.Limit:526 acum: --
+[markCommentRec] start0 end44.Limit:526 acum: --
+[markCommentRec] start0 end45.Limit:526 acum: --
+[markCommentRec] start0 end46.Limit:526 acum: --
+[markCommentRec] start0 end47.Limit:526 acum: --
+[markCommentRec] start0 end48.Limit:526 acum: --
+[markCommentRec] start0 end49.Limit:526 acum: --
+[markCommentRec] start0 end50.Limit:526 acum: --
+[markCommentRec] start0 end51.Limit:526 acum: --
+[markCommentRec] start0 end52.Limit:526 acum: --
+[markCommentRec] start0 end53.Limit:526 acum: --
+[markCommentRec] start0 end54.Limit:526 acum: --
+[markCommentRec] start0 end55.Limit:526 acum: --
+[markCommentRec] start0 end56.Limit:526 acum: --
+[markCommentRec] start0 end57.Limit:526 acum: --
+[markCommentRec] start0 end58.Limit:526 acum: --
+[markCommentRec] start0 end59.Limit:526 acum: --
+[markCommentRec] start0 end60.Limit:526 acum: --
+[markCommentRec] start0 end61.Limit:526 acum: --
+[markCommentRec] start0 end62.Limit:526 acum: --
+[markCommentRec] start0 end63.Limit:526 acum: --
+[markCommentRec] start0 end64.Limit:526 acum: --
+[markCommentRec] comentario marcado
+[markComments] end
 [highlightSyntax]texto parseado
+Action Name: QUIT

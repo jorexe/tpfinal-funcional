@@ -17,6 +17,7 @@ highlightSyntax txtview=do
 			
 			let parseResult=Language.Haskell.Parser.parseModule contents
 			processResult parseResult txtBuffer
+			markComments txtBuffer
 			putStrLn("[highlightSyntax]texto parseado")
 
 --
@@ -207,6 +208,56 @@ process_hsConDecl buffer _ =return ()
 --
 
 process_hsBangType::TextBuffer->SrcLoc->HsBangType->IO()
-process_hsBangType buffer location (HsBangedTy hsType)=process_hsType buffer hsType location
+process_hsBangType buffer location (HsUnBangedTy hsType)=process_hsType buffer hsType location
 process_hsBangType _ _ _=return ()
 
+
+--estilo de letra color  azul
+blueTag::IO TextTag
+blueTag=do
+	aux<- textTagNew Nothing
+	set aux [
+      		textTagForegroundSet := True,
+		textTagForeground := ("blue" :: String) 
+		]
+	return aux
+
+markComments::TextBuffer->IO()
+markComments buffer=do
+			putStrLn("[markComments] start")
+			start <- textBufferGetStartIter buffer
+			
+			end <-textIterCopy  start
+			btag<- blueTag
+			markCommentsRec buffer start end "" btag
+			putStrLn("[markComments] end")
+markCommentsRec::TextBuffer->TextIter->TextIter->String->TextTag->IO()
+markCommentsRec buffer start end acum tag=do
+				
+				startOffset<-textIterGetOffset start
+				endOffset<-textIterGetOffset end
+				top<-textBufferGetEndIter buffer
+				topOffset<-textIterGetOffset top
+				putStrLn ("[markCommentRec] start"++(show startOffset)++" end"++(show endOffset)++".Limit:"++(show topOffset) ++" acum: "++acum) 
+
+				end'<-textIterCopy end
+				textIterForwardChars end 1
+				currentChar<-textBufferGetText buffer end' end False	
+				if ((compare "\n" currentChar)== EQ)
+					then
+						if ((compare "--" acum)==EQ)
+							then do
+							textBufferApplyTag buffer tag start end
+							putStrLn ("[markCommentRec] comentario marcado")
+						else
+							return ()
+				else
+					if((compare "-" currentChar)==EQ)
+						then
+						markCommentsRec buffer start end (acum++ currentChar) tag
+					else
+						if((compare "--" acum)==EQ)
+							then markCommentsRec buffer start end acum tag
+						else do
+							start<-textIterCopy end
+							markCommentsRec buffer start end acum tag

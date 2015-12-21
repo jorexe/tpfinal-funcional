@@ -48,9 +48,9 @@ main= do
     textViewSetWrapMode textview WrapChar
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "codigoPrueba2.hs" textview	
+    readFileIntoTextView "codigoPrueba.hs" textview	
     
-    --markSpelling textview
+    --BORRAR LUEGO. markSpelling textview
     highlightSyntax textview
 
     buffer <- get textview textViewBuffer

@@ -3,7 +3,7 @@ import Control.Monad.IO.Class
 import FileModule
 import ClipboardModule
 import SpellingModule
---import SyntaxHighlightModule
+import SyntaxHighlightModule
 
 main :: IO ()
 main= do
