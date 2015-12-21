@@ -41,7 +41,16 @@ process_hsdecl::TextBuffer-> HsDecl->IO()
 process_hsdecl buffer (HsFunBind hsMatchList)=foldIO (process_hsMatch buffer)  hsMatchList
 process_hsdecl buffer (HsTypeSig loc hsName hsQualType)= do 
 		foldIO (process_fun_declaration buffer loc ) hsName
-		process_hsQualType buffer hsQualType loc						
+		process_hsQualType buffer hsQualType loc
+process_hsdecl buffer (HsDataDecl loc _ hsName _ hsDataDecl _ )	=do
+							
+							btag<-brownTag
+							markElement buffer loc "data"  btag 
+							gtag<-greenTag
+							markElement buffer loc (extractHsName hsName)  gtag
+							foldIO (process_hsConDecl buffer ) hsDataDecl
+ 
+		
 process_hsdecl _ _ =return ()
 
 --
@@ -174,4 +183,30 @@ markElementRec buffer name start end acum tag nameOffset=do
 									contents <- textBufferGetText buffer start end False	
 									markElementRec buffer name start end contents tag (nameOffset +1)
 							
-							
+---
+
+--estilo de letra color marrón
+brownTag::IO TextTag
+brownTag=do
+	aux<- textTagNew Nothing
+	set aux [
+      		textTagForegroundSet := True,
+		textTagForeground := ("brown" :: String) 
+		]
+	return aux
+
+--
+process_hsConDecl::TextBuffer->HsConDecl->IO()
+process_hsConDecl buffer  (HsConDecl loc hsName hsBangType)=do
+							tag<-greenTag
+							markElement buffer loc (extractHsName hsName)  tag
+							foldIO (process_hsBangType buffer loc ) hsBangType
+
+process_hsConDecl buffer _ =return ()
+
+--
+
+process_hsBangType::TextBuffer->SrcLoc->HsBangType->IO()
+process_hsBangType buffer location (HsUnBangedTy hsType)=process_hsType buffer hsType location
+process_hsBangType _ _ _=return ()
+

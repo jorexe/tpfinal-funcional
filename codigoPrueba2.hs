@@ -1,3 +1,4 @@
+--Comentario
 data Punto =Punto2D Float Float | Punto3D Float Float Float 
 
 

@@ -25,7 +25,7 @@ La idea es que se vea forma similar a como lo realiza el editor de texto "gedit"
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/gedit_haskell.png)
 
 Los colores que se emplean sobre la fuente de las letras son los siguientes:
-+ nombre de función: negro en cursiva y subrayado.
++ nombre de función: negro en cursiva .
 + comentario: azul.
 + tipo de dato y constructores: verde.
 + palabra reservada "data": marrón.
@@ -62,7 +62,7 @@ Se borra el contenido del buffer (http://projects.haskell.org/gtk2hs/docs/devel/
 Se copia en el clipboard, lo que se haya seleccionado de la ventana principal.
 
 ## Pegar
-Se copia al buffer de la ventana de edición, el contenido del clipboard.
+Se copia en la posición del cursor en la ventana de edición, el contenido del clipboard.
 
 ## Colapsar definiciones.
 Cuando se tiene el texto resaltado con la sintaxis de Haskell, se ofrece la posibilidad de colapsar las definiciones de funciones. Se muestra un botón con el símbolo "-" en el margen izquierdo de la línea donde esta definida la función. Esto se puede apreciar en el siguiente prototipo de la aplicación:

@@ -25,7 +25,7 @@ La idea es que se vea forma similar a como lo realiza el editor de texto "gedit"
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/gedit_haskell.png)
 
 Los colores que se emplean sobre la fuente de las letras son los siguientes:
-+ nombre de función: negro en cursiva y subrayado.
++ nombre de función: negro en cursiva .
 + comentario: azul.
 + tipo de dato y constructores: verde.
 + palabra reservada "data": marrón.
@@ -64,7 +64,7 @@ Se copia en el clipboard, lo que se haya seleccionado de la ventana principal.
 ## Pegar
 Se copia en la posición del cursor en la ventana de edición, el contenido del clipboard.
 
-## Colapsar definiciones.
+## Colapsar definiciones [falta implementar].
 Cuando se tiene el texto resaltado con la sintaxis de Haskell, se ofrece la posibilidad de colapsar las definiciones de funciones. Se muestra un botón con el símbolo "-" en el margen izquierdo de la línea donde esta definida la función. Esto se puede apreciar en el siguiente prototipo de la aplicación:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/antesColapsar.png)
@@ -77,14 +77,14 @@ Cuando se presiona dicho botón,  se colapsa la definición completa de la funci
 Para ocultar el texto, se emplean tags sobre el texto en el buffer que lo vuelven "invisible"(http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextTag.html#v%3AtextTagInvisible), aunque en realidad no se lo borra.
 
 
-## Macheo de paréntesis y de llaves.
+## Macheo de paréntesis y de llaves [falta implementar]
 En el caso de se ubique el cursor al lado de una apertura de paréntesis, se resalta dicha apertura de paréntesis junto con el paréntesis que cierra. Por otra parte, si no se cierra el paréntesis que abre, no se lo resalta.
 Este mismo comportamiento se realiza con la apertura y cierre de llaves. Para el resaltado, se emplea el color amarillo como color de fondo del símbolo a resaltar; el color de la fuente no se modifica.
 Esta funcionalidad se puede apreciar en el siguiente prototipo:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/parentesis.png)
 
-## Búsqueda de palabras
+## Búsqueda de palabras [falta implementar]
 Junto con los botones mencionados anteriormente, se ofrece en la barra superior un campo en el cual se puede ingresar una cadena de caracteres a buscar. Al lado de dicho campo hay un botón que al presionarlo se resaltan en rojo aquellas cadenas coincidan con la que se esta buscando.
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/busqueda.png)
