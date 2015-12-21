@@ -63,14 +63,15 @@ process_hsType::TextBuffer->HsType->SrcLoc->IO()
 process_hsType buffer (HsTyFun hstype1 hstype2) srcLoc = do
 					process_hsType buffer hstype1 srcLoc
 					process_hsType buffer hstype2 srcLoc
-process_hsType buffer (HsTyCon hsQName) srcLoc = process_hsQName buffer hsQName srcLoc
+process_hsType buffer (HsTyCon hsQName) srcLoc =do
+						tag <-greenTag
+						process_hsQName buffer hsQName srcLoc tag
 process_hsType buffer _  _= return ()
 --
-process_hsQName:: TextBuffer->HsQName->SrcLoc->IO()
-process_hsQName buffer (UnQual hsName) loc= do
-					tag<-greenTag
+process_hsQName:: TextBuffer->HsQName->SrcLoc->TextTag->IO()
+process_hsQName buffer (UnQual hsName) loc tag= do
 					markElement buffer loc (extractHsName hsName) tag
-process_hsQName _ _ _ =return ()
+process_hsQName _ _ _ _ =return ()
 
 --procesa la declaración de tipos de la función(no es la función en sí con lo que devuelve)
 process_fun_declaration:: TextBuffer->SrcLoc->HsName->IO()
@@ -81,16 +82,18 @@ process_fun_declaration buffer loc hsName=do
 
 --Procesa los datos de una función
 process_hsMatch::TextBuffer->HsMatch->IO()
-process_hsMatch buffer (HsMatch srcLoc hsName hsPat _ _) =do
+process_hsMatch buffer (HsMatch srcLoc hsName hsPat hsRhs _) =do
 						tag<-blackItalic
 						markElement buffer srcLoc (extractHsName hsName) tag
 						foldIO (processHsPat buffer srcLoc) hsPat
+						process_hsRhs buffer hsRhs srcLoc
 
 --
 processHsPat::TextBuffer->SrcLoc->HsPat->IO()
 processHsPat buffer location (HsPParen hsPat) =processHsPat buffer location hsPat 
 processHsPat buffer  location (HsPApp hsQName hsPat)=do
-					process_hsQName buffer hsQName location
+					tag<-greenTag
+					process_hsQName buffer hsQName location tag
 					foldIO (processHsPat buffer location) hsPat
 
 processHsPat _ _ _=return ()	
@@ -264,3 +267,24 @@ markCommentsRec buffer start end acum tag=do
 						else do
 							start<-textIterCopy end
 							markCommentsRec buffer start end acum tag
+
+
+---se resaltan nombres de funciones cuando se las aplica
+process_hsRhs::TextBuffer->HsRhs->SrcLoc->IO()
+process_hsRhs buffer (HsUnGuardedRhs hsExp) srcLoc=process_hs_exp buffer srcLoc hsExp
+process_hsRhs _ _ _ = return ()
+
+
+process_hs_exp::TextBuffer-> SrcLoc->HsExp->IO()
+process_hs_exp buffer loc (HsApp hsexp1 hsexp2)=do
+						process_hs_exp buffer loc hsexp1
+						process_hs_exp buffer loc hsexp2
+
+process_hs_exp buffer loc (HsVar hsQname)=do
+						tag<-blackItalic
+						process_hsQName buffer hsQname loc tag
+process_hs_exp _ _ _ =return ()
+
+
+
+
