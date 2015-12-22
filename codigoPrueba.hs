@@ -1,5 +1,5 @@
 --CODIGO HASKELL DE EJEMPLO PARA PROBAR EL RESALTADO DE SINTAXIS
-data Punto =Punto2D Float Float | Punto3D Float Float Float deriving (Show)
+data Punto =Punto2D Float Float | Punto3D Float Float Float 
 
 modulo:: Punto -> Float
 modulo (Punto2D x y) = sqrt ( x^2 + y^2)

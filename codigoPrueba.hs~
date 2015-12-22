@@ -4,7 +4,7 @@ data Punto =Punto2D Float Float | Punto3D Float Float Float deriving (Show)
 modulo:: Punto -> Float
 modulo (Punto2D x y) = sqrt ( x^2 + y^2)
 modulo (Punto3D x y z)= sqrt ( x^2 + y^2 +z^2)
-
+	
 
 resta':: Punto ->Punto ->Punto
 resta' (Punto2D x1 y1) (Punto2D x2 y2) = Punto2D (x1-x2) (y1-y2)

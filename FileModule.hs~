@@ -3,6 +3,7 @@ module FileModule where
 import Graphics.UI.Gtk
 import Control.Monad.IO.Class
 import System.IO
+import SyntaxHighlightModule
 --definicion de funciones
 
 --recibe el string del nombre del archivo y el textview.
@@ -34,7 +35,7 @@ writeFileFromTextView fileName txtView=
 
 --función que se emplea para la opción de "nuevo archivo".
 --newFile:: ActionClass self =>(self,TextView) -> IO (ConnectId self)
-createNewFile:: ActionClass self =>(self,TextView) -> IO ()
+createNewFile:: ActionClass self =>(self,TextView) -> IO (ConnectId self)
 createNewFile (a,txtView) =onActionActivate a $
 		do	putStrLn ("New file")
 			txtBuffer <- textViewGetBuffer txtView

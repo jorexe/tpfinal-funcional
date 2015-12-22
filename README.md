@@ -14,7 +14,7 @@ El texto del documento se carga en un TextView (http://projects.haskell.org/gtk2
  con letra negra.
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/base.png)
 
-En la parte superior se encuentran botones con las funcionalidades. 
+En la parte superior se encuentran botones con las funcionalidades. Los iconos de dichos botones son los que vienen por defecto en la librería GTK (http://www.pygtk.org/pygtk2reference/gtk-stock-items.html).
 
 ## Resaltador de sintaxis de haskell
 https://hackage.haskell.org/package/haskell-src-1.0.2.0/docs/Language-Haskell-Parser.html

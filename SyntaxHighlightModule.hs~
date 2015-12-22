@@ -6,6 +6,10 @@ import Control.Monad.IO.Class
 import Language.Haskell.Parser
 import Language.Haskell.Syntax
 --
+highlightSyntaxMain:: ActionClass self =>(self,TextView) -> IO (ConnectId self)	
+highlightSyntaxMain (a,textview) = onActionActivate a $ do
+							highlightSyntax textview							
+--
 highlightSyntax:: TextView->IO()
 highlightSyntax txtview=do
 			txtBuffer <- textViewGetBuffer txtview
@@ -14,7 +18,9 @@ highlightSyntax txtview=do
 			end <- textBufferGetEndIter txtBuffer
 			
 			contents <- textBufferGetText txtBuffer start end False
-			
+			--se remueven marcas previas
+			textBufferRemoveAllTags txtBuffer start end			
+
 			let parseResult=Language.Haskell.Parser.parseModule contents
 			processResult parseResult txtBuffer
 			markComments txtBuffer
@@ -26,7 +32,9 @@ processResult (ParseOk modul) buffer = do
 				putStrLn("[highlightSyntax] ParseOK")
 				putStrLn(show modul)
 				processModule modul buffer
-
+processResult (ParseFailed _ _) buffer=do
+					putStrLn("[highlightSyntax] ParseFailed")
+					return ()
 --
 processModule::HsModule->TextBuffer->IO()
 processModule (HsModule loc mod _ _ hsdeclList) buffer=foldIO (process_hsdecl buffer) hsdeclList
@@ -71,7 +79,7 @@ process_hsType buffer _  _= return ()
 process_hsQName:: TextBuffer->HsQName->SrcLoc->TextTag->IO()
 process_hsQName buffer (UnQual hsName) loc tag= do
 					markElement buffer loc (extractHsName hsName) tag
-process_hsQName _ _ _ =return ()
+process_hsQName _ _ _ _ =return ()
 
 --procesa la declaración de tipos de la función(no es la función en sí con lo que devuelve)
 process_fun_declaration:: TextBuffer->SrcLoc->HsName->IO()
@@ -271,19 +279,24 @@ markCommentsRec buffer start end acum tag=do
 
 ---se resaltan nombres de funciones cuando se las aplica
 process_hsRhs::TextBuffer->HsRhs->SrcLoc->IO()
-process_hsRhs buffer (HsUnGuardedRhs hsExp) srcLoc=process_hs_exp buffer srcLoc hsExp
+process_hsRhs buffer (HsUnGuardedRhs hsExp) srcLoc=process_hs_exp buffer srcLoc hsExp True
 process_hsRhs _ _ _ = return ()
 
+--el booleano se emplea para detectar si es el nombre de la función que se esta aplicando
+process_hs_exp::TextBuffer-> SrcLoc->HsExp->Bool->IO()
+process_hs_exp buffer loc (HsApp hsexp1 hsexp2) bool=do
+						process_hs_exp buffer loc hsexp1 True
+						process_hs_exp buffer loc hsexp2 False
 
-process_hs_exp::TextBuffer-> SrcLoc->HsExp->IO()
-process_hs_exp buffer loc (HsApp hsexp1 hsexp2)=do
-						process_hs_exp buffer loc hsexp1
-						process_hs_exp buffer loc hsexp2
-
-process_hs_exp buffer loc (HsVar hsQname)=do
-						tag<-blackItalic
-						process_hsQName buffer hsQname loc tag
-process_hs_exp _ _ _ =return ()
+process_hs_exp buffer loc (HsVar hsQname) bool=do
+						if bool
+							then do
+							tag<-blackItalic
+							process_hsQName buffer hsQname loc tag
+						else
+							return ()
+process_hs_exp buffer loc (HsParen hsExp) bool =process_hs_exp buffer loc hsExp True
+process_hs_exp _ _ _ _ =return ()
 
 
 

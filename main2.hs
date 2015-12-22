@@ -20,9 +20,10 @@ main= do
     pastetext <- actionNew "PASTE_TEXT" "Paste" (Just "Paste clipboard.") (Just stockPaste)
     quitapp <- actionNew "QUIT" "Exit"    (Just "Quit the editor.") (Just stockQuit)
     spellcheck <- actionNew "CHECK" "SpellCheck" (Just "Check spelling.") (Just stockSpellCheck)
-
+    syntaxhighlight <-actionNew "SYNTAX" "highlight" (Just "Highlight Haskell syntax.") (Just stockIndent)
+    
     defaultgroup <- actionGroupNew "DEFAULT_GROUP"
-    mapM_ (actionGroupAddAction defaultgroup) [savefile, copytext, pastetext, newfile, openfile,spellcheck, quitapp]
+    mapM_ (actionGroupAddAction defaultgroup) [savefile, copytext, pastetext, newfile, openfile,spellcheck,syntaxhighlight, quitapp]
 
     uimanager <- uiManagerNew
     uiManagerAddUiFromString uimanager uitemplate
@@ -48,9 +49,9 @@ main= do
     textViewSetWrapMode textview WrapChar
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "codigoPrueba.hs" textview	
+    readFileIntoTextView "codigoPrueba2.hs" textview	
     
-    --BORRAR LUEGO. markSpelling textview
+    --BORRAR markSpelling textview
     highlightSyntax textview
 
     buffer <- get textview textViewBuffer
@@ -73,7 +74,8 @@ main= do
     --Bind de botones
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
-    mapM_ printexample [quitapp]
+    mapM_ printexample [quitapp,syntaxhighlight]
+    mapM_ highlightSyntaxMain [(syntaxhighlight,textview)]
     mapM_ pasteFromClipboard [(pastetext,textview)]
     mapM_ copyFromClipboard [(copytext,textview)]
     mapM_ createNewFile [(newfile,textview)]
@@ -85,7 +87,7 @@ main= do
     onDestroy window mainQuit
     mainGUI
 
-uitemplate = "<ui><toolbar><toolitem action=\"NEW_FILE\" /><toolitem action=\"OPEN_FILE\" /><toolitem action=\"SAVE_FILE\" /><separator /><toolitem action=\"COPY_TEXT\" /><toolitem action=\"PASTE_TEXT\" /><separator /><toolitem action=\"QUIT\" /><toolitem action=\"CHECK\" /></toolbar></ui>"
+uitemplate = "<ui><toolbar><toolitem action=\"NEW_FILE\" /><toolitem action=\"OPEN_FILE\" /><toolitem action=\"SAVE_FILE\" /><separator /><toolitem action=\"COPY_TEXT\" /><toolitem action=\"PASTE_TEXT\" /><separator /><toolitem action=\"QUIT\" /><toolitem action=\"CHECK\" /><toolitem action=\"SYNTAX\" /></toolbar></ui>"
 
 printexample :: ActionClass self => self -> IO (ConnectId self)
 printexample a = onActionActivate a $ do name <- actionGetName a

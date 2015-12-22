@@ -3,6 +3,7 @@ module FileModule where
 import Graphics.UI.Gtk
 import Control.Monad.IO.Class
 import System.IO
+import SyntaxHighlightModule
 --definicion de funciones
 
 --recibe el string del nombre del archivo y el textview.
@@ -16,6 +17,7 @@ readFileIntoTextView fileName txtView=
    			textBufferSetText txtBuffer contents
 		  	putStr contents
 			hClose handle
+			highlightSyntax txtView			
 			return ()
 
 --recibe el string del nombre del archivo y el textview.
