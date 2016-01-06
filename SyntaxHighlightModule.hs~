@@ -5,6 +5,9 @@ import Graphics.UI.Gtk
 import Control.Monad.IO.Class
 import Language.Haskell.Parser
 import Language.Haskell.Syntax
+import TagsModule
+import SearchModule
+let reservedWords=["case", "class", "data", "deriving", "do","else", "if", "import", "in", "infix", "infixl", "infixr","instance", "let", "of", "module", "newtype", "then", "type", "where"]
 --
 highlightSyntaxMain:: ActionClass self =>(self,TextView) -> IO (ConnectId self)	
 highlightSyntaxMain (a,textview) = onActionActivate a $ do
@@ -130,26 +133,7 @@ markElement buffer srcLoc name tag=do
 
 
 
---estilo de letra color verde
-greenTag::IO TextTag
-greenTag=do
-	aux<- textTagNew Nothing
-	set aux [
-      		textTagForegroundSet := True,
-		textTagForeground := ("green" :: String) 
-		]
-	return aux
 
---estilo de letra color negro con cursiva
-blackItalic::IO TextTag
-blackItalic=do
-			aux<- textTagNew Nothing
-			set aux [
-      				textTagStyle := StyleItalic,
-      				textTagForegroundSet := True,
-				textTagForeground := ("black" :: String) 
-				]
-			return aux
 
 --recibe: el buffer, el nombre del elemento, iterador que apunta al comienzo del nombre del elemento en el buffer, iterador que apunta al final del nombre del elemento , cadena leida hasta el momento desde start en el buffer(cuando se llega a haber leido todo el nombre del elemento, se marca dicho nombre sobre el buffer).
 markElementRec::TextBuffer->String->TextIter->TextIter->String->TextTag->Int->IO()
@@ -197,17 +181,7 @@ markElementRec buffer name start end acum tag nameOffset=do
 							
 ---
 
---estilo de letra color marrón
-brownTag::IO TextTag
-brownTag=do
-	aux<- textTagNew Nothing
-	set aux [
-      		textTagForegroundSet := True,
-		textTagForeground := ("brown" :: String) 
-		]
-	return aux
 
---
 process_hsConDecl::TextBuffer->HsConDecl->IO()
 process_hsConDecl buffer  (HsConDecl loc hsName hsBangType)=do
 							tag<-greenTag
@@ -223,15 +197,7 @@ process_hsBangType buffer location (HsUnBangedTy hsType)=process_hsType buffer h
 process_hsBangType _ _ _=return ()
 
 
---estilo de letra color  azul
-blueTag::IO TextTag
-blueTag=do
-	aux<- textTagNew Nothing
-	set aux [
-      		textTagForegroundSet := True,
-		textTagForeground := ("blue" :: String) 
-		]
-	return aux
+
 
 markComments::TextBuffer->IO()
 markComments buffer=do
@@ -279,7 +245,7 @@ markCommentsRec buffer start end acum tag=do
 
 ---se resaltan nombres de funciones cuando se las aplica
 process_hsRhs::TextBuffer->HsRhs->SrcLoc->IO()
-process_hsRhs buffer (HsUnGuardedRhs hsExp) srcLoc=process_hs_exp buffer srcLoc hsExp True
+process_hsRhs buffer (HsUnGuardedRhs hsExp) srcLoc=process_hs_exp buffer srcLoc hsExp False
 process_hsRhs _ _ _ = return ()
 
 --el booleano se emplea para detectar si es el nombre de la función que se esta aplicando
