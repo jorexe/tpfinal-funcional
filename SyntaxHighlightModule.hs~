@@ -242,24 +242,22 @@ markCommentsRec buffer start end acum tag=do
 					textIterForwardChars end 1
 					currentChar<-textBufferGetText buffer end' end False
 				
-			
-					if ((compare "\n" currentChar)== EQ)
-						then do
+					case currentChar of
+						'\n' ->do
 							CM.when ((compare "--" acum)==EQ) (do 
 												textBufferApplyTag buffer tag start end
 												putStrLn ("[markCommentRec] comentario marcado") )
 							start<-textIterCopy end				  	
 							markCommentsRec buffer start end "" tag
-					else
-						if((compare "-" currentChar)==EQ)
-							then
-							markCommentsRec buffer start end (acum++ currentChar) tag
-						else
-							if((compare "--" acum)==EQ) --dentro de un comentario
+						'-' -> markCommentsRec buffer start end (acum++ currentChar) tag
+						_ -> if((compare "--" acum)==EQ) --dentro de un comentario
 								then markCommentsRec buffer start end acum tag
 							else do
 								start<-textIterCopy end
-								markCommentsRec buffer start end acum tag
+								markCommentsRec buffer start end "" tag
+
+					
+					
 
 
 ---se resaltan nombres de funciones cuando se las aplica
