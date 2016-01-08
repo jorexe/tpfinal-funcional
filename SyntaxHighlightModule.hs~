@@ -7,7 +7,7 @@ import Language.Haskell.Parser
 import Language.Haskell.Syntax
 import TagsModule
 import SearchModule
-let reservedWords=["case", "class", "data", "deriving", "do","else", "if", "import", "in", "infix", "infixl", "infixr","instance", "let", "of", "module", "newtype", "then", "type", "where"]
+reservedWords=["case", "class", "data", "deriving", "do","else", "if", "import", "in", "infix", "infixl", "infixr","instance", "let", "of", "module", "newtype", "then", "type", "where"]
 --
 highlightSyntaxMain:: ActionClass self =>(self,TextView) -> IO (ConnectId self)	
 highlightSyntaxMain (a,textview) = onActionActivate a $ do
@@ -23,20 +23,34 @@ highlightSyntax txtview=do
 			contents <- textBufferGetText txtBuffer start end False
 			--se remueven marcas previas
 			textBufferRemoveAllTags txtBuffer start end			
-
+			
+			--se marcan palabras clave de la sintaxis de Haskell.
+			markReservedWords txtBuffer	
+			
+			--parseo y marcado de sintaxis.
 			let parseResult=Language.Haskell.Parser.parseModule contents
 			processResult parseResult txtBuffer
+			
+					
+			--se marcan comentarios
 			markComments txtBuffer
 			putStrLn("[highlightSyntax]texto parseado")
-
 --
+markReservedWords:: TextBuffer->IO ()
+markReservedWords txtBuffer =do
+			tag<-brownTag
+			foldIO (markWord txtBuffer  tag ) reservedWords
+		 
+--
+
+--se procesa el resultado del parseo que se obtiene del parser de sintaxis de Haskell.
 processResult::ParseResult HsModule->TextBuffer-> IO()
 processResult (ParseOk modul) buffer = do
 				putStrLn("[highlightSyntax] ParseOK")
 				putStrLn(show modul)
 				processModule modul buffer
 processResult (ParseFailed _ _) buffer=do
-					putStrLn("[highlightSyntax] ParseFailed")
+					putStrLn("[highlightSyntax] ParseFailed (not valid Haskell syntax)")
 					return ()
 --
 processModule::HsModule->TextBuffer->IO()
@@ -148,7 +162,7 @@ markElementRec buffer name start end acum tag nameOffset=do
 								
 								startOffset<-textIterGetOffset start
 								endOffset<-textIterGetOffset end
-								putStrLn ("start"++(show startOffset)++" end"++(show endOffset) ++" elemento tageado: "++name) 
+								putStrLn ("start"++(show startOffset)++" end"++(show endOffset) ++" tagged element: "++name) 
 								
 								textBufferApplyTag buffer tag start end
 								
@@ -229,8 +243,10 @@ markCommentsRec buffer start end acum tag=do
 							then do
 							textBufferApplyTag buffer tag start end
 							putStrLn ("[markCommentRec] comentario marcado")
-						else
-							return ()
+						else do
+							start<-textIterCopy end
+							--return ()
+							markCommentsRec buffer start end "" tag
 				else
 					if((compare "-" currentChar)==EQ)
 						then
