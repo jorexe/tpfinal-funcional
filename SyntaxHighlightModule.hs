@@ -7,6 +7,7 @@ import Language.Haskell.Parser
 import Language.Haskell.Syntax
 import TagsModule
 import SearchModule
+import qualified Control.Monad as CM
 reservedWords=["case", "class", "data", "deriving", "do","else", "if", "import", "in", "infix", "infixl", "infixr","instance", "let", "of", "module", "newtype", "then", "type", "where"]
 --
 highlightSyntaxMain:: ActionClass self =>(self,TextView) -> IO (ConnectId self)	
@@ -233,30 +234,32 @@ markCommentsRec buffer start end acum tag=do
 				top<-textBufferGetEndIter buffer
 				topOffset<-textIterGetOffset top
 				putStrLn ("[markCommentRec] start"++(show startOffset)++" end"++(show endOffset)++".Limit:"++(show topOffset) ++" acum: "++acum) 
-
-				end'<-textIterCopy end
-				textIterForwardChars end 1
-				currentChar<-textBufferGetText buffer end' end False	
-				if ((compare "\n" currentChar)== EQ)
-					then
-						if ((compare "--" acum)==EQ)
-							then do
-							textBufferApplyTag buffer tag start end
-							putStrLn ("[markCommentRec] comentario marcado")
-						else do
-							start<-textIterCopy end
-							--return ()
+				
+				if (endOffset == topOffset)  
+					then return ()
+				else	do
+					end'<-textIterCopy end
+					textIterForwardChars end 1
+					currentChar<-textBufferGetText buffer end' end False
+				
+			
+					if ((compare "\n" currentChar)== EQ)
+						then do
+							CM.when ((compare "--" acum)==EQ) (do 
+												textBufferApplyTag buffer tag start end
+												putStrLn ("[markCommentRec] comentario marcado") )
+							start<-textIterCopy end				  	
 							markCommentsRec buffer start end "" tag
-				else
-					if((compare "-" currentChar)==EQ)
-						then
-						markCommentsRec buffer start end (acum++ currentChar) tag
 					else
-						if((compare "--" acum)==EQ)
-							then markCommentsRec buffer start end acum tag
-						else do
-							start<-textIterCopy end
-							markCommentsRec buffer start end acum tag
+						if((compare "-" currentChar)==EQ)
+							then
+							markCommentsRec buffer start end (acum++ currentChar) tag
+						else
+							if((compare "--" acum)==EQ)
+								then markCommentsRec buffer start end acum tag
+							else do
+								start<-textIterCopy end
+								markCommentsRec buffer start end acum tag
 
 
 ---se resaltan nombres de funciones cuando se las aplica
