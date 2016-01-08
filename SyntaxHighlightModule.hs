@@ -12,7 +12,8 @@ reservedWords=["case", "class", "data", "deriving", "do","else", "if", "import",
 --
 highlightSyntaxMain:: ActionClass self =>(self,TextView) -> IO (ConnectId self)	
 highlightSyntaxMain (a,textview) = onActionActivate a $ do
-							highlightSyntax textview							
+							highlightSyntax textview
+							putStrLn("[highlightSyntaxMain] done")							
 --
 highlightSyntax:: TextView->IO()
 highlightSyntax txtview=do
@@ -41,7 +42,7 @@ markReservedWords:: TextBuffer->IO ()
 markReservedWords txtBuffer =do
 			tag<-brownTag
 			foldIO (markWord txtBuffer  tag ) reservedWords
-		 
+		 	putStrLn("[markedReservedWords] palabras clave marcadas")
 --
 
 --se procesa el resultado del parseo que se obtiene del parser de sintaxis de Haskell.
@@ -144,13 +145,13 @@ markElement buffer srcLoc name tag=do
 				tags <- textBufferGetTagTable buffer
 						
 				textTagTableAdd tags tag
-				markElementRec buffer name start end "" tag 0
+				--markElementRec buffer name start end "" tag 0
+				markWordRec buffer name start end "" tag 0 False True
 
 
 
 
-
---recibe: el buffer, el nombre del elemento, iterador que apunta al comienzo del nombre del elemento en el buffer, iterador que apunta al final del nombre del elemento , cadena leida hasta el momento desde start en el buffer(cuando se llega a haber leido todo el nombre del elemento, se marca dicho nombre sobre el buffer).
+--recibe: el buffer, el nombre del elemento, iterador que apunta al comienzo del nombre del elemento en el buffer, iterador que apunta al final del nombre del elemento , cadena leida hasta el momento desde start en el buffer(cuando se llega a haber leido todo el nombre del elemento, se marca dicho nombre sobre el buffer), indice actual sobre el nombre del elemento, un booleano que indica si se esta iterando sobre una palabra distintinta de la que se busca.
 markElementRec::TextBuffer->String->TextIter->TextIter->String->TextTag->Int->IO()
 markElementRec buffer name start end acum tag nameOffset=do
 						startOffset<-textIterGetOffset start
