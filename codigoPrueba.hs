@@ -19,3 +19,4 @@ distanciaA punto1 punto2= modulo (resta' punto1 punto2)
 doIncrement::Punto ->Punto
 doIncrement (Punto2D x y)=Punto2D (x+1) (y+1)
 doIncrement (Punto3D x y z)=Punto3D (x+1) (y+1) (z+1)
+--

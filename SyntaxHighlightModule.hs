@@ -234,15 +234,15 @@ markCommentsRec buffer start end acum tag=do
 				top<-textBufferGetEndIter buffer
 				topOffset<-textIterGetOffset top
 				putStrLn ("[markCommentRec] start"++(show startOffset)++" end"++(show endOffset)++".Limit:"++(show topOffset) ++" acum: "++acum) 
-				
+				--se controlan los límites
 				if (endOffset == topOffset)  
-					then return ()
+					then return () --fuera de limite
 				else	do
 					end'<-textIterCopy end
 					textIterForwardChars end 1
 					currentChar<-textBufferGetText buffer end' end False
 				
-			
+					
 					if ((compare "\n" currentChar)== EQ)
 						then do
 							CM.when ((compare "--" acum)==EQ) (do 
@@ -255,7 +255,7 @@ markCommentsRec buffer start end acum tag=do
 							then
 							markCommentsRec buffer start end (acum++ currentChar) tag
 						else
-							if((compare "--" acum)==EQ)
+							if((compare "--" acum)==EQ) --dentro de un comentario
 								then markCommentsRec buffer start end acum tag
 							else do
 								start<-textIterCopy end
