@@ -52,7 +52,7 @@ main= do
     readFileIntoTextView "codigoPrueba.hs" textview	
     
     
-    highlightSyntax textview
+    --highlightSyntax textview
 
     buffer <- get textview textViewBuffer
     tags <- textBufferGetTagTable buffer

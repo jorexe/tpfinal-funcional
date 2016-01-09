@@ -1,0 +1,5 @@
+module SyntaxUtilsModule where
+--
+extractHsName::HsName->String
+extractHsName (HsIdent str)=str
+extractHsName (HsSymbol str)=str

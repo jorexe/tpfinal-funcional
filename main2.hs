@@ -49,7 +49,7 @@ main= do
     textViewSetWrapMode textview WrapChar
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "codigoPrueba.hs" textview	
+    readFileIntoTextView "codigoPrueba2.hs" textview	
     
     
     --highlightSyntax textview

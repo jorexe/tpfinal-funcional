@@ -67,7 +67,7 @@ markWordRec buffer name start end acum tag nameOffset inOtherWord stopOnNewLine=
 								if( (length name)<= nameOffset ||not( (compare currentString [(name !! nameOffset)])==EQ))
 									then do
 										start<-textIterCopy end
-										let inOtherWord=not (DC.isSpace currentChar || (currentChar == '.') || (currentChar == ':')|| (currentChar == ';')|| (currentChar == ','))
+										let inOtherWord=not (DC.isSpace currentChar || (currentChar == '.') || (currentChar == ':')|| (currentChar == ';')|| (currentChar == ',') || (currentChar == '=') || (currentChar == '>')|| (currentChar == '('))
 										markWordRec buffer name start end "" tag 0 inOtherWord stopOnNewLine
 								
 								else do

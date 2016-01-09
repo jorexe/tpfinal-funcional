@@ -1,3 +1,4 @@
+--como resultado del parseo se obtiene un módulo. El parámetro "[hsDecl]" es un arreglo de declaraciones. Las declaraciones son definiciones de datos, de funciones, signature de función, etc.
 data HsModule = HsModule SrcLoc Module (Maybe [HsExportSpec]) [HsImportDecl] [HsDecl]
 
 data HsExportSpec

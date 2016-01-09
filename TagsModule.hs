@@ -45,3 +45,13 @@ blueTag=do
 		textTagForeground := ("blue" :: String) 
 		]
 	return aux
+
+--texto oculto
+invisibleTag::IO TextTag
+invisibleTag=do
+		aux<- textTagNew Nothing
+		set aux [
+			textTagInvisible := True 
+		
+			]
+		return aux

@@ -1,3 +1,4 @@
+--como resultado del parseo se obtiene un módulo. El parámetro "[hsDecl]" es un arreglo de declaraciones. Las declaraciones son definiciones de datos, de funciones, signature de función, etc.
 data HsModule = HsModule SrcLoc Module (Maybe [HsExportSpec]) [HsImportDecl] [HsDecl]
 
 data HsExportSpec
@@ -32,7 +33,7 @@ data HsDecl
 | HsInstDecl SrcLoc HsContext HsQName [HsType] [HsDecl]
 | HsDefaultDecl SrcLoc [HsType]
 | HsTypeSig SrcLoc [HsName] HsQualType--declaracion de tipos de la funcion
-| HsFunBind [HsMatch]  --ACA ESTA LA FUNCION
+| HsFunBind [HsMatch]  --ESTA ES LA FUNCION.Se compone de multiples definiciones.
 | HsPatBind SrcLoc HsPat HsRhs [HsDecl]
 | HsForeignImport SrcLoc String HsSafety String HsName HsType
 | HsForeignExport SrcLoc String String HsName HsType
@@ -42,7 +43,9 @@ data HsConDecl
 data HsBangType
 = HsBangedTy HsType
 | HsUnBangedTy HsType
-data HsMatch = HsMatch SrcLoc HsName [HsPat] HsRhs [HsDecl] --SrcLoc contiene linea y columna en el archivo. Hsname el nombre de la funcion. HsPat son los argumentos que recive la definicion.
+
+--HsMatch representa una definición de función con sus respectivos parámetros.SrcLoc contiene linea y columna en el archivo. Hsname el nombre de la funcion. HsPat son los argumentos que recive la definicion.
+data HsMatch = HsMatch SrcLoc HsName [HsPat] HsRhs [HsDecl] 
 data HsRhs
 = HsUnGuardedRhs HsExp
 | HsGuardedRhss [HsGuardedRhs]

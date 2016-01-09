@@ -7,6 +7,7 @@ import Language.Haskell.Parser
 import Language.Haskell.Syntax
 import TagsModule
 import SearchModule
+import SyntaxUtilsModule
 import qualified Control.Monad as CM
 reservedWords=["case", "class", "data", "deriving", "do","else", "if", "import", "in", "infix", "infixl", "infixr","instance", "let", "of", "module", "newtype", "then", "type", "where"]
 --
@@ -59,11 +60,7 @@ processModule::HsModule->TextBuffer->IO()
 processModule (HsModule loc mod _ _ hsdeclList) buffer=foldIO (process_hsdecl buffer) hsdeclList
 
 --
-foldIO:: (a->IO()) -> [a] -> IO()
-foldIO fun []=return ()
-foldIO fun (x:xs)=do
-			fun x
-			foldIO fun xs
+
 --
 process_hsdecl::TextBuffer-> HsDecl->IO()
 process_hsdecl buffer (HsFunBind hsMatchList)=foldIO (process_hsMatch buffer)  hsMatchList
@@ -124,11 +121,7 @@ processHsPat buffer  location (HsPApp hsQName hsPat)=do
 					foldIO (processHsPat buffer location) hsPat
 
 processHsPat _ _ _=return ()	
-
 --
-extractHsName::HsName->String
-extractHsName (HsIdent str)=str
-extractHsName (HsSymbol str)=str
 
 --se marca declaración de función en el buffer
 
@@ -223,9 +216,15 @@ markComments buffer=do
 			end <-textIterCopy  start
 			btag<- blueTag
 			tags <- textBufferGetTagTable buffer
-						
+			
+			--borrarTag<-invisibleTag	
+			--textTagTableAdd tags borrarTag
+			--markCommentsRec buffer start end "" borrarTag
+			
+		
 			textTagTableAdd tags btag
 			markCommentsRec buffer start end "" btag
+			
 			putStrLn("[markComments] end")
 markCommentsRec::TextBuffer->TextIter->TextIter->String->TextTag->IO()
 markCommentsRec buffer start end acum tag=do

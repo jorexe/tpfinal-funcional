@@ -1,6 +1,8 @@
 --modulo que contiene los tags
 module TagsModule where
 
+import Graphics.UI.Gtk
+
 --estilo de letra color verde
 greenTag::IO TextTag
 greenTag=do
@@ -43,3 +45,13 @@ blueTag=do
 		textTagForeground := ("blue" :: String) 
 		]
 	return aux
+
+--texto oculto
+invisibleTag::IO TextTag
+invisibleTag=do
+		aux<- textTagNew Nothing
+		set aux [
+			textTagInvisibleSet := True 
+		
+			]
+		return aux
