@@ -11,10 +11,11 @@ processHsDecl _  _= return()
 processHsMatch :: [HsDecl] -> [HsMatch] -> TextBuffer->IO()
 processHsMatch xs (y:ys) buffer= do
 					let start=getNameEndIter y buffer
-					let end= if (ys==null)
+					let end= if (null ys)
+							then
 							getStartIter xs buffer
 						else
-							getNameStartIter ys buffer
+							getNameStartIter ys buffer --comienzo de la siguiente función
 					tags <- textBufferGetTagTable buffer
 					tag<-invisibleTag	
 					textTagTableAdd tags tag
@@ -23,8 +24,11 @@ processHsMatch xs (y:ys) buffer= do
 processHsMatch [] [] _=return ()
 --
 
-getNameStartIter::[HsMatch]->TextBuffer->TextIter
 
+--Retorna el iterador que apunta al comienzo del nombre de la definición de función
+getNameStartIter::[HsMatch]->TextBuffer->TextIter
+getNameStartIter ((HsMatch srcLoc _ _ _ _):ys) buffer=iter
+				where iter<-getIterForSrcLoc srcLoc
 
 
 
