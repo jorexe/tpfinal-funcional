@@ -16,9 +16,11 @@ restaMain (Punto3D x1 y1 z1) (Punto3D x2 y2 z2) = Punto3D (x1-x2) (y1-y2) (z1-z2
 --función para obtener la distancia entre dos puntos.
 distanciaA:: Punto -> Punto -> Float
 distanciaA punto1 punto2= modulo (restaMain punto1 punto2)
-
+--
+--función para incrementar las coordenadas
 doIncrement::Punto -> Punto
 doIncrement (Punto2D x y)=Punto2D (x+1) (y+1)
 doIncrement (Punto3D x y z)=Punto3D (x+1) (y+1) (z+1)
 
 --
+data Fruit= Orange | Banana

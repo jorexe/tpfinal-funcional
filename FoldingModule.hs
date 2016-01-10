@@ -9,10 +9,14 @@ processFolding::HsModule->TextBuffer->IO()
 processFolding (HsModule _  _ _ _ hsDecl) buffer=processHsDecl buffer hsDecl
 
 processHsDecl:: TextBuffer->[HsDecl]-> IO()
-processHsDecl buffer ((HsFunBind hsMatch):xs)=do 
+processHsDecl buffer ((HsFunBind hsMatch):xs)=do
+						putStrLn "[FoldingModule, processHsDecl] hsFunBind"
 						processHsMatch xs hsMatch buffer
 						processHsDecl buffer xs
-processHsDecl _  _= return()
+processHsDecl buffer (x:xs)=processHsDecl buffer xs
+processHsDecl _   _= do
+			putStrLn  "[FoldingModule, processHsDecl] others: "
+			return()
 --
 
 --primera lista contiene las siguientes declaraciones de Haskell.
@@ -28,9 +32,15 @@ processHsMatch xs (y:ys) buffer= do
 					tags <- textBufferGetTagTable buffer
 					tag<-invisibleTag	
 					textTagTableAdd tags tag
+					--					
+					startOffset<-textIterGetOffset start
+					endOffset<-textIterGetOffset end
+					putStrLn ("[FoldingModule, processHsMatch] applying tag. Start:" ++ (show startOffset) ++ " end: " ++ (show endOffset))
+					--					
 					textBufferApplyTag buffer tag start end
 					processHsMatch xs ys buffer
-processHsMatch [] [] _=return ()
+
+processHsMatch _ _ _ =return ()
 --
 
 
