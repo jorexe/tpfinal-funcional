@@ -1,4 +1,5 @@
 module SyntaxUtilsModule where
+import Language.Haskell.Syntax
 --
 extractHsName::HsName->String
 extractHsName (HsIdent str)=str
