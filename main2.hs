@@ -42,6 +42,8 @@ main= do
     hseparator <- hSeparatorNew
     boxPackStart vb hseparator PackNatural 2
 
+    --horizontalBox <- hBoxNew False 10
+
 
     --TextView
     textview <- textViewNew

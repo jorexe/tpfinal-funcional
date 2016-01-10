@@ -5,10 +5,10 @@ import Graphics.UI.Gtk
 import Language.Haskell.Syntax
 import TagsModule
 --función principal en la funcionalidad de colapsar código.
-processFolding::HsModule->TextBuffer->IO()
+processFolding::HsModule->TextBuffer -> IO ()
 processFolding (HsModule _  _ _ _ hsDecl) buffer=processHsDecl buffer hsDecl
 
-processHsDecl:: TextBuffer->[HsDecl]-> IO()
+processHsDecl:: TextBuffer -> [ HsDecl ] -> IO ()
 processHsDecl buffer ((HsFunBind hsMatch):xs)=do
 						putStrLn "[FoldingModule, processHsDecl] hsFunBind"
 						processHsMatch xs hsMatch buffer
@@ -22,7 +22,6 @@ processHsDecl _   _= do
 --primera lista contiene las siguientes declaraciones de Haskell.
 --segunda lista tiene como primer elemento a la declaración de la actual función. Los siguientes elementos son las siguientes funciones.
 processHsMatch :: [HsDecl] -> [HsMatch] -> TextBuffer->IO()
-
 processHsMatch xs (y:ys) buffer= do
 					start<-getNameEndIter y buffer
 					end<- if (null ys)

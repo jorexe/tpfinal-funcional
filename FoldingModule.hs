@@ -5,10 +5,10 @@ import Graphics.UI.Gtk
 import Language.Haskell.Syntax
 import TagsModule
 --función principal en la funcionalidad de colapsar código.
-processFolding::HsModule->TextBuffer->IO()
+processFolding::HsModule->TextBuffer -> IO ()
 processFolding (HsModule _  _ _ _ hsDecl) buffer=processHsDecl buffer hsDecl
 
-processHsDecl:: TextBuffer->[HsDecl]-> IO()
+processHsDecl:: TextBuffer -> [ HsDecl ] -> IO ()
 processHsDecl buffer ((HsFunBind hsMatch):xs)=do
 						putStrLn "[FoldingModule, processHsDecl] hsFunBind"
 						processHsMatch xs hsMatch buffer
@@ -37,7 +37,7 @@ processHsMatch xs (y:ys) buffer= do
 					endOffset<-textIterGetOffset end
 					putStrLn ("[FoldingModule, processHsMatch] applying tag. Start:" ++ (show startOffset) ++ " end: " ++ (show endOffset))
 					--					
-					textBufferApplyTag buffer tag start end
+					--textBufferApplyTag buffer tag start end
 					processHsMatch xs ys buffer
 
 processHsMatch _ _ _ =return ()

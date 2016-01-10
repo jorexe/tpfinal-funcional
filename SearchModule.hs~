@@ -39,7 +39,7 @@ markWordRec buffer name start end acum tag nameOffset inOtherWord stopOnNewLine=
 								textIterForwardChars nextIter 1
 								currentString<-textBufferGetText  buffer end nextIter False								
 								let nextChar'=currentString !! 0
-								CM.when ((endOffset == topOffset) || DC.isSpace nextChar' || (nextChar' == '.') || (nextChar' == ':')|| (nextChar' == ';')|| (nextChar' == ','))	(textBufferApplyTag buffer tag start end)
+								CM.when ((endOffset == topOffset) || DC.isSpace nextChar' || (nextChar' == '.') || (nextChar' == ':')|| (nextChar' == ';')|| (nextChar' == ',')|| (nextChar' == ']'))	(textBufferApplyTag buffer tag start end)
 								
 								--se busca siguiente ocurrencias si no se encuentra en el final del buffer
 								if (endOffset < topOffset)
@@ -67,7 +67,7 @@ markWordRec buffer name start end acum tag nameOffset inOtherWord stopOnNewLine=
 								if( (length name)<= nameOffset ||not( (compare currentString [(name !! nameOffset)])==EQ))
 									then do
 										start<-textIterCopy end
-										let inOtherWord=not (DC.isSpace currentChar || (currentChar == '.') || (currentChar == ':')|| (currentChar == ';')|| (currentChar == ',') || (currentChar == '=') || (currentChar == '>'))
+										let inOtherWord=not (DC.isSpace currentChar || (currentChar == '.') || (currentChar == ':')|| (currentChar == ';')|| (currentChar == ',') || (currentChar == '=') || (currentChar == '>')|| (currentChar == '[')|| (currentChar == '('))
 										markWordRec buffer name start end "" tag 0 inOtherWord stopOnNewLine
 								
 								else do
