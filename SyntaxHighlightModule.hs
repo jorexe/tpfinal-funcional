@@ -9,6 +9,8 @@ import TagsModule
 import SearchModule
 import SyntaxUtilsModule
 import qualified Control.Monad as CM
+import FoldingModule
+
 reservedWords=["case", "class", "data", "deriving", "do","else", "if", "import", "in", "infix", "infixl", "infixr","instance", "let", "of", "module", "newtype", "then", "type", "where"]
 --
 highlightSyntaxMain:: ActionClass self =>(self,TextView) -> IO (ConnectId self)	
@@ -37,6 +39,8 @@ highlightSyntax txtview=do
 					
 			--se marcan comentarios
 			markComments txtBuffer
+			
+		
 			putStrLn("[highlightSyntax]texto parseado")
 --
 markReservedWords:: TextBuffer->IO ()
@@ -52,6 +56,9 @@ processResult (ParseOk modul) buffer = do
 				putStrLn("[highlightSyntax] ParseOK")
 				putStrLn(show modul)
 				processModule modul buffer
+				--BORRAR, probando colapsado de codigo
+				processFolding modul buffer
+
 processResult (ParseFailed _ _) buffer=do
 					putStrLn("[highlightSyntax] ParseFailed (not valid Haskell syntax)")
 					return ()
