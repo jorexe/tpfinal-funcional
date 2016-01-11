@@ -13,13 +13,13 @@ import FoldingModule
 
 reservedWords=["case", "class", "data", "deriving", "do","else", "if", "import", "in", "infix", "infixl", "infixr","instance", "let", "of", "module", "newtype", "then", "type", "where"]
 --
-highlightSyntaxMain:: ActionClass self =>(self,TextView) -> IO (ConnectId self)	
-highlightSyntaxMain (a,textview) = onActionActivate a $ do
-							highlightSyntax textview
+highlightSyntaxMain:: ActionClass self =>(self,TextView,Table) -> IO (ConnectId self)	
+highlightSyntaxMain (a,textview,table) = onActionActivate a $ do
+							highlightSyntax textview table
 							putStrLn("[highlightSyntaxMain] done")							
 --
-highlightSyntax:: TextView->IO()
-highlightSyntax txtview=do
+highlightSyntax:: TextView->Table ->IO()
+highlightSyntax txtview table=do
 			txtBuffer <- textViewGetBuffer txtview
 			start <- textBufferGetStartIter txtBuffer
 			
@@ -34,15 +34,15 @@ highlightSyntax txtview=do
 			
 			--parseo y marcado de sintaxis.
 			let parseResult=Language.Haskell.Parser.parseModule contents
-			processResult parseResult txtBuffer
+			processResult parseResult txtBuffer table
 			
 					
 			--se marcan comentarios
 			markComments txtBuffer
+			putStrLn("[highlightSyntax]texto parseado")
 			
 		
-			putStrLn("[highlightSyntax]texto parseado")
---
+--			
 markReservedWords:: TextBuffer->IO ()
 markReservedWords txtBuffer =do
 			tag<-brownTag
@@ -51,15 +51,15 @@ markReservedWords txtBuffer =do
 --
 
 --se procesa el resultado del parseo que se obtiene del parser de sintaxis de Haskell.
-processResult::ParseResult HsModule->TextBuffer-> IO()
-processResult (ParseOk modul) buffer = do
+processResult::ParseResult HsModule->TextBuffer->Table-> IO()
+processResult (ParseOk modul) buffer table= do
 				putStrLn("[highlightSyntax] ParseOK")
 				putStrLn(show modul)
 				processModule modul buffer
-				--BORRAR, probando colapsado de codigo
-				processFolding modul txtBuffer
+				--se agregan los botones para colapsar el código
+				processFolding modul buffer table
 
-processResult (ParseFailed _ _) buffer=do
+processResult (ParseFailed _ _) buffer _ =do
 					putStrLn("[highlightSyntax] ParseFailed (not valid Haskell syntax)")
 					return ()
 --

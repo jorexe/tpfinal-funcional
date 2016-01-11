@@ -5,24 +5,24 @@ import Graphics.UI.Gtk
 import Language.Haskell.Syntax
 import TagsModule
 --función principal en la funcionalidad de colapsar código.
-processFolding::HsModule->TextBuffer -> IO ()
-processFolding (HsModule _  _ _ _ hsDecl) buffer=processHsDecl buffer hsDecl
-
-processHsDecl:: TextBuffer -> [ HsDecl ] -> IO ()
-processHsDecl buffer ((HsFunBind hsMatch):xs)=do
+processFolding::HsModule->TextBuffer->Table  -> IO ()
+processFolding (HsModule _  _ _ _ hsDecl) buffer table=	processHsDecl buffer hsDecl table
+--
+processHsDecl:: TextBuffer -> [ HsDecl ]->Table -> IO ()
+processHsDecl buffer ((HsFunBind hsMatch):xs) table=do
 						putStrLn "[FoldingModule, processHsDecl] hsFunBind"
-						processHsMatch xs hsMatch buffer
-						processHsDecl buffer xs
-processHsDecl buffer (x:xs)=processHsDecl buffer xs
-processHsDecl _   _= do
+						processHsMatch xs hsMatch buffer table
+						processHsDecl buffer xs table
+processHsDecl buffer (x:xs) table =processHsDecl buffer xs table
+processHsDecl _   _ _ = do
 			putStrLn  "[FoldingModule, processHsDecl] others: "
 			return()
 --
 
 --primera lista contiene las siguientes declaraciones de Haskell.
 --segunda lista tiene como primer elemento a la declaración de la actual función. Los siguientes elementos son las siguientes funciones.
-processHsMatch :: [HsDecl] -> [HsMatch] -> TextBuffer->IO()
-processHsMatch xs (y:ys) buffer= do
+processHsMatch :: [HsDecl] -> [HsMatch] -> TextBuffer->Table->IO()
+processHsMatch xs (y:ys) buffer table= do
 					start<-getNameEndIter y buffer
 					end<- if (null ys)
 						then 
@@ -38,10 +38,20 @@ processHsMatch xs (y:ys) buffer= do
 					putStrLn ("[FoldingModule, processHsMatch] applying tag. Start:" ++ (show startOffset) ++ " end: " ++ (show endOffset))
 					--					
 					--textBufferApplyTag buffer tag start end
-					processHsMatch xs ys buffer
+					--se crea el boton para colapsar el código de dicha función
+					button<-createButton start end tag buffer
+					let row=getRow y
+					tableAttachDefaults table button 0 1 (row-1) row
+					--tableAttach table button 0 1 (row-1) row [Shrink] [Shrink] 0 0
+					
+					processHsMatch xs ys buffer table
 
-processHsMatch _ _ _ =return ()
+processHsMatch _ _ _  _=return ()
 --
+
+getRow::HsMatch-> Int
+getRow (HsMatch srcLoc _ _ _ _)= srcLine srcLoc
+
 
 
 --Retorna el iterador que apunta al comienzo del nombre de la definición de función
@@ -93,3 +103,30 @@ getIter srcLoc buffer name=do
 				iter <- getIterForSrcLoc srcLoc buffer
 				textIterForwardChars iter length'
 				return iter
+
+
+--función que permite obtener la cantidad de líneas que se muestran
+getTextViewRows::TextView->IO Int
+getTextViewRows textView=do
+				txtBuffer <- textViewGetBuffer textView
+				textBufferGetLineCount txtBuffer
+--
+
+--
+createButton::TextIter->TextIter->TextTag->TextBuffer-> IO Button
+createButton start end tag buffer=do
+			button<-buttonNewWithLabel "-"
+			onClicked button (buttonSwitch button buffer tag start end)
+			return button
+--
+buttonSwitch :: Button->TextBuffer->TextTag->TextIter->TextIter -> IO ()
+buttonSwitch b buffer tag start end = do
+  txt <- buttonGetLabel b
+  let newtxt = case txt of
+                 "+" ->  "-"
+                 "-"  -> "+"
+  --case txt of
+  --               "+" -> textBufferRemoveTag buffer tag start end
+  --               "-"  -> textBufferApplyTag buffer tag start end
+  buttonSetLabel b newtxt
+

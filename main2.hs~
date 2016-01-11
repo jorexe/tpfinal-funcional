@@ -4,6 +4,9 @@ import FileModule
 import ClipboardModule
 import SpellingModule
 import SyntaxHighlightModule
+import FoldingModule
+--cantidad de filas que se muestran, por ahora esta fijo
+totalRows=39
 
 main :: IO ()
 main= do
@@ -42,15 +45,31 @@ main= do
     hseparator <- hSeparatorNew
     boxPackStart vb hseparator PackNatural 2
 
+    --caja horizontal que contiene la tabla con los botones para colapsar código y el textview
+    horizontalBox <- hBoxNew False 5
+    containerAdd vb horizontalBox
+    
+   --tabla con botones para colapsar código,se debería crear al leer el archivo (los botones dependen del archivo)
+    --rows<-getTextViewRows textview --cantidad de filas en el textview
+    --putStrLn ("cantidad de filas: " ++ (show rows) )
+    table<- tableNew totalRows 1 True
+    tableGetColSpacing table 0
+    containerAdd horizontalBox table
 
     --TextView
     textview <- textViewNew
-    boxPackStart vb textview PackGrow 4
+    boxPackStart horizontalBox textview PackGrow 4
     textViewSetWrapMode textview WrapChar
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "codigoPrueba.hs" textview	
+    readFileIntoTextView "codigoPrueba.hs" textview table	
     
+    tableSetHomogeneous table False
+    
+    
+   
+   
+   
     
     --highlightSyntax textview
 
@@ -75,12 +94,12 @@ main= do
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
     mapM_ printexample [quitapp,syntaxhighlight]
-    mapM_ highlightSyntaxMain [(syntaxhighlight,textview)]
+    mapM_ highlightSyntaxMain [(syntaxhighlight,textview,table)]
     mapM_ pasteFromClipboard [(pastetext,textview)]
     mapM_ copyFromClipboard [(copytext,textview)]
     mapM_ createNewFile [(newfile,textview)]
     mapM_ savedisplaydialog [(savefile,textview)]
-    mapM_ loaddisplaydialog [(openfile,textview)]
+    mapM_ loaddisplaydialog [(openfile,textview,table)]
     mapM_ runSpellCheck [(spellcheck,textview)]
     widgetShowAll window
 
@@ -109,8 +128,8 @@ savedisplaydialog (a,textview) = onActionActivate a $ do
 
                 widgetDestroy fchdal
 
-loaddisplaydialog :: ActionClass self => (self,TextView) -> IO (ConnectId self)
-loaddisplaydialog (a,textview) = onActionActivate a $ do
+loaddisplaydialog :: ActionClass self => (self,TextView,Table) -> IO (ConnectId self)
+loaddisplaydialog (a,textview,table) = onActionActivate a $ do
                 fchdal <- fileChooserDialogNew (Just "Load As...Dialog") Nothing FileChooserActionOpen [("Cancel", ResponseCancel), ("Open", ResponseAccept), ("Backup", ResponseUser 100)]
                 --fileChooserSetDoOverwriteConfirmation fchdal True
                 widgetShow fchdal
@@ -119,7 +138,7 @@ loaddisplaydialog (a,textview) = onActionActivate a $ do
                     ResponseCancel -> putStrLn "You cancelled..."
                     ResponseAccept -> do nwf <- fileChooserGetFilename fchdal
                                          case nwf of Nothing -> putStrLn "Nothing" 
-                                                     Just path -> readFileIntoTextView path textview
+                                                     Just path -> readFileIntoTextView path textview table
 
                     ResponseUser 100 -> putStrLn "You pressed the backup button"
                     ResponseDeleteEvent -> putStrLn "You closed the dialog window..."
