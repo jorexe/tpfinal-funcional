@@ -116,15 +116,16 @@ getTextViewRows textView=do
 createButton::TextIter->TextIter->TextTag->TextBuffer-> IO Button
 createButton start end tag buffer=do
 			button<-buttonNewWithLabel "-"
-			onClicked button (buttonSwitch button buffer tag start end)
+			--onClicked button (buttonSwitch button buffer tag start end)
+			onButtonActivate button (buttonSwitch button buffer tag start end)			
 			return button
 --
 buttonSwitch :: Button->TextBuffer->TextTag->TextIter->TextIter -> IO ()
 buttonSwitch b buffer tag start end = do
   txt <- buttonGetLabel b
   let newtxt = case txt of
-                 "+" ->  "-"
-                 "-"  -> "+"
+                 "less" ->  "more"
+                 "more"  -> "less"
   --case txt of
   --               "+" -> textBufferRemoveTag buffer tag start end
   --               "-"  -> textBufferApplyTag buffer tag start end
