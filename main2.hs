@@ -62,7 +62,7 @@ main= do
     textViewSetWrapMode textview WrapChar
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "codigoPrueba.hs" textview table	
+    readFileIntoTextView "codigoPrueba.hs" textview table horizontalBox	
     
     
     
@@ -93,12 +93,12 @@ main= do
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
     mapM_ printexample [quitapp,syntaxhighlight]
-    mapM_ highlightSyntaxMain [(syntaxhighlight,textview,table)]
+    mapM_ highlightSyntaxMain [(syntaxhighlight,textview,table,horizontalBox)]
     mapM_ pasteFromClipboard [(pastetext,textview)]
     mapM_ copyFromClipboard [(copytext,textview)]
     mapM_ createNewFile [(newfile,textview)]
     mapM_ savedisplaydialog [(savefile,textview)]
-    mapM_ loaddisplaydialog [(openfile,textview,table)]
+    mapM_ loaddisplaydialog [(openfile,textview,table,horizontalBox)]
     mapM_ runSpellCheck [(spellcheck,textview)]
     widgetShowAll window
 
@@ -127,8 +127,8 @@ savedisplaydialog (a,textview) = onActionActivate a $ do
 
                 widgetDestroy fchdal
 
-loaddisplaydialog :: ActionClass self => (self,TextView,Table) -> IO (ConnectId self)
-loaddisplaydialog (a,textview,table) = onActionActivate a $ do
+loaddisplaydialog :: ActionClass self => (self,TextView,Table,HBox) -> IO (ConnectId self)
+loaddisplaydialog (a,textview,table,hbox) = onActionActivate a $ do
                 fchdal <- fileChooserDialogNew (Just "Load As...Dialog") Nothing FileChooserActionOpen [("Cancel", ResponseCancel), ("Open", ResponseAccept), ("Backup", ResponseUser 100)]
                 --fileChooserSetDoOverwriteConfirmation fchdal True
                 widgetShow fchdal
@@ -137,7 +137,7 @@ loaddisplaydialog (a,textview,table) = onActionActivate a $ do
                     ResponseCancel -> putStrLn "You cancelled..."
                     ResponseAccept -> do nwf <- fileChooserGetFilename fchdal
                                          case nwf of Nothing -> putStrLn "Nothing" 
-                                                     Just path -> readFileIntoTextView path textview table
+                                                     Just path -> readFileIntoTextView path textview table hbox
 
                     ResponseUser 100 -> putStrLn "You pressed the backup button"
                     ResponseDeleteEvent -> putStrLn "You closed the dialog window..."

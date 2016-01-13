@@ -13,13 +13,14 @@ import FoldingModule
 
 reservedWords=["case", "class", "data", "deriving", "do","else", "if", "import", "in", "infix", "infixl", "infixr","instance", "let", "of", "module", "newtype", "then", "type", "where"]
 --
-highlightSyntaxMain:: ActionClass self =>(self,TextView,Table) -> IO (ConnectId self)	
-highlightSyntaxMain (a,textview,table) = onActionActivate a $ do
-							highlightSyntax textview table
+highlightSyntaxMain:: ActionClass self =>(self,TextView,Table,HBox) -> IO (ConnectId self)	
+highlightSyntaxMain (a,textview,table,hbox) = onActionActivate a $ do
+							highlightSyntax textview table hbox
 							putStrLn("[highlightSyntaxMain] done")							
 --
-highlightSyntax:: TextView->Table ->IO()
-highlightSyntax txtview table=do
+--hbox es la caja horizontal en la que se encuentra la tabla
+highlightSyntax:: TextView->Table->HBox ->IO()
+highlightSyntax txtview table hbox=do
 			txtBuffer <- textViewGetBuffer txtview
 			start <- textBufferGetStartIter txtBuffer
 			
@@ -34,7 +35,7 @@ highlightSyntax txtview table=do
 			
 			--parseo y marcado de sintaxis.
 			let parseResult=Language.Haskell.Parser.parseModule contents
-			processResult parseResult txtBuffer table
+			processResult parseResult txtBuffer table hbox
 			
 					
 			--se marcan comentarios
@@ -51,15 +52,15 @@ markReservedWords txtBuffer =do
 --
 
 --se procesa el resultado del parseo que se obtiene del parser de sintaxis de Haskell.
-processResult::ParseResult HsModule->TextBuffer->Table-> IO()
-processResult (ParseOk modul) buffer table= do
+processResult::ParseResult HsModule->TextBuffer->Table->HBox-> IO()
+processResult (ParseOk modul) buffer table hbox= do
 				putStrLn("[highlightSyntax] ParseOK")
 				putStrLn(show modul)
 				processModule modul buffer
 				--se agregan los botones para colapsar el código
-				processFolding modul buffer table
+				processFolding modul buffer table hbox
 
-processResult (ParseFailed _ _) buffer _ =do
+processResult (ParseFailed _ _) _ _ =do
 					putStrLn("[highlightSyntax] ParseFailed (not valid Haskell syntax)")
 					return ()
 --

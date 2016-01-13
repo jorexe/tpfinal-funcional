@@ -4,29 +4,34 @@ import SyntaxUtilsModule
 import Graphics.UI.Gtk
 import Language.Haskell.Syntax
 import TagsModule
+
+					--boton , linea en la que se encuentra
+data ButtonProperty=ButtonProperty ToggleButton Int 
+
 --función principal en la funcionalidad de colapsar código.
-processFolding::HsModule->TextBuffer->Table  -> IO ()
-processFolding (HsModule _  _ _ _ hsDecl) buffer table=	processHsDecl buffer hsDecl table
+processFolding::HsModule->TextBuffer->Table->HBox  -> IO ()
+processFolding (HsModule _  _ _ _ hsDecl) buffer table hbox=	processHsDecl buffer hsDecl table hbox
 --
-processHsDecl:: TextBuffer -> [ HsDecl ]->Table -> IO ()
-processHsDecl buffer ((HsFunBind hsMatch):xs) table=do
+processHsDecl:: TextBuffer -> [ HsDecl ]->Table ->HBox ->IO ()
+processHsDecl buffer ((HsFunBind hsMatch):xs) table hbox=do
 						putStrLn "[FoldingModule, processHsDecl] hsFunBind"
-						processHsMatch xs hsMatch buffer table
-						processHsDecl buffer xs table
-processHsDecl buffer (x:xs) table =processHsDecl buffer xs table
-processHsDecl _   _ _ = do
+						processHsMatch xs hsMatch buffer table hbox
+						processHsDecl buffer xs table hbox
+processHsDecl buffer (x:xs) table hbox =processHsDecl buffer xs table hbox
+processHsDecl _   _ _  _= do
 			putStrLn  "[FoldingModule, processHsDecl] others: "
 			return()
 --
 
 --primera lista contiene las siguientes declaraciones de Haskell.
 --segunda lista tiene como primer elemento a la declaración de la actual función. Los siguientes elementos son las siguientes funciones.
-processHsMatch :: [HsDecl] -> [HsMatch] -> TextBuffer->Table->IO()
-processHsMatch xs (y:ys) buffer table= do
-					start<-getNameEndIter y buffer
-					end<- if (null ys)
+processHsMatch :: [HsDecl] -> [HsMatch] -> TextBuffer->Table->HBox->IO [ButtonProperty]
+processHsMatch xs (y:ys) buffer table hbox= do
+					start<-getNameEndIter y buffer --iterador al comienzo del código a ocultar
+					--lineBelow el numero linea que la cual se oculta codigo
+					(end,nextLine)<- if (null ys)
 						then 
-							getStartIter xs buffer
+							getStartIter xs buffer --comienzo siguiente declaración
 						else 
 							getNameStartIter ys buffer --comienzo de la siguiente función
 					tags <- textBufferGetTagTable buffer
@@ -35,18 +40,28 @@ processHsMatch xs (y:ys) buffer table= do
 					--					
 					startOffset<-textIterGetOffset start
 					endOffset<-textIterGetOffset end
-					putStrLn ("[FoldingModule, processHsMatch] applying tag. Start:" ++ (show startOffset) ++ " end: " ++ (show endOffset))
+					putStrLn ("[FoldingModule, processHsMatch] registering tag. Start:" ++ (show startOffset) ++ " end: " ++ (show endOffset))
 					--					
 					--textBufferApplyTag buffer tag start end
 					--se crea el boton para colapsar el código de dicha función
+					let currentLine=getRow y	
+					let row=getRow y				
 					button<-createButton start end tag buffer
-					let row=getRow y
 					tableAttachDefaults table button 0 1 (row-1) row
+					
+					nextButtonProperties<-processHsMatch xs ys buffer table hbox --llamada recursiva. En la variable quedan los siguientes botones
+					
+					
+					onToggled button (buttonSwitch button buffer tag start end nextButtonProperties table (currentLine - nextLine ))			
+					
+					putStrLn ("[FoldingModule, processHsMatch].CurrentLine: " ++ (show currentLine )++ "line nextLine: " ++ (show nextLine))
+					
+					
 					--tableAttach table button 0 1 (row-1) row [Shrink] [Shrink] 0 0
 					
-					processHsMatch xs ys buffer table
+					return ((ButtonProperty button row):nextButtonProperties)
 
-processHsMatch _ _ _  _=return ()
+processHsMatch _ _ _  _ _=return []
 --
 
 getRow::HsMatch-> Int
@@ -55,20 +70,23 @@ getRow (HsMatch srcLoc _ _ _ _)= srcLine srcLoc
 
 
 --Retorna el iterador que apunta al comienzo del nombre de la definición de función
-getNameStartIter::[HsMatch]->TextBuffer->IO TextIter
+getNameStartIter::[HsMatch]->TextBuffer->IO (TextIter,Int)
 getNameStartIter ((HsMatch srcLoc _ _ _ _):ys) buffer=getIterForSrcLoc srcLoc buffer
+							
 
 
 
 --
 
-getStartIter::[HsDecl]->TextBuffer->IO TextIter
-getStartIter [] buffer=textBufferGetEndIter buffer
+getStartIter::[HsDecl]->TextBuffer->IO (TextIter,Int)
+getStartIter [] buffer=do
+			iter<- textBufferGetEndIter buffer
+			return (iter,0)
 getStartIter (x:xs) buffer =getStartIterHsDecl x buffer
 
 
 --
-getStartIterHsDecl::HsDecl->TextBuffer->IO TextIter
+getStartIterHsDecl::HsDecl->TextBuffer->IO (TextIter,Int)
 getStartIterHsDecl (HsTypeDecl srcLoc _ _ _) buffer=getIterForSrcLoc srcLoc buffer
 getStartIterHsDecl (HsDataDecl srcLoc _ _ _ _ _) buffer=getIterForSrcLoc srcLoc buffer
 getStartIterHsDecl (HsInfixDecl srcLoc _ _ _) buffer=getIterForSrcLoc srcLoc buffer
@@ -89,18 +107,18 @@ getNameEndIter (HsMatch srcLoc hsName _ _ _) buffer =do
 							let name=extractHsName hsName
 							getIter srcLoc buffer name
 --
-getIterForSrcLoc::SrcLoc->TextBuffer->IO TextIter
+getIterForSrcLoc::SrcLoc->TextBuffer->IO (TextIter,Int)
 getIterForSrcLoc srcLoc buffer=do
 				let line=(srcLine srcLoc)-1
 				let column=(srcColumn srcLoc)
 				iter<-textBufferGetIterAtLine buffer line
 				textIterForwardChars iter (column -1 )
-				return iter
+				return (iter,line)
 --
 getIter::SrcLoc->TextBuffer->String->IO TextIter
 getIter srcLoc buffer name=do
 				let length'=length name
-				iter <- getIterForSrcLoc srcLoc buffer
+				(iter,l) <- getIterForSrcLoc srcLoc buffer
 				textIterForwardChars iter length'
 				return iter
 
@@ -113,21 +131,57 @@ getTextViewRows textView=do
 --
 
 --
-createButton::TextIter->TextIter->TextTag->TextBuffer-> IO Button
+createButton::TextIter->TextIter->TextTag->TextBuffer-> IO ToggleButton
 createButton start end tag buffer=do
-			button<-buttonNewWithLabel "-"
+			button<-toggleButtonNewWithLabel "[-]"
 			--onClicked button (buttonSwitch button buffer tag start end)
-			onButtonActivate button (buttonSwitch button buffer tag start end)			
+			--onToggled button (buttonSwitch button buffer tag start end)			
 			return button
 --
-buttonSwitch :: Button->TextBuffer->TextTag->TextIter->TextIter -> IO ()
-buttonSwitch b buffer tag start end = do
-  txt <- buttonGetLabel b
-  let newtxt = case txt of
-                 "less" ->  "more"
-                 "more"  -> "less"
-  --case txt of
-  --               "+" -> textBufferRemoveTag buffer tag start end
-  --               "-"  -> textBufferApplyTag buffer tag start end
-  buttonSetLabel b newtxt
+
+--nextButtonsProperties contiene las propiedades de los siguientes botones, no la del actual.
+-- lines contiene la cantidad de lineas que hay que desplazar el boton de abajo cuando se oculta el código
+buttonSwitch :: ToggleButton->TextBuffer->TextTag->TextIter->TextIter->[ButtonProperty] ->Table -> Int-> IO ()
+buttonSwitch button buffer tag start end nextButtonsProperty table lines= do
+					  active<-toggleButtonGetActive button
+					  if ( active)
+						then	do
+							putStrLn ("Se oculta codigo. Lineas ocultadas:" ++ (show lines))
+							textBufferApplyTag buffer tag start end
+							--updateButtons nextButtonsProperty table lines
+							--set table [tableChildTopAttach button :=0,
+							--	   tableChildBottomAttach button := 1]
+							updateButtons button table lines
+					  else do
+						putStrLn "Se vuelve a mostrar codigo"
+						textBufferRemoveTag buffer tag start end
+					 	updateButtons button table (-lines)
+					  return ()
+
+-- 
+updateButtons::ToggleButton->Table->Int->IO()
+updateButtons button table lines=do
+							putStrLn "[updateButtons]"
+							buttons<-containerGetChildren table
+							updateButton table lines button False (reverse buttons)
+--
+
+--el valor booleano indica si los botones son los siguientes al boton presionado
+updateButton::Table->Int->ToggleButton->Bool->[Widget]->IO()
+updateButton table lines callingButton True  (x:xs)= do
+						let button=castToToggleButton x
+						currentTopAttach<-get table (tableChildTopAttach button)
+						currentBottomAttach<- get table (tableChildBottomAttach button)					
+						set table	[tableChildTopAttach button :=(currentTopAttach + lines),
+								tableChildBottomAttach button := (currentBottomAttach +lines)
+							 	]
+						updateButton table lines callingButton True  xs
+updateButton table lines callingButton False  (x:xs)= do
+							let currentButton=castToToggleButton x
+							if (currentButton==callingButton)
+								then updateButton table lines callingButton True  xs
+						  	else 
+								updateButton table lines callingButton False  xs
+updateButton table lines callingButton _  _= return ()
+
 
