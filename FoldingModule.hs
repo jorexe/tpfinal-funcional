@@ -172,16 +172,18 @@ updateButton table lines callingButton True  (x:xs)= do
 						let button=castToToggleButton x
 						currentTopAttach<-get table (tableChildTopAttach button)
 						currentBottomAttach<- get table (tableChildBottomAttach button)					
-						set table	[tableChildTopAttach button :=(currentTopAttach + lines),
-								tableChildBottomAttach button := (currentBottomAttach +lines)
+						
+						let topAttach=currentTopAttach + lines
+						let bottomAttach=currentBottomAttach +lines
+						putStrLn ("[updateButton] lines: " ++ (show lines)++" currentTopAttach:"++ (show currentTopAttach) ++ " currentBottomAttach: " ++ (show currentBottomAttach) ++ "top attach: " ++ (show topAttach) ++ " bottomAttach: " ++ (show bottomAttach))	
+						set table	[tableChildTopAttach button :=topAttach,
+								tableChildBottomAttach button := bottomAttach
 							 	]
 						updateButton table lines callingButton True  xs
 updateButton table lines callingButton False  (x:xs)= do
 							let currentButton=castToToggleButton x
-							if (currentButton==callingButton)
-								then updateButton table lines callingButton True  xs
-						  	else 
-								updateButton table lines callingButton False  xs
+							updateButton table lines callingButton (currentButton==callingButton)  xs
+						  	
 updateButton table lines callingButton _  _= return ()
 
 

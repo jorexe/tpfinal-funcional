@@ -54,6 +54,7 @@ main= do
     --putStrLn ("cantidad de filas: " ++ (show rows) )
     table<- tableNew totalRows 1 True
     tableGetColSpacing table 0
+    set table [windowDefaultWidth := 80, windowDefaultHeight := 40]
     containerAdd horizontalBox table
 
     --TextView
@@ -98,7 +99,7 @@ main= do
     mapM_ copyFromClipboard [(copytext,textview)]
     mapM_ createNewFile [(newfile,textview)]
     mapM_ savedisplaydialog [(savefile,textview)]
-    mapM_ loaddisplaydialog [(openfile,textview,table)]
+    mapM_ loaddisplaydialog [(openfile,textview,table,horizontalBox)]
     mapM_ runSpellCheck [(spellcheck,textview)]
     widgetShowAll window
 
