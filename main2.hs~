@@ -54,13 +54,17 @@ main= do
     --putStrLn ("cantidad de filas: " ++ (show rows) )
     table<- tableNew totalRows 1 True
     tableGetColSpacing table 0
-    set table [windowDefaultWidth := 80, windowDefaultHeight := 40]
     containerAdd horizontalBox table
+   -- boxPackStart horizontalBox table PackNatural 4
 
     --TextView
     textview <- textViewNew
-    boxPackStart horizontalBox textview PackGrow 4
     textViewSetWrapMode textview WrapChar
+    widgetSetSizeRequest textview 700 300
+    --textViewSetBorderWindowSize textview TextWindowRight 200
+    --textViewSetBorderWindowSize textview TextWindowLeft 200
+--    boxPackStart horizontalBox textview PackNatural 4
+    containerAdd horizontalBox textview
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
     readFileIntoTextView "codigoPrueba.hs" textview table horizontalBox	
