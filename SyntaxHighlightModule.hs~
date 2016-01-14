@@ -60,7 +60,7 @@ processResult (ParseOk modul) buffer table hbox= do
 				--se agregan los botones para colapsar el código
 				processFolding modul buffer table hbox
 
-processResult (ParseFailed _ _) _ _ =do
+processResult (ParseFailed _ _) _ _  _=do
 					putStrLn("[highlightSyntax] ParseFailed (not valid Haskell syntax)")
 					return ()
 --

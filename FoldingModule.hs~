@@ -10,7 +10,11 @@ data ButtonProperty=ButtonProperty ToggleButton Int
 
 --función principal en la funcionalidad de colapsar código.
 processFolding::HsModule->TextBuffer->Table->HBox  -> IO ()
-processFolding (HsModule _  _ _ _ hsDecl) buffer table hbox=	processHsDecl buffer hsDecl table hbox
+processFolding (HsModule _  _ _ _ hsDecl) buffer table hbox=do
+								clearButtons table
+								processHsDecl buffer hsDecl table hbox
+								
+								putStrLn "[processFolding] buttons done"
 --
 processHsDecl:: TextBuffer -> [ HsDecl ]->Table ->HBox ->IO ()
 processHsDecl buffer ((HsFunBind hsMatch):xs) table hbox=do
@@ -169,7 +173,6 @@ updateButtons button table lines=do
 --el valor booleano indica si los botones son los siguientes al boton presionado
 updateButton::Table->Int->ToggleButton->Bool->[Widget]->IO()
 updateButton table lines callingButton True  (x:xs)= do
-						putStrLn ("[updateButton] lines: " ++ (show lines))
 						let button=castToToggleButton x
 						currentTopAttach<-get table (tableChildTopAttach button)
 						currentBottomAttach<- get table (tableChildBottomAttach button)					
@@ -187,4 +190,9 @@ updateButton table lines callingButton False  (x:xs)= do
 						  	
 updateButton table lines callingButton _  _= return ()
 
+--quitar todos los botones
+clearButtons:: Table->IO()
+clearButtons table=do
+			buttons<-containerGetChildren table
+			foldIO (containerRemove table) buttons
 

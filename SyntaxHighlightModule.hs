@@ -33,7 +33,7 @@ highlightSyntax txtview table hbox=do
 			--se marcan palabras clave de la sintaxis de Haskell.
 			markReservedWords txtBuffer	
 			
-			--parseo y marcado de sintaxis.
+			--parseo y marcado de sintaxis. También se agregan los botones para colapsar el código.
 			let parseResult=Language.Haskell.Parser.parseModule contents
 			processResult parseResult txtBuffer table hbox
 			

@@ -1,4 +1,4 @@
-module ClipboardModule where
+module ClipboardModule(copyFromClipboard,pasteFromClipboard)  where
 
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.General.Clipboard
