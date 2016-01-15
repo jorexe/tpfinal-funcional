@@ -12,7 +12,7 @@ main :: IO ()
 main= do
     initGUI
     window <- windowNew
-    set window [windowTitle := "Text Editor", containerBorderWidth := 0,windowDefaultWidth := 800, windowDefaultHeight := 400]
+    set window [windowTitle := "Text Editor", containerBorderWidth := 0,windowDefaultWidth := 800, windowDefaultHeight := 400, windowResizable:=False]
     --We need to set the window color to white (RGB format)
     widgetModifyBg window StateNormal (Color 0xFFFF 0xFFFF 0xFFFF)
     --Menu
@@ -101,7 +101,7 @@ main= do
     mapM_ highlightSyntaxMain [(syntaxhighlight,textview,table,horizontalBox)]
     mapM_ pasteFromClipboard [(pastetext,textview)]
     mapM_ copyFromClipboard [(copytext,textview)]
-    mapM_ createNewFile [(newfile,textview)]
+    mapM_ createNewFile [(newfile,textview,table)]
     mapM_ savedisplaydialog [(savefile,textview)]
     mapM_ loaddisplaydialog [(openfile,textview,table,horizontalBox)]
     mapM_ runSpellCheck [(spellcheck,textview)]

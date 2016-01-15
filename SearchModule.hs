@@ -4,6 +4,7 @@ import qualified Control.Monad as CM
 import qualified Data.Char as DC
 --marca una determinada palabra con un determinado tag que se recibe. Se busca en todo el texto.No se hacen búsquedas paciales, es decir que no se marca un string que aparezca parcialmente dentro de otro palabra que haya en el texto.
 
+--primer parametro es el buffer, el segunto el tag a emplear para marcar, el tercero es la palabra que se busca.
 markWord::TextBuffer->TextTag->String->IO()
 markWord buffer  tag name=do
 				start<-textBufferGetStartIter buffer 
@@ -39,7 +40,7 @@ markWordRec buffer name start end acum tag nameOffset inOtherWord stopOnNewLine=
 								textIterForwardChars nextIter 1
 								currentString<-textBufferGetText  buffer end nextIter False								
 								let nextChar'=currentString !! 0
-								CM.when ((endOffset == topOffset) || DC.isSpace nextChar' || (nextChar' == '.') || (nextChar' == ':')|| (nextChar' == ';')|| (nextChar' == ',')|| (nextChar' == '-'))	(textBufferApplyTag buffer tag start end)
+								CM.when ((endOffset == topOffset) || DC.isSpace nextChar' || (nextChar' == '.') || (nextChar' == ':')|| (nextChar' == ';')|| (nextChar' == ',')|| (nextChar' == '-')|| (nextChar' == ']')|| (nextChar' == '='))	(textBufferApplyTag buffer tag start end)
 								
 								--se busca siguiente ocurrencias si no se encuentra en el final del buffer
 								if (endOffset < topOffset)

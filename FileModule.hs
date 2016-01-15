@@ -4,7 +4,9 @@ import Graphics.UI.Gtk
 import Control.Monad.IO.Class
 import System.IO
 import SyntaxHighlightModule
---definicion de funciones
+import FoldingModule
+
+--definición de funciones
 
 --recibe el string del nombre del archivo y el textview.
 --No reterna nada. Inserta el texto del archivo en el buffer del textview.
@@ -36,11 +38,11 @@ writeFileFromTextView fileName txtView=
 
 --función que se emplea para la opción de "nuevo archivo".
 --newFile:: ActionClass self =>(self,TextView) -> IO (ConnectId self)
-createNewFile:: ActionClass self =>(self,TextView) -> IO (ConnectId self)
-createNewFile (a,txtView) =onActionActivate a $
+createNewFile:: ActionClass self =>(self,TextView,Table) -> IO (ConnectId self)
+createNewFile (a,txtView,table ) =onActionActivate a $
 		do	putStrLn ("New file")
 			txtBuffer <- textViewGetBuffer txtView
 			start <- textBufferGetStartIter txtBuffer
 			end <- textBufferGetEndIter txtBuffer
 			textBufferDelete txtBuffer start end
-			
+			clearButtons table --se borran los botones para colapsar código del archivo anterior

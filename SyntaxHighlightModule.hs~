@@ -33,7 +33,7 @@ highlightSyntax txtview table hbox=do
 			--se marcan palabras clave de la sintaxis de Haskell.
 			markReservedWords txtBuffer	
 			
-			--parseo y marcado de sintaxis.
+			--parseo y marcado de sintaxis. También se agregan los botones para colapsar el código.
 			let parseResult=Language.Haskell.Parser.parseModule contents
 			processResult parseResult txtBuffer table hbox
 			
@@ -83,9 +83,9 @@ process_hsdecl buffer (HsDataDecl loc _ hsName _ hsDataDecl _ )	=do
 							markElement buffer loc (extractHsName hsName)  gtag
 							foldIO (process_hsConDecl buffer ) hsDataDecl
  
-		
+process_hsdecl buffer (HsPatBind loc hspat _ _ )=processHsPat buffer loc hspat		
 process_hsdecl _ _ =return ()
-
+--HsPatBind SrcLoc HsPat HsRhs [HsDecl]
 --
 process_hsQualType::TextBuffer->HsQualType->SrcLoc->IO()
 process_hsQualType buffer (HsQualType _ hs_type) srcLoc=process_hsType buffer hs_type srcLoc
@@ -98,6 +98,9 @@ process_hsType buffer (HsTyFun hstype1 hstype2) srcLoc = do
 process_hsType buffer (HsTyCon hsQName) srcLoc =do
 						tag <-greenTag
 						process_hsQName buffer hsQName srcLoc tag
+process_hsType buffer (HsTyApp hstype1 hstype2)  srcLoc= do
+						process_hsType buffer hstype1 srcLoc
+						process_hsType buffer hstype2 srcLoc
 process_hsType buffer _  _= return ()
 --
 process_hsQName:: TextBuffer->HsQName->SrcLoc->TextTag->IO()

@@ -9,3 +9,6 @@ getX (Punto3D x y z)= x
 sumX:: [Punto]->Float
 sumX ((Punto2D x _ ):xs)=x + (sumX xs)
 sumX ((Punto3D x _ _):xs)=x + (sumX xs)
+
+something::Int->IO Int
+something i = return i

@@ -83,7 +83,7 @@ process_hsdecl buffer (HsDataDecl loc _ hsName _ hsDataDecl _ )	=do
 							markElement buffer loc (extractHsName hsName)  gtag
 							foldIO (process_hsConDecl buffer ) hsDataDecl
  
-		
+process_hsdecl buffer (HsPatBind loc hspat _ _ )=processHsPat buffer loc hspat		
 process_hsdecl _ _ =return ()
 
 --
@@ -98,6 +98,9 @@ process_hsType buffer (HsTyFun hstype1 hstype2) srcLoc = do
 process_hsType buffer (HsTyCon hsQName) srcLoc =do
 						tag <-greenTag
 						process_hsQName buffer hsQName srcLoc tag
+process_hsType buffer (HsTyApp hstype1 hstype2)  srcLoc= do
+						process_hsType buffer hstype1 srcLoc
+						process_hsType buffer hstype2 srcLoc
 process_hsType buffer _  _= return ()
 --
 process_hsQName:: TextBuffer->HsQName->SrcLoc->TextTag->IO()
