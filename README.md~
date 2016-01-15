@@ -10,10 +10,12 @@ Se toma como base el tutorial [1].
 + Emprolijar este informe
 + Ponerle a este informe la presentación que piden los profesores.
 + Para implementar la búsqueda de palabras, falta poner en la barra de herramientas un cuadro para ingresar el texto y un botón para activar la búsqueda de la palabra. Una vez que se tiene la palabra a buscar, usar la funcion "FoldingModule.hs" (SearchModule.hs") que ya esta implementada y que te marca la palabra que le pases como parametro.
-+ implementar el macheo de parentesis.
++ implementar el marcado de parentesis.
 + probar el programa a fondo.
 + ver como es el tema del scroleo. Ahora no esta implementado. Si el texto no entra en pantalla, no se ve por mas que se haga bajar el cursor.
-+ actualizar todas las capturas de pantalla con la última versión de la aplicación. No van mas los prototipos, se tiene que ver la versión final
++ actualizar todas las capturas de pantalla con la última versión de la aplicación. No van mas los prototipos, se tiene que ver la versión final.
++ Las capturas de pantalla de la versión final, van en la carpeta "images".
++ Los links no deberían estar sueltos por el informe, deberían estar bien citados como la intoducción de mas arriba (usando corchetes y un numero)y la correspondiente entrada en bibliiografía.
 
 ## Funcionalidades básicas
 Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a hacer CTRL+C), copiar lo que se haya seleccionado al clipboard.
@@ -25,7 +27,7 @@ El texto del documento se carga en un TextView (http://projects.haskell.org/gtk2
 
 En la parte superior se encuentran botones con las funcionalidades. Los iconos de dichos botones son los que vienen por defecto en la librería GTK (http://www.pygtk.org/pygtk2reference/gtk-stock-items.html).
 
-En el siguiente diagrama se puede apreciar un esquema sobre la implementación de la interfaz gráfica. Dentro de la ventana principal se ubica una caja vertical que contiene los principales elementos gráficos: barra de herramientas, un separador, y una caja horizontal. La caja horizontal contiene dos elmentos alineados en forma horizontal: la tabla de botones para la fución de colapsado de código, y la ventana de edición de texto.
+En el siguiente diagrama se puede apreciar un esquema sobre la implementación de la interfaz gráfica. Dentro de la ventana principal se ubica una caja vertical que contiene los principales elementos gráficos ordenados en forma vertical: barra de herramientas, un separador, y una caja horizontal. La caja horizontal contiene dos elmentos alineados en forma horizontal: la tabla de botones para la fución de colapsado de código, y la ventana de edición de texto.
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/images/Diagrama-Final programacion funcional.png)
 
 ## Resaltador de sintaxis de haskell
@@ -67,10 +69,10 @@ NOTA:se puede editar mientras se este en modo de correción.
 Para abrir un archivo se debe tocar el botón correspondiente en la barra de herramientas. Al presionarlo, se abre una ventana que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se emplea la función readFile de Haskell para leerlo. Luego se carga el contenido del archivo en el buffer de la ventana de edición de texto (TextView http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html).
 
 ## Guardar un archivo
-Para utilizar esta funcionalidad se debe presionar el correspondiente botón en la barra de herramientas.Al presionarlo see abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Después se emplea la función writeFile de Haskell para guardar el contenido de la ventana de edición de texto (TextView) en el archivo. 
+Para utilizar esta funcionalidad se debe presionar el correspondiente botón en la barra de herramientas.Al presionarlo se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Después se emplea la función writeFile de Haskell para guardar el contenido de la ventana de edición de texto (TextView) en el archivo. 
 
 ## Nuevo archivo.
-Se borra el contenido del buffer (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextBuffer.html#v%3AtextBufferDelete) de la ventana de edición de texto (TextView).
+Se borra el contenido del buffer (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextBuffer.html#v%3AtextBufferDelete) de la ventana de edición de texto (TextView). También se eliminan los botones del colapsado de código que hayan quedado del archivo que se tenía abierto.
 
 ## Copiar 
 Se copia en el clipboard, lo que se haya seleccionado de la ventana principal de edición de texto.
@@ -84,9 +86,11 @@ Cuando se tiene el texto resaltado con la sintaxis de Haskell, se ofrece la posi
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/antesColapsar.png)
 
 
-Cuando se presiona dicho botón,  se colapsa la definición completa de la función y solo se deja el nombre; luego de realizar esto, dicho botón queda oscurecido para indicar que la función se encuentra activada. En caso de que se vuelva a presionar el botón, se vuelve a mostrar la definición de la función y botón vuelve a su estado anterior (no oscurecido para indicar que no esta activada esta función). Esto se puede ver en la siguiente captura de pantalla de la aplicación:
+Cuando se presiona dicho botón,  se colapsa la definición completa de la función y solo se deja el nombre; luego de realizar esto, dicho botón queda oscurecido para indicar que la función se encuentra activada.  Esto se puede ver en la siguiente captura de pantalla de la aplicación:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/despuesColapsar.png)
+
+En caso de que se vuelva a presionar el botón, se vuelve a mostrar la definición de la función y botón vuelve a su estado anterior (no oscurecido para indicar que no esta activada esta funcionalidad).
 
 Al presionar estos botones, si se colapsa una o más líneas debajo de una función, los botones de las funciones que se encuentran debajo de la primera deben ser movidos hacia arriba en la misma proporción de líneas. Cuando se realiza el proceso inverso ( se desactiva el colapsado del código sobre una función), se mueven hacia abajo los botones de las funciones que se encuentran abajo de la función a la cual se le aplica esta funcionalidad.
 
@@ -112,7 +116,7 @@ Junto con los botones mencionados anteriormente, se ofrece en la barra superior 
 + FoldingModule.hs: modulo que realiza la función de colapsado de código de una función.
 + SearchModule: implementa la búsqueda y el marcado de palabras.
 + SpellingModule.hs: implementa la correción ortográfica.
-+ SyntaxHighlightModule.hs: contiene la implementación del parseo y marcado de la sintaxis de Haskell
++ SyntaxHighlightModule.hs: contiene la implementación del parseo y marcado de la sintaxis de Haskell.
 + SyntaxUtilsModule.hs: contiene funciones de uso común para los módulos "SyntaxHighlightModule.hs" y "FoldingModule.hs".
 + TagsModule: modulo que implementa tipos de tags que se utilizan en varios módulos.
 
@@ -127,11 +131,11 @@ El proyecto depende de las siguientes programas y librerías:
 + happy
 + haskell-src
 
-Las mismas se pueden instalar utilizando el script para Linux "setupEnviroment.sh" que se encuentra junto con los archivos del proyecto.
+Las mismas se pueden instalar utilizando el script para Linux "setupEnviroment.sh" que se encuentra junto con los archivos del proyecto. El mismo fue utilizado exitosamente en Ubuntu 14.04 .
 
 ## Compilación y ejecución del proyecto
 Antes de compilar el programa, se necesitan tener instaladas las dependencias descriptas en el punto anterior.
-Para compilar el programa, se utiliza el compilador de Haskell "ghc". En el script de Linux "correr.sh" se puede ver como se compila y se ejecuta el programa. En el mismo, el ejecutable que se obtienen se llama "app".
+Para compilar el programa, se utiliza el compilador de Haskell "ghc" ("Glasgow Haskell compiler"). En el script de Linux "correr.sh" se puede ver como se compila y se ejecuta el programa. En el mismo, el ejecutable que se obtienen se llama "app".
 
 ## Bibliografía
 + [1] http://www.muitovar.com/gtk2hs/index.html
