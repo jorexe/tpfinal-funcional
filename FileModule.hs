@@ -10,8 +10,8 @@ import FoldingModule
 
 --recibe el string del nombre del archivo y el textview.
 --No reterna nada. Inserta el texto del archivo en el buffer del textview.
-readFileIntoTextView:: FilePath -> TextView->Table->HBox -> IO ()
-readFileIntoTextView fileName txtView table hbox=
+readFileIntoTextView:: FilePath -> TextView->Table -> IO ()
+readFileIntoTextView fileName txtView table =
 		do	putStrLn ("Opening file: " ++ fileName)
 			handle <- openFile fileName ReadMode
   			contents <- hGetContents handle
@@ -19,7 +19,8 @@ readFileIntoTextView fileName txtView table hbox=
    			textBufferSetText txtBuffer contents
 		  	putStr contents
 			hClose handle
-			highlightSyntax txtView	table hbox
+			clearButtons table --se borran los botones para colapsar código del archivo anterior
+			highlightSyntax txtView	table 
 			return ()
 
 --recibe el string del nombre del archivo y el textview.

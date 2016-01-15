@@ -68,7 +68,7 @@ main= do
     containerAdd horizontalBox textview
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "codigoPrueba2.hs" textview table horizontalBox	
+    readFileIntoTextView "codigoPrueba2.hs" textview table 	
     
     
    
@@ -98,7 +98,7 @@ main= do
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
     mapM_ printexample [quitapp,syntaxhighlight]
-    mapM_ highlightSyntaxMain [(syntaxhighlight,textview,table,horizontalBox)]
+    mapM_ highlightSyntaxMain [(syntaxhighlight,textview,table)]
     mapM_ pasteFromClipboard [(pastetext,textview)]
     mapM_ copyFromClipboard [(copytext,textview)]
     mapM_ createNewFile [(newfile,textview,table)]
@@ -142,7 +142,7 @@ loaddisplaydialog (a,textview,table,hbox) = onActionActivate a $ do
                     ResponseCancel -> putStrLn "You cancelled..."
                     ResponseAccept -> do nwf <- fileChooserGetFilename fchdal
                                          case nwf of Nothing -> putStrLn "Nothing" 
-                                                     Just path -> readFileIntoTextView path textview table hbox
+                                                     Just path -> readFileIntoTextView path textview table 
 
                     ResponseUser 100 -> putStrLn "You pressed the backup button"
                     ResponseDeleteEvent -> putStrLn "You closed the dialog window..."

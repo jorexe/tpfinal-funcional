@@ -68,7 +68,7 @@ main= do
     containerAdd horizontalBox textview
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "codigoPrueba2.hs" textview table horizontalBox	
+    readFileIntoTextView "codigoPrueba2.hs" textview table 	
     
     
    
@@ -98,10 +98,10 @@ main= do
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
     mapM_ printexample [quitapp,syntaxhighlight]
-    mapM_ highlightSyntaxMain [(syntaxhighlight,textview,table,horizontalBox)]
+    mapM_ highlightSyntaxMain [(syntaxhighlight,textview,table)]
     mapM_ pasteFromClipboard [(pastetext,textview)]
     mapM_ copyFromClipboard [(copytext,textview)]
-    mapM_ createNewFile [(newfile,textview)]
+    mapM_ createNewFile [(newfile,textview,table)]
     mapM_ savedisplaydialog [(savefile,textview)]
     mapM_ loaddisplaydialog [(openfile,textview,table,horizontalBox)]
     mapM_ runSpellCheck [(spellcheck,textview)]

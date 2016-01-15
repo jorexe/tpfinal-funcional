@@ -5,32 +5,30 @@ import Graphics.UI.Gtk
 import Language.Haskell.Syntax
 import TagsModule
 
-					--boton , linea en la que se encuentra
-data ButtonProperty=ButtonProperty ToggleButton Int 
 
 --función principal en la funcionalidad de colapsar código.
-processFolding::HsModule->TextBuffer->Table->HBox  -> IO ()
-processFolding (HsModule _  _ _ _ hsDecl) buffer table hbox=do
+processFolding::HsModule->TextBuffer->Table  -> IO ()
+processFolding (HsModule _  _ _ _ hsDecl) buffer table =do
 								clearButtons table
-								processHsDecl buffer hsDecl table hbox
+								processHsDecl buffer hsDecl table 
 								widgetShowAll table
 								putStrLn "[processFolding] buttons done"
 --
-processHsDecl:: TextBuffer -> [ HsDecl ]->Table ->HBox ->IO ()
-processHsDecl buffer ((HsFunBind hsMatch):xs) table hbox=do
+processHsDecl:: TextBuffer -> [ HsDecl ]->Table ->IO ()
+processHsDecl buffer ((HsFunBind hsMatch):xs) table =do
 						putStrLn "[FoldingModule, processHsDecl] hsFunBind"
-						processHsMatch xs hsMatch buffer table hbox
-						processHsDecl buffer xs table hbox
-processHsDecl buffer (x:xs) table hbox =processHsDecl buffer xs table hbox
-processHsDecl _   _ _  _= do
+						processHsMatch xs hsMatch buffer table 
+						processHsDecl buffer xs table 
+processHsDecl buffer (x:xs) table  =processHsDecl buffer xs table 
+processHsDecl _   _ _  = do
 			putStrLn  "[FoldingModule, processHsDecl] others: "
 			return()
 --
 
 --primera lista contiene las siguientes declaraciones de Haskell.
 --segunda lista tiene como primer elemento a la declaración de la actual función. Los siguientes elementos son las siguientes funciones.
-processHsMatch :: [HsDecl] -> [HsMatch] -> TextBuffer->Table->HBox->IO [ButtonProperty]
-processHsMatch xs (y:ys) buffer table hbox= do
+processHsMatch :: [HsDecl] -> [HsMatch] -> TextBuffer->Table->IO ()
+processHsMatch xs (y:ys) buffer table = do
 					start<-getNameEndIter y buffer --iterador al comienzo del código a ocultar
 					--lineBelow el numero linea que la cual se oculta codigo
 					(end,nextLine)<- if (null ys)
@@ -53,19 +51,19 @@ processHsMatch xs (y:ys) buffer table hbox= do
 					button<-createButton start end tag buffer
 					tableAttachDefaults table button 0 1 (row-1) row
 					
-					nextButtonProperties<-processHsMatch xs ys buffer table hbox --llamada recursiva. En la variable quedan los siguientes botones
+					nextButtonProperties<-processHsMatch xs ys buffer table  --llamada recursiva. En la variable quedan los siguientes botones
 					
 					
-					onToggled button (buttonSwitch button buffer tag start end nextButtonProperties table (currentLine - nextLine ))			
+					onToggled button (buttonSwitch button buffer tag start end table (currentLine - nextLine ))			
 					
 					putStrLn ("[FoldingModule, processHsMatch].CurrentLine: " ++ (show currentLine )++ "line nextLine: " ++ (show nextLine))
 					
 					
 					--tableAttach table button 0 1 (row-1) row [Shrink] [Shrink] 0 0
 					
-					return ((ButtonProperty button row):nextButtonProperties)
+					
 
-processHsMatch _ _ _  _ _=return []
+processHsMatch _ _ _  _ =return ()
 --
 
 getRow::HsMatch-> Int
@@ -145,8 +143,8 @@ createButton start end tag buffer=do
 
 --nextButtonsProperties contiene las propiedades de los siguientes botones, no la del actual.
 -- lines contiene la cantidad de lineas que hay que desplazar el boton de abajo cuando se oculta el código
-buttonSwitch :: ToggleButton->TextBuffer->TextTag->TextIter->TextIter->[ButtonProperty] ->Table -> Int-> IO ()
-buttonSwitch button buffer tag start end nextButtonsProperty table lines= do
+buttonSwitch :: ToggleButton->TextBuffer->TextTag->TextIter->TextIter ->Table -> Int-> IO ()
+buttonSwitch button buffer tag start end table lines= do
 					  active<-toggleButtonGetActive button
 					  if ( active)
 						then	do
