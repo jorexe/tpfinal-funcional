@@ -1,0 +1,3 @@
+#!/bin/bash
+echo 'Revisando errores de ortografía en el informe'
+ aspell  --lang=es < ./README.md

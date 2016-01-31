@@ -30,16 +30,14 @@ highlightSyntax txtview table =do
 			--se remueven marcas previas
 			textBufferRemoveAllTags txtBuffer start end			
 			
-			--se marcan palabras clave de la sintaxis de Haskell.
-			markReservedWords txtBuffer	
+			
 			
 			--parseo y marcado de sintaxis. También se agregan los botones para colapsar el código.
 			let parseResult=Language.Haskell.Parser.parseModule contents
 			processResult parseResult txtBuffer table 
 			
 					
-			--se marcan comentarios
-			markComments txtBuffer
+			
 			putStrLn("[highlightSyntax]texto parseado")
 			
 		
@@ -55,12 +53,18 @@ markReservedWords txtBuffer =do
 processResult::ParseResult HsModule->TextBuffer->Table-> IO()
 processResult (ParseOk modul) buffer table = do
 				putStrLn("[highlightSyntax] ParseOK")
-				putStrLn(show modul)
+
+				--se marcan palabras clave de la sintaxis de Haskell.
+				markReservedWords txtBuffer	
+				--putStrLn(show modul)
+				
+				--se marca la sintaxis segun lo parseado				
 				processModule modul buffer
 				--se agregan los botones para colapsar el código
 				processFolding modul buffer table 
-
-processResult (ParseFailed _ _) _ _  _=do
+				--se marcan comentarios
+				markComments txtBuffer
+processResult (ParseFailed _ _) _ _  =do
 					putStrLn("[highlightSyntax] ParseFailed (not valid Haskell syntax)")
 					return ()
 --
