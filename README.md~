@@ -63,7 +63,7 @@ Después de tocar el botón del corrector se obtiene lo siguiente:
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/despues.png)
 
 
-NOTA:se puede editar mientras se este en modo de correción.
+NOTA:se puede editar mientras se este en modo de corrección.
 
 ## Abrir archivo
 Para abrir un archivo se debe tocar el botón correspondiente en la barra de herramientas. Al presionarlo, se abre una ventana que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se emplea la función readFile de Haskell para leerlo. Luego se carga el contenido del archivo en el buffer de la ventana de edición de texto (TextView http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html).

@@ -9,7 +9,7 @@ Se toma como base el tutorial [1].
 ## LO QUE FALTA
 + Emprolijar este informe
 + Ponerle a este informe la presentación que piden los profesores.
-+ Para implementar la búsqueda de palabras, falta poner en la barra de herramientas un cuadro para ingresar el texto y un botón para activar la búsqueda de la palabra. Una vez que se tiene la palabra a buscar, usar la función "FoldingModule.hs" (SearchModule.hs") que ya esta implementada y que te marca la palabra que le pases como parámetro.
++ Para implementar la búsqueda de palabras, falta poner en la barra de herramientas un cuadro para ingresar el texto y un botón para activar la búsqueda de la palabra. Una vez que se tiene la palabra a buscar, usar la función "markWord" (esta en el archivo "SearchModule.hs") que ya esta implementada y que te marca la palabra que le pases como parámetro.
 + implementar el marcado de paréntesis.
 + probar el programa a fondo.
 + ver como es el tema del scroleo. Ahora no esta implementado. Si el texto no entra en pantalla, no se ve por mas que se haga bajar el cursor.
