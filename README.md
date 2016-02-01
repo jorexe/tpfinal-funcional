@@ -1,4 +1,4 @@
-# tp final-programación funcional
+# tp final-Programación funcional
 
 ***Jorge Gomez, Fernando Bejarano***
 
@@ -37,7 +37,8 @@ En el siguiente diagrama se puede apreciar un esquema sobre la implementación d
 El módulo que se utiliza para realizar el parseo de la sintaxis de Haskel es "Language.Haskell.Parser"  [9].
 
 Se emplea la función "parseModule" del parser "Language.Haskell.Parser" que viene en Haskell para parsear el código que viene del archivo. Si se obtiene un resultado de tipo "ParseOk" (el parseo del texto fue exitoso ya que presenta sintaxis de Haskell válida) se resalta gráficamente el código. Si se obtiene un resultado de tipo "ParseFailed" no se resalta el código.
-La idea es que el resaltado de sintaxis se vea forma similar a como lo realiza el editor de texto "gedit", utilizando etiquetas en la ventana de edición de texto (TextView) para asignarle un color representativo a cada elemento de la sintaxis.
+
+La idea es que el resaltado de sintaxis se vea forma similar a como lo realiza el editor de texto "gedit", de manera que se asigne un color representativo a cada elemento de la sintaxis:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/gedit_haskell.png)
 
@@ -72,7 +73,7 @@ NOTA:se puede editar mientras se este en modo de corrección. Luego de editar, e
 Para abrir un archivo se debe tocar el botón correspondiente en la barra de herramientas. Al presionarlo, se abre una ventana de diálogo que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se carga el contenido del mismo en la ventana de edición de texto.
 
 En cuanto al código, lo que se realiza internamente es utilizar la función "openFile" del módulo "System.IO" para abrir el archivo en modo lectura. Como resultado de esto, se obtiene un "Handle"; mas tarde se obtiene el texto del archivo empleando la función "hGetContents" la cual recive como parámetro el handle.
-Una vez que se tiene el contenido del archivo, se lo carga en el buffer de la ventana de edición de texto (TextView http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html). Por último, se cierra el handle. 
+Una vez que se tiene el contenido del archivo, se lo carga en el buffer de la ventana de edición de texto ( [8] ). Por último, se cierra el handle. 
 
 ## Guardar un archivo
 Para utilizar esta funcionalidad se debe presionar el correspondiente botón en la barra de herramientas. Al presionarlo se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Luego de confirmar estos datos, se guarda el contenido de la ventana de edición de texto (TextView) en un archivo.
@@ -80,7 +81,7 @@ Para utilizar esta funcionalidad se debe presionar el correspondiente botón en 
 Internamente se extrae el texto de la ventana de edición, y se emplea la función "writeFile" del módulo "System.IO" de Haskell para grabar este texto en archivo con el nombre y ubicación indicados. 
 
 ## Nuevo archivo.
-Se borra el contenido del buffer (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextBuffer.html#v%3AtextBufferDelete) de la ventana de edición de texto (TextView). También se eliminan los botones del colapsado de código que hayan quedado del archivo que se tenía abierto.
+Se borra el contenido del buffer ( [10] ) de la ventana de edición de texto ( [8] ). También se eliminan los botones del colapsado de código que hayan quedado del archivo que se tenía abierto.
 
 ## Copiar 
 Se copia en el clipboard, lo que se haya seleccionado de la ventana principal de edición de texto. Para lograr esto, se obtiene el clipboard de selección de la interfaz gráfica y el clipboard general del sistema operativo. Por último,  el texto seleccionado en el clipboard de la interfaz gráfica (texto marcado en la ventana de edición) se graba en el clipboard del sistema operativo.
@@ -101,7 +102,7 @@ En caso de que se vuelva a presionar el botón, se vuelve a mostrar la definici�
 
 Al presionar estos botones, si se colapsa una o más líneas debajo de una función, los botones de las funciones que se encuentran debajo de la primera deben ser movidos hacia arriba en la misma proporción de líneas que se colapsaron. Cuando se realiza el proceso inverso ( se desactiva el colapsado del código sobre una función), se mueven hacia abajo los botones de las funciones que se encuentran abajo de la función a la cual se le restauran la definición.
 
-Para ocultar el texto, se emplean etiquetas sobre el texto en el buffer de la ventana de edición que lo vuelven "invisible" (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextTag.html#v%3AtextTagInvisible), aunque en realidad no se lo borra. Para volver a mostrar este texto, simplemente se quitan estas marcas y luego el texto vuelve a ser visible en la la ventana de edición.
+Para ocultar el texto, se emplean etiquetas sobre el texto en el buffer de la ventana de edición que lo vuelven "invisible" [11], aunque en realidad no se lo borra. Para volver a mostrar este texto, simplemente se quitan estas marcas y luego el texto vuelve a ser visible en la la ventana de edición.
 
 
 ## Macheo de paréntesis y de llaves [falta implementar]
@@ -151,10 +152,14 @@ Para compilar el programa, se utiliza el compilador de Haskell "ghc" ("Glasgow H
 + [4] http://blog.codeslower.com/static/CheatSheet.pdf
 + [5] Gideon Sireling. Graphical user interfaces in Haskell. 2011.
 + [6] Haspell: Haskell bindings to Aspell.
-+ https://hackage.haskell.org/package/haspell-1.1.0/docs/doc-index.html
+  https://hackage.haskell.org/package/haspell-1.1.0/docs/doc-index.html
 + [7] Stock Items. The gtk Class Reference.
-+ http://www.pygtk.org/pygtk2reference/gtk-stock-items.html
+  http://www.pygtk.org/pygtk2reference/gtk-stock-items.html
 + [8] TextView.
-+ http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html
+  http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html
 + [9] Haskell parser.
-+ https://hackage.haskell.org/package/haskell-src-1.0.2.0/docs/Language-Haskell-Parser.html
+  https://hackage.haskell.org/package/haskell-src-1.0.2.0/docs/Language-Haskell-Parser.html
++ [10] Textbuffer.
+  http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextBuffer.html
++ [11] Text tag invisible.
+  http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextTag.html#v%3AtextTagInvisible
