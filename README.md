@@ -18,42 +18,42 @@ Se toma como base el tutorial [1].
 + Los links no deberían estar sueltos por el informe, deberían estar bien citados como la introducción de mas arriba (usando corchetes y un numero)y la correspondiente entrada en bibliografía.
 
 ## Funcionalidades básicas
-Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a presionar CTRL+C), copiar lo que se haya seleccionado al clipboard.
+Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a presionar CTRL+C) a la ventana de edición de texto, copiar el texto seleccionado al clipboard.
 
 ## Interfaz gráfica
-El texto del documento se carga en un TextView (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html)
- con letra negra.
+El texto del documento se carga con letra negra en un TextView (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html)
+ .
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/base.png)
 
-En la parte superior se encuentran botones con las funcionalidades. Los iconos de dichos botones son los que vienen por defecto en la librería GTK (http://www.pygtk.org/pygtk2reference/gtk-stock-items.html).
+En la parte superior se encuentra una barra de herramientas con los botones que proveen las funcionalidades. Los iconos de dichos botones son los que vienen por defecto en la librería GTK (http://www.pygtk.org/pygtk2reference/gtk-stock-items.html).
 
-En el siguiente diagrama se puede apreciar un esquema sobre la implementación de la interfaz gráfica. Dentro de la ventana principal se ubica una caja vertical que contiene los principales elementos gráficos ordenados en forma vertical: barra de herramientas, un separador, y una caja horizontal. La caja horizontal contiene dos elementos alineados en forma horizontal: la tabla de botones para la función de colapsado de código, y la ventana de edición de texto.
+En el siguiente diagrama se puede apreciar un esquema sobre la implementación de la interfaz gráfica. Dentro de la ventana principal se ubica una caja vertical que contiene los principales elementos gráficos ordenados en forma vertical: la barra de herramientas, un separador, y una caja horizontal. La caja horizontal contiene dos elementos alineados en forma horizontal: la tabla de botones para la función de colapsado de código, y la ventana de edición de texto.
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/images/Diagrama-Final programacion funcional.png)
 
 ## Resaltado de sintaxis de haskell
 https://hackage.haskell.org/package/haskell-src-1.0.2.0/docs/Language-Haskell-Parser.html
 
-Se emplea la función "parseModule" del parser "Language.Haskell.Parser" que viene en Haskell para parsear el código que viene del archivo. Si se obtiene como resultado un "ParseOk" (el parseo del texto fue exitoso ya que presenta sintaxis de Haskell válida) se resalta gráficamente el código. Si se obtiene "ParseFailed" no se resalta el código.
-La idea es que el resaltado de sintaxis se vea forma similar a como lo realiza el editor de texto "gedit", utilizando tags en la ventana de edición de texto (TextView) para asignarle un color representativo a cada elemento de la sintaxis.
+Se emplea la función "parseModule" del parser "Language.Haskell.Parser" que viene en Haskell para parsear el código que viene del archivo. Si se obtiene un resultado de tipo "ParseOk" (el parseo del texto fue exitoso ya que presenta sintaxis de Haskell válida) se resalta gráficamente el código. Si se obtiene un resultado de tipo "ParseFailed" no se resalta el código.
+La idea es que el resaltado de sintaxis se vea forma similar a como lo realiza el editor de texto "gedit", utilizando etiquetas en la ventana de edición de texto (TextView) para asignarle un color representativo a cada elemento de la sintaxis.
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/prototipo/gedit_haskell.png)
 
-Los colores que se emplean sobre la fuente de las letras son los siguientes:
-+ nombre de función: negro en cursiva .
+Los colores que se emplean sobre la fuente de las letras para representar elementos de la sintaxis son los siguientes:
++ nombre de función: negro en cursiva.
 + comentario: azul.
 + tipo de dato y constructores: verde.
-+ las palabras reservadas ( por ejemplo "data"): marrón. La lista de estas palabras se obtuvo de [4].
++ las palabras reservadas ( por ejemplo "data"): marrón. La lista de estas palabras se obtuvo de [4] y es la siguiente: "case", "class", "data", "deriving", "do","else", "if", "import", "in", "infix", "infixl", "infixr","instance", "let", "of", "module", "newtype", "then", "type", "where".
 + el resto: en negro sin subrayado ni cursiva.
 
-Esta funcionalidad se realiza en forma automática cuando se abre un archivo; en caso de que la sintaxis sea válida se la resalta. En forma adicional, se puede activar con un botón en la barra de herramientas. Si luego de haberse realizado el resaltado de la sintaxis se realiza algún cambio sobre el texto, es necesario volver a presionar este botón para que se ajuste el resaltado al nuevo texto que se tiene.
+Esta funcionalidad se realiza en forma automática cuando se abre un archivo. En caso de que la sintaxis no sea válida, no se la resalta. En forma adicional, esta funcionalidad se puede activar con un botón en la barra de herramientas. Si luego de haberse realizado el resaltado de la sintaxis se realiza algún cambio sobre el texto, es necesario volver a presionar este botón para que se ajuste el resaltado al nuevo texto que se tiene.
 
 
 ## Corrector ortográfico
-Para detectar las palabras mal escritas, se emplea la librería Aspell para Haskell (Haspell) :https://hackage.haskell.org/package/haspell-1.1.0/docs/doc-index.html
+Para detectar las palabras mal escritas , se emplea la librería Aspell para Haskell (Haspell) :https://hackage.haskell.org/package/haspell-1.1.0/docs/doc-index.html. Esta librería indica como incorrectas a aquellas palabras que no se encuentren en el diccionario que se esta empleando; la implementación hecha para este trabajo ofrece soporte para el diccionario español.
 
 Para resaltar las palabras mal escritas se utilizan etiquetas en la ventana de edición de texto (TextView) del aplicativo, asignándoles color de letra rojo a las palabras que no se encuentren en el diccionario.
 
-Antes de tocar el botón del corrector:
+Por ejemplo dado el siguiente texto con errores ortográficos la aplicación se ve de la siguiente manera antes de tocar el botón del corrector:
 
 	
 ![Alt text](https://github.com/jorexe/tpfinal-funcional/blob/haskellSintax/prototipo/antes.png)
@@ -66,10 +66,10 @@ Después de tocar el botón del corrector se obtiene lo siguiente:
 NOTA:se puede editar mientras se este en modo de corrección.
 
 ## Abrir archivo
-Para abrir un archivo se debe tocar el botón correspondiente en la barra de herramientas. Al presionarlo, se abre una ventana que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se emplea la función readFile de Haskell para leerlo. Luego se carga el contenido del archivo en el buffer de la ventana de edición de texto (TextView http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html).
+Para abrir un archivo se debe tocar el botón correspondiente en la barra de herramientas. Al presionarlo, se abre una ventana de diálogo que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se emplea la función "readFile" de Haskell para leerlo. Luego se carga el contenido del archivo en el buffer de la ventana de edición de texto (TextView http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextView.html).
 
 ## Guardar un archivo
-Para utilizar esta funcionalidad se debe presionar el correspondiente botón en la barra de herramientas.Al presionarlo se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Después se emplea la función writeFile de Haskell para guardar el contenido de la ventana de edición de texto (TextView) en el archivo. 
+Para utilizar esta funcionalidad se debe presionar el correspondiente botón en la barra de herramientas. Al presionarlo se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Después se emplea la función "writeFile" de Haskell para guardar el contenido de la ventana de edición de texto (TextView) en el archivo. 
 
 ## Nuevo archivo.
 Se borra el contenido del buffer (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextBuffer.html#v%3AtextBufferDelete) de la ventana de edición de texto (TextView). También se eliminan los botones del colapsado de código que hayan quedado del archivo que se tenía abierto.
@@ -81,7 +81,7 @@ Se copia en el clipboard, lo que se haya seleccionado de la ventana principal de
 Se copia el contenido del clipboard en la posición del cursor en la ventana de edición de texto.
 
 ## Colapsar definiciones.
-Cuando se tiene el texto resaltado con la sintaxis de Haskell, se ofrece la posibilidad de colapsar las definiciones de funciones. Se muestra un botón con el símbolo "[-]" en el margen izquierdo de la línea donde esta definida la función. Esto se puede apreciar en el siguiente captura de pantalla:
+Cuando se tiene el texto resaltado con la sintaxis de Haskell, se ofrece la posibilidad de colapsar las definiciones de funciones de Haskell. Se muestra un botón con el símbolo "[-]" en el margen izquierdo de la línea donde esta definida la función. Esto se puede apreciar en la siguiente captura de pantalla:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/antesColapsar.png)
 
@@ -92,7 +92,7 @@ Cuando se presiona dicho botón,  se colapsa la definición completa de la funci
 
 En caso de que se vuelva a presionar el botón, se vuelve a mostrar la definición de la función y botón vuelve a su estado anterior (no oscurecido para indicar que no esta activada esta funcionalidad).
 
-Al presionar estos botones, si se colapsa una o más líneas debajo de una función, los botones de las funciones que se encuentran debajo de la primera deben ser movidos hacia arriba en la misma proporción de líneas. Cuando se realiza el proceso inverso ( se desactiva el colapsado del código sobre una función), se mueven hacia abajo los botones de las funciones que se encuentran abajo de la función a la cual se le aplica esta funcionalidad.
+Al presionar estos botones, si se colapsa una o más líneas debajo de una función, los botones de las funciones que se encuentran debajo de la primera deben ser movidos hacia arriba en la misma proporción de líneas que se colapsaron. Cuando se realiza el proceso inverso ( se desactiva el colapsado del código sobre una función), se mueven hacia abajo los botones de las funciones que se encuentran abajo de la función a la cual se le restauran la definición.
 
 Para ocultar el texto, se emplean etiquetas sobre el texto en el buffer de la ventana de edición que lo vuelven "invisible" (http://projects.haskell.org/gtk2hs/docs/devel/Graphics-UI-Gtk-Multiline-TextTag.html#v%3AtextTagInvisible), aunque en realidad no se lo borra. Para volver a mostrar este texto, simplemente se quitan estas marcas y luego el texto vuelve a ser visible en la la ventana de edición.
 
@@ -118,7 +118,7 @@ Junto con los botones mencionados anteriormente, se ofrece en la barra superior 
 + SpellingModule.hs: implementa la corrección ortográfica.
 + SyntaxHighlightModule.hs: contiene la implementación del parseo y marcado de la sintaxis de Haskell.
 + SyntaxUtilsModule.hs: contiene funciones de uso común para los módulos "SyntaxHighlightModule.hs" y "FoldingModule.hs".
-+ TagsModule: modulo que implementa tipos de tags que se utilizan en varios módulos.
++ TagsModule: modulo que implementa distintas marcas que se utilizan en varios módulos y que se pueden aplicar sobre partes del texto.
 
 ## Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:
@@ -131,7 +131,7 @@ El proyecto depende de las siguientes programas y librerías:
 + happy
 + haskell-src
 
-Las mismas se pueden instalar utilizando el script para Linux "setupEnviroment.sh" que se encuentra junto con los archivos del proyecto. El mismo fue utilizado exitosamente en Ubuntu 14.04 .
+Las mismas se pueden instalar utilizando el script para Linux "setupEnviroment.sh" que se encuentra junto con los archivos del proyecto. El mismo fue utilizado exitosamente en la distribución de linux "Ubuntu 14.04" .
 
 ## Compilación y ejecución del proyecto
 Antes de compilar el programa, se necesitan tener instaladas las dependencias descriptas en el punto anterior.
