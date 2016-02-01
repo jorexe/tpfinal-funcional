@@ -13,7 +13,9 @@ copyFromClipboard (a, txtview) = onActionActivate a $
 			readClipboard <-clipboardGet selectionPrimary
 			writeClipboard <-clipboardGet selectionClipboard
 			clipboardRequestText readClipboard (copyCallBack writeClipboard)
---
+
+--"selectionClipboard" es el clipboard general del sistema operativo
+--"selectionPrimary"es el clipboard de selección de texto de la ventana de edición de texto.
 pasteFromClipboard:: ActionClass self => (self,TextView) -> IO (ConnectId self)
 pasteFromClipboard (a, txtview) = onActionActivate a $
 		do	putStrLn ("Paste from clipboard")

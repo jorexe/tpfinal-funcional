@@ -19,9 +19,6 @@ pasteFromClipboard (a, txtview) = onActionActivate a $
 		do	putStrLn ("Paste from clipboard")
 			clipboard <-clipboardGet selectionClipboard
 			clipboardRequestText clipboard (pasteCallback txtview)
-
-
-
 --
 pasteCallback:: TextView -> Maybe String -> IO ()
 pasteCallback txtView (Just str)=
@@ -30,7 +27,6 @@ pasteCallback txtView (Just str)=
    				textBufferInsertAtCursor txtBuffer str
 pasteCallback txtView Nothing = 
 			do return()
-
 
 
 --

@@ -17,7 +17,7 @@ readFileIntoTextView fileName txtView table =
   			contents <- hGetContents handle
 			txtBuffer <- textViewGetBuffer txtView
    			textBufferSetText txtBuffer contents
-		  	putStr contents
+		  	--putStr contents
 			hClose handle
 			clearButtons table --se borran los botones para colapsar código del archivo anterior
 			highlightSyntax txtView	table 

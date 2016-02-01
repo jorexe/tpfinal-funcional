@@ -51,7 +51,10 @@ invisibleTag::IO TextTag
 invisibleTag=do
 		aux<- textTagNew Nothing
 		set aux [
-			textTagInvisibleSet := True 
+			textTagInvisible := True 
 		
 			]
 		return aux
+
+--estilo de letra color rojo italica
+redItalicTag::IO TextTag
