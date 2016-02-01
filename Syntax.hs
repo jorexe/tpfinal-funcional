@@ -44,7 +44,7 @@ data HsBangType
 = HsBangedTy HsType
 | HsUnBangedTy HsType
 
---HsMatch representa una definición de función con sus respectivos parámetros.SrcLoc contiene linea y columna en el archivo. Hsname el nombre de la funcion. HsPat son los argumentos que recive la definicion.
+--HsMatch representa una definición de función con sus respectivos parámetros.SrcLoc contiene linea y columna en el archivo. Hsname el nombre de la funcion. HsPat son los argumentos que recibe la definicion.
 data HsMatch = HsMatch SrcLoc HsName [HsPat] HsRhs [HsDecl] 
 data HsRhs
 = HsUnGuardedRhs HsExp

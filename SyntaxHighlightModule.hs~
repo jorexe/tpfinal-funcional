@@ -18,7 +18,6 @@ highlightSyntaxMain (a,textview,table) = onActionActivate a $ do
 							highlightSyntax textview table
 							putStrLn("[highlightSyntaxMain] done")							
 --
---hbox es la caja horizontal en la que se encuentra la tabla
 highlightSyntax:: TextView->Table ->IO()
 highlightSyntax txtview table =do
 			txtBuffer <- textViewGetBuffer txtview
@@ -55,7 +54,7 @@ processResult (ParseOk modul) buffer table = do
 				putStrLn("[highlightSyntax] ParseOK")
 
 				--se marcan palabras clave de la sintaxis de Haskell.
-				markReservedWords txtBuffer	
+				markReservedWords buffer	
 				--putStrLn(show modul)
 				
 				--se marca la sintaxis segun lo parseado				
@@ -63,7 +62,7 @@ processResult (ParseOk modul) buffer table = do
 				--se agregan los botones para colapsar el código
 				processFolding modul buffer table 
 				--se marcan comentarios
-				markComments txtBuffer
+				markComments buffer
 processResult (ParseFailed _ _) _ _  =do
 					putStrLn("[highlightSyntax] ParseFailed (not valid Haskell syntax)")
 					return ()
