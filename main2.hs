@@ -7,7 +7,8 @@ import SyntaxHighlightModule
 import FoldingModule
 --cantidad de filas que se muestran, por ahora esta fijo
 totalRows=39
-
+infline=0
+supline=38
 main :: IO ()
 main= do
     initGUI
@@ -47,6 +48,7 @@ main= do
 
     --caja horizontal que contiene la tabla con los botones para colapsar código y el textview
     horizontalBox <- hBoxNew False 5
+    sw <- scrolledWindowNew Nothing Nothing
     containerAdd vb horizontalBox
     
    --tabla con botones para colapsar código,se debería crear al leer el archivo (los botones dependen del archivo)
@@ -59,13 +61,16 @@ main= do
    -- boxPackStart horizontalBox table PackNatural 4
 
     --TextView
-    textview <- textViewNew
+    textview <- textViewNew 
     textViewSetWrapMode textview WrapChar
     widgetSetSizeRequest textview 700 400
     --textViewSetBorderWindowSize textview TextWindowRight 200
     --textViewSetBorderWindowSize textview TextWindowLeft 200
 --    boxPackStart horizontalBox textview PackNatural 4
-    containerAdd horizontalBox textview
+    --containerAdd sw 
+    containerAdd sw textview
+    containerAdd horizontalBox sw
+    --containerAdd horizontalBox textview
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
     readFileIntoTextView "codigoPrueba2.hs" textview table 	
@@ -78,6 +83,19 @@ main= do
     --highlightSyntax textview
 
     buffer <- get textview textViewBuffer
+    
+    --Signals
+    textview `on` moveViewport $ \ss i -> putStrLn "shown!"
+    textview `on` pageHorizontally $ \i b -> putStrLn "Paged"
+    textview `on` moveFocus $ \dirtype -> putStrLn "Focus moved!"
+    textview `on` pasteClipboard $ putStrLn "Something Pasted!"
+    textview `on` setAnchor $ putStrLn "Set anchor"
+    textview `on` textViewPreeditChanged $ \s -> do insertmark <- textBufferGetInsert buffer
+                                                    cursoriter <- textBufferGetIterAtMark buffer insertmark
+                                                    off <- textIterGetLine cursoriter
+                                                    putStrLn("insertAtCursor" ++ show (off) ++" "++s)
+    textview `on` moveCursor $ movedLineEvent buffer
+
     tags <- textBufferGetTagTable buffer
     kindaRedItalic <- textTagNew Nothing
     set kindaRedItalic [
@@ -148,3 +166,16 @@ loaddisplaydialog (a,textview,table,hbox) = onActionActivate a $ do
                     ResponseDeleteEvent -> putStrLn "You closed the dialog window..."
 
                 widgetDestroy fchdal
+
+movedLineEvent :: TextBuffer -> MovementStep -> Int -> Bool -> IO ()
+movedLineEvent  buffer MovementDisplayLines dir b = do insertmark <- textBufferGetInsert buffer
+                                                       cursoriter <- textBufferGetIterAtMark buffer insertmark
+                                                       line <- textIterGetLine cursoriter
+                                                       --if line > supline
+                                                       --     then do infline <- infline + 1
+                                                       --             supline <- supline + 1
+                                                       --             putStrLn("Scrolled")
+                                                       --     else do
+                                                       --Si la linea es inferior a la minima, restar los 2
+                                                       putStrLn("Cursor moving to line" ++ show (line+dir) ++ show b)
+movedLineEvent buffer _ a b = do putStrLn("Cursor moved")
