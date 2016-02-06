@@ -87,7 +87,7 @@ main= do
     --containerAdd horizontalBox textview
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "codigoPrueba2.hs" textview table 	
+    readFileIntoTextView "FileModule.hs" textview table 	
     
     
    
@@ -108,7 +108,7 @@ main= do
                                                     cursoriter <- textBufferGetIterAtMark buffer insertmark
                                                     off <- textIterGetLine cursoriter
                                                     putStrLn("insertAtCursor" ++ show (off) ++" "++s)
-    textview `on` moveCursor $ movedLineEvent buffer
+    textview `on` moveCursor $ (movedLineEvent buffer table)
 
     tags <- textBufferGetTagTable buffer
     kindaRedItalic <- textTagNew Nothing
@@ -194,18 +194,23 @@ loaddisplaydialog (a,textview,table,hbox) = onActionActivate a $ do
 
                 widgetDestroy fchdal
 
-movedLineEvent :: TextBuffer -> MovementStep -> Int -> Bool -> IO ()
-movedLineEvent  buffer MovementDisplayLines dir b = do insertmark <- textBufferGetInsert buffer
-                                                       cursoriter <- textBufferGetIterAtMark buffer insertmark
-                                                       line <- textIterGetLine cursoriter
-                                                       --if line > supline
-                                                       --     then do infline <- infline + 1
-                                                       --             supline <- supline + 1
-                                                       --             putStrLn("Scrolled")
-                                                       --     else do
-                                                       --Si la linea es inferior a la minima, restar los 2
-                                                       putStrLn("Cursor moving to line" ++ show (line+dir) ++ show b)
-movedLineEvent buffer _ a b = do putStrLn("Cursor moved")
+movedLineEvent :: TextBuffer->Table  -> MovementStep -> Int -> Bool-> IO ()
+movedLineEvent  buffer table MovementDisplayLines dir b  = do
+                                                              insertmark <- textBufferGetInsert buffer
+                                                              cursoriter <- textBufferGetIterAtMark buffer insertmark
+                                                              line <- textIterGetLine cursoriter
+                                                              if (line > supline)
+                                                                    then do 
+                                                                        let infline =infline + 1
+                                                                        let supline =supline + 1
+                                                                        putStrLn("Scrolled")
+                                                                        --MUEVE LOS BOTONES
+                                                                        moveAllButtons table (-dir)
+                                                              else do
+                                                                  putStrLn("algo falta aca")
+                                                              --Si la linea es inferior a la minima, restar los 2
+                                                              putStrLn("Cursor moving to line:" ++ show (line)++" .Dir:"++show (dir)++ " " ++ show b)
+movedLineEvent buffer _ a b _ = do putStrLn("Cursor moved")
 
 searchWord :: Entry -> TextBuffer -> TextTag -> IO()
 searchWord searchEntry buffer tag =  do str <- entryGetText searchEntry

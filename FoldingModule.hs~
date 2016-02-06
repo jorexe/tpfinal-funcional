@@ -63,7 +63,7 @@ processHsMatch xs (y:ys) buffer table = do
 					
 					
 
-processHsMatch _ _ _  _ =return []
+processHsMatch _ _ _  _ =return ()
 --
 
 getRow::HsMatch-> Int
@@ -160,18 +160,29 @@ buttonSwitch button buffer tag start end table lines= do
 					 	updateButtons button table (-lines)
 					  return ()
 
--- 
+-- se actualizan las posiciones de los botones. (se suben o se bajan segun corresponda). El boton que se indica como parámetro es el que se presionó. Los botones que le siguen al presionado son lo que se desplazan.
 updateButtons::ToggleButton->Table->Int->IO()
 updateButtons button table lines=do
 							putStrLn "[updateButtons]"
 							buttons<-containerGetChildren table
-							updateButton table lines button False (reverse buttons)
+							updateButtonsRec table lines button False (reverse buttons)
 --
 
---el valor booleano indica si los botones son los siguientes al boton presionado
-updateButton::Table->Int->ToggleButton->Bool->[Widget]->IO()
-updateButton table lines callingButton True  (x:xs)= do
-						let button=castToToggleButton x
+--se actualizan los botones en forma recursiva.El valor booleano indica si los botones son los siguientes al boton presionado
+updateButtonsRec::Table->Int->ToggleButton->Bool->[Widget]->IO()
+updateButtonsRec table lines callingButton True  (x:xs)= do
+						
+						updateButton table lines x 
+						updateButtonRec table lines callingButton True  xs
+updateButtonsRec table lines callingButton False  (x:xs)= do
+							let currentButton=castToToggleButton x
+							updateButtonRec table lines callingButton (currentButton==callingButton)  xs
+updateButtonsRec table lines callingButton _  _= return ()
+
+--se actualiza un botón en forma individual
+updateButton::Table->Int->Widget->IO()
+updateButton table lines  buttonWidget=do
+						let button=castToToggleButton buttonWidget
 						currentTopAttach<-get table (tableChildTopAttach button)
 						currentBottomAttach<- get table (tableChildBottomAttach button)					
 						
@@ -181,12 +192,7 @@ updateButton table lines callingButton True  (x:xs)= do
 						set table	[tableChildTopAttach button :=topAttach,
 								tableChildBottomAttach button := bottomAttach
 							 	]
-						updateButton table lines callingButton True  xs
-updateButton table lines callingButton False  (x:xs)= do
-							let currentButton=castToToggleButton x
-							updateButton table lines callingButton (currentButton==callingButton)  xs
-						  	
-updateButton table lines callingButton _  _= return ()
+--
 
 --quitar todos los botones
 clearButtons:: Table->IO()
@@ -194,3 +200,9 @@ clearButtons table=do
 			buttons<-containerGetChildren table
 			foldIO (containerRemove table) buttons
 
+--Se desplazan todos los botones una cierta cantidad de líneas.
+moveAllButtons::Table->Int->IO()
+moveAllButtons table lines=do
+			putStrLn "[updateButtons]"
+			buttons<-containerGetChildren table
+			foldIO (updateButton table lines) (reverse buttons)
