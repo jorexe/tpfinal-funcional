@@ -3,6 +3,7 @@ import Control.Monad.IO.Class
 import FileModule
 import ClipboardModule
 import SpellingModule
+import SearchModule
 import SyntaxHighlightModule
 import FoldingModule
 --cantidad de filas que se muestran, por ahora esta fijo
@@ -40,9 +41,22 @@ main= do
     
     --BoxContainer
     vb <- vBoxNew False 0
+    hb <- hBoxNew False 0
     containerAdd window vb
-
+    
     boxPackStart vb toolbar PackNatural 2
+
+    --Search panel
+    labelsearch <- labelNew (Just "Search Word:")
+    boxPackStart hb labelsearch PackNatural 2
+    searchEntry <- entryNew
+    boxPackStart hb searchEntry PackNatural 2
+    searchbutton <- buttonNewWithLabel "Search"
+    boxPackStart hb searchbutton PackNatural 2
+    
+
+    containerAdd vb hb
+
     hseparator <- hSeparatorNew
     boxPackStart vb hseparator PackNatural 2
 
@@ -104,14 +118,27 @@ main= do
       --textTagForegroundGdk := Color 30000 0 0 ]
       textTagForeground := ("red" :: String) ]
 
+    searchTag <- textTagNew Nothing
+    set searchTag [
+      --textTagStyle := StyleItalic,
+      textTagForegroundSet := True,
+      --textTagForegroundGdk := Color 30000 0 0 ]
+      textTagBackground := ("yellow" :: String)
+      --textTagForeground := ("red" :: String) 
+      ]
+
     textTagTableAdd tags kindaRedItalic
-    textview `on` keyPressEvent $ tryEvent $ do
-      [Control] <- eventModifier
-      "i" <- eventKeyName
-      liftIO $ do
-        (start, end) <- textBufferGetSelectionBounds buffer
-        textBufferApplyTag buffer kindaRedItalic start end
+    textTagTableAdd tags searchTag
+    --textview `on` keyPressEvent $ tryEvent $ do
+    --  [Control] <- eventModifier
+    --  "i" <- eventKeyName
+    --  liftIO $ do
+    --    (start, end) <- textBufferGetSelectionBounds buffer
+    --    textBufferApplyTag buffer kindaRedItalic start end
     
+    --Binding search button
+    onClicked searchbutton $ searchWord searchEntry buffer searchTag
+
     --Bind de botones
     --actionSetSensitive cuta False
     onActionActivate quitapp (widgetDestroy window)
@@ -179,3 +206,7 @@ movedLineEvent  buffer MovementDisplayLines dir b = do insertmark <- textBufferG
                                                        --Si la linea es inferior a la minima, restar los 2
                                                        putStrLn("Cursor moving to line" ++ show (line+dir) ++ show b)
 movedLineEvent buffer _ a b = do putStrLn("Cursor moved")
+
+searchWord :: Entry -> TextBuffer -> TextTag -> IO()
+searchWord searchEntry buffer tag =  do str <- entryGetText searchEntry
+                                        markWord buffer tag str

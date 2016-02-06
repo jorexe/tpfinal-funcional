@@ -8,10 +8,9 @@ import qualified Data.Char as DC
 markWord::TextBuffer->TextTag->String->IO()
 markWord buffer  tag name=do
 				start<-textBufferGetStartIter buffer 
-				
 				end<-textIterCopy start
-
 				tags <- textBufferGetTagTable buffer
+				textTagTableRemove tags tag
 				textTagTableAdd tags tag
 				markWordRec buffer name start end "" tag 0 False False
 
