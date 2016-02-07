@@ -108,7 +108,7 @@ main= do
                                                     cursoriter <- textBufferGetIterAtMark buffer insertmark
                                                     off <- textIterGetLine cursoriter
                                                     putStrLn("insertAtCursor" ++ show (off) ++" "++s)
-    textview `on` moveCursor $ (movedLineEvent buffer table)
+    textview `on` moveCursor $ (movedCursorEvent buffer table)
 
     tags <- textBufferGetTagTable buffer
     kindaRedItalic <- textTagNew Nothing
@@ -120,15 +120,22 @@ main= do
 
     searchTag <- textTagNew Nothing
     set searchTag [
-      --textTagStyle := StyleItalic,
       textTagForegroundSet := True,
-      --textTagForegroundGdk := Color 30000 0 0 ]
       textTagBackground := ("yellow" :: String)
-      --textTagForeground := ("red" :: String) 
+      ]
+
+    parenthesisTag <- textTagNew Nothing
+    set parenthesisTag [
+      textTagForegroundSet := True,
+      textTagBackground := ("green" :: String)
       ]
 
     textTagTableAdd tags kindaRedItalic
     textTagTableAdd tags searchTag
+    textTagTableAdd tags parenthesisTag
+
+    textview `on` moveCursor $ (checkParenthesisEvent buffer parenthesisTag)
+    textview `on` moveCursor $ (showInfo buffer)
     --textview `on` keyPressEvent $ tryEvent $ do
     --  [Control] <- eventModifier
     --  "i" <- eventKeyName
@@ -156,6 +163,16 @@ main= do
     mainGUI
 
 uitemplate = "<ui><toolbar><toolitem action=\"NEW_FILE\" /><toolitem action=\"OPEN_FILE\" /><toolitem action=\"SAVE_FILE\" /><separator /><toolitem action=\"COPY_TEXT\" /><toolitem action=\"PASTE_TEXT\" /><separator /><toolitem action=\"QUIT\" /><toolitem action=\"CHECK\" /><toolitem action=\"SYNTAX\" /></toolbar></ui>"
+
+showInfo :: TextBuffer -> MovementStep -> Int -> Bool -> IO()
+showInfo b movementStep steps flag = do
+    i <- textBufferGetInsert b >>= textBufferGetIterAtMark b
+    p <- textIterGetOffset i
+    c <- textIterGetChar i
+    let cc = case c of
+                Nothing -> ""
+                Just ch -> [ch]
+    putStrLn("Position: " ++ show p ++ "\nMovement step: " ++ show movementStep ++"\nSteps: " ++ show steps ++ "\nExtends selection: " ++ show flag ++"\nCharacter at cursor: " ++ cc)
 
 printexample :: ActionClass self => self -> IO (ConnectId self)
 printexample a = onActionActivate a $ do name <- actionGetName a
@@ -194,23 +211,68 @@ loaddisplaydialog (a,textview,table,hbox) = onActionActivate a $ do
 
                 widgetDestroy fchdal
 
-movedLineEvent :: TextBuffer->Table  -> MovementStep -> Int -> Bool-> IO ()
-movedLineEvent  buffer table MovementDisplayLines dir b  = do
+checkParenthesisEvent :: TextBuffer -> TextTag -> MovementStep -> Int -> Bool -> IO()
+checkParenthesisEvent buffer parenthesisTag _ _ _ = do
+                                                        insertmark <- textBufferGetInsert buffer
+                                                        tags <- textBufferGetTagTable buffer
+                                                        textTagTableRemove tags parenthesisTag
+                                                        currentiter <- textBufferGetIterAtMark buffer insertmark
+                                                        prevop <- searchNextParenthesis buffer '(' (-1) currentiter 0
+                                                        case prevop of
+                                                                Nothing -> return ()
+                                                                _ -> do
+                                                                        nextclo <- searchNextParenthesis buffer ')' (1) currentiter 0
+                                                                        highlightParenthesis buffer prevop nextclo parenthesisTag
+
+highlightParenthesis :: TextBuffer -> Maybe TextIter -> Maybe TextIter -> TextTag -> IO()
+highlightParenthesis buffer (Just prev) (Just next) tag = do
+                                                                tags <- textBufferGetTagTable buffer
+                                                                textTagTableAdd tags tag
+                                                                highlightChar buffer prev tag
+                                                                highlightChar buffer next tag
+highlightParenthesis _ _ _ _ = do return ()
+
+highlightChar :: TextBuffer -> TextIter -> TextTag -> IO()
+highlightChar buffer iter tag = do
+                                    endoffset <- textIterGetOffset iter
+                                    end <- textBufferGetIterAtOffset buffer (endoffset+1)
+                                    textBufferApplyTag buffer tag iter end
+
+printChar :: Maybe Char -> IO ()
+printChar (Just a) = putStrLn([a])
+printChar _ = return()
+
+isOpenParenthesis :: Maybe Char -> Bool
+isOpenParenthesis (Just a) = a == '('
+isOpenParenthesis _ = False
+
+movedCursorEvent :: TextBuffer->Table  -> MovementStep -> Int -> Bool-> IO ()
+movedCursorEvent  buffer table MovementDisplayLines dir b  = do
                                                               insertmark <- textBufferGetInsert buffer
                                                               cursoriter <- textBufferGetIterAtMark buffer insertmark
                                                               line <- textIterGetLine cursoriter
+                                                              offset <- textIterGetOffset cursoriter
+
                                                               if (line > supline)
-                                                                    then do 
-                                                                        let infline =infline + 1
-                                                                        let supline =supline + 1
-                                                                        putStrLn("Scrolled")
-                                                                        --MUEVE LOS BOTONES
-                                                                        moveAllButtons table (-dir)
+                                                                  then do 
+                                                                      let infline =infline + 1
+                                                                      let supline =supline + 1
+                                                                      putStrLn("Scrolled")
+                                                                      --MUEVE LOS BOTONES
+                                                                      moveAllButtons table (-dir)
                                                               else do
-                                                                  putStrLn("algo falta aca")
+                                                                  if (line < infline)
+                                                                      then do
+                                                                          let infline =infline - 1
+                                                                          let supline =supline - 1
+                                                                          putStrLn("Scrolled")
+                                                                          --MUEVE LOS BOTONES
+                                                                          moveAllButtons table (dir)
+                                                                  else do
+                                                                      putStrLn("")
                                                               --Si la linea es inferior a la minima, restar los 2
                                                               putStrLn("Cursor moving to line:" ++ show (line)++" .Dir:"++show (dir)++ " " ++ show b)
-movedLineEvent buffer _ a b _ = do putStrLn("Cursor moved")
+movedCursorEvent buffer _ a b _ = do putStrLn("Cursor moved")
 
 searchWord :: Entry -> TextBuffer -> TextTag -> IO()
 searchWord searchEntry buffer tag =  do str <- entryGetText searchEntry

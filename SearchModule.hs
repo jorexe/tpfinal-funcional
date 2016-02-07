@@ -15,8 +15,71 @@ markWord buffer  tag name=do
 				markWordRec buffer name start end "" tag 0 False False
 
 
+--TextBuffer, Character to search, Direction, CurrentPositionTextIter
+searchChar :: TextBuffer -> Char -> Int -> TextIter -> IO (Maybe TextIter)
+searchChar buffer c direction iter = do
+										currentchar <- textIterGetChar iter
+										if (compareMaybeChar currentchar c)
+											then do
+												return (Just iter)
+										else do
+											totalcount <- textBufferGetCharCount buffer
+											offset <- textIterGetOffset iter
+											if ((offset < totalcount) && (offset > 0))
+												then do
+													nextiter <- textBufferGetIterAtOffset buffer (offset+direction)
+													searchChar buffer c direction nextiter
+											else do
+												return (Nothing)
 
+flipParenthesis :: Char -> Char
+flipParenthesis c | c == ')' = '(' | c == '(' = ')' | otherwise = ' '
 
+--TextBuffer, Character to search, Direction, CurrentPositionTextIter
+searchNextParenthesis :: TextBuffer -> Char -> Int -> TextIter -> Int -> IO (Maybe TextIter)
+searchNextParenthesis buffer c direction iter flag= do
+														putStrLn("Getting flag "++show flag)
+														currentchar <- textIterGetChar iter
+														if ((compareMaybeChar currentchar c))
+															then do
+																if (flag == 0)
+																	then do
+																		return (Just iter)
+																else do
+																	totalcount <- textBufferGetCharCount buffer
+																	offset <- textIterGetOffset iter
+																	if ((offset < totalcount) && (offset > 0))
+																		then do
+																			nextiter <- textBufferGetIterAtOffset buffer (offset+direction)
+																			searchNextParenthesis buffer c direction nextiter (flag-1)
+																	else do
+																		return (Nothing)
+														else do
+															if ((compareMaybeChar currentchar (flipParenthesis c)))
+																then do
+																	putStrLn("Increasing flag")
+																	totalcount <- textBufferGetCharCount buffer
+																	offset <- textIterGetOffset iter
+																	if ((offset < totalcount) && (offset > 0))
+																		then do
+																			nextiter <- textBufferGetIterAtOffset buffer (offset+direction)
+																			searchNextParenthesis buffer c direction nextiter (flag+1)
+																	else do
+																		return (Nothing)
+															else do
+																putStr("")
+																totalcount <- textBufferGetCharCount buffer
+																offset <- textIterGetOffset iter
+																if ((offset < totalcount) && (offset > 0))
+																	then do
+																		nextiter <- textBufferGetIterAtOffset buffer (offset+direction)
+																		searchNextParenthesis buffer c direction nextiter flag
+																else do
+																	return (Nothing)
+
+compareMaybeChar :: Maybe Char -> Char -> Bool
+compareMaybeChar (Just c) ch = c == ch
+compareMaybeChar _ _ = False
 
 --recibe: el buffer, el nombre del elemento, iterador que apunta al comienzo del nombre del elemento en el buffer, iterador que apunta al final del nombre del elemento , cadena leida hasta el momento desde start en el buffer(cuando se llega leer todo el nombre del elemento, se marca dicho nombre sobre el buffer),la etiqueta, indice actual sobre el nombre del elemento, un booleano que indica si se esta iterando sobre una palabra distintinta de la que se busca, y por último un booleano que indica si se debe parar de buscar la palabra frente a un fin de linea.
 markWordRec::TextBuffer->String->TextIter->TextIter->String->TextTag->Int->Bool->Bool->IO()
