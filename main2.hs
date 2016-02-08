@@ -135,7 +135,7 @@ main= do
     textTagTableAdd tags parenthesisTag
 
     textview `on` moveCursor $ (checkParenthesisEvent buffer parenthesisTag)
-    textview `on` moveCursor $ (showInfo buffer)
+    --textview `on` moveCursor $ (showInfo buffer)
     --textview `on` keyPressEvent $ tryEvent $ do
     --  [Control] <- eventModifier
     --  "i" <- eventKeyName
@@ -252,28 +252,34 @@ movedCursorEvent  buffer table MovementDisplayLines dir b  = do
                                                               cursoriter <- textBufferGetIterAtMark buffer insertmark
                                                               line <- textIterGetLine cursoriter
                                                               offset <- textIterGetOffset cursoriter
-
-                                                              if (line > supline)
-                                                                  then do 
-                                                                      let infline =infline + 1
-                                                                      let supline =supline + 1
-                                                                      putStrLn("Scrolled")
-                                                                      --MUEVE LOS BOTONES
-                                                                      moveAllButtons table (-dir)
-                                                              else do
-                                                                  if (line < infline)
-                                                                      then do
-                                                                          let infline =infline - 1
-                                                                          let supline =supline - 1
-                                                                          putStrLn("Scrolled")
-                                                                          --MUEVE LOS BOTONES
-                                                                          moveAllButtons table (dir)
-                                                                  else do
-                                                                      putStrLn("")
-                                                              --Si la linea es inferior a la minima, restar los 2
-                                                              putStrLn("Cursor moving to line:" ++ show (line)++" .Dir:"++show (dir)++ " " ++ show b)
+						
+							      botomLimit<-textBufferGetLineCount buffer
+							      if( (line== (botomLimit-1)) && dir >0)
+									then putStrLn("[movedCursorEvent] reached limit")
+							      else
+		                                                      if (line > supline)
+		                                                          then do 
+		                                                              let infline =infline + 1
+		                                                              let supline =supline + 1
+		                                                              putStrLn("Scrolled")
+		                                                              --MUEVE LOS BOTONES
+		                                                              moveAllButtons table (-dir)
+		                                                      else do
+		                                                          if (line < infline)
+		                                                              then do
+		                                                                  let infline =infline - 1
+		                                                                  let supline =supline - 1
+		                                                                  putStrLn("Scrolled")
+		                                                                  --MUEVE LOS BOTONES
+		                                                                  moveAllButtons table (dir)
+		                                                          else do
+		                                                              putStrLn("")
+		                                                      --Si la linea es inferior a la minima, restar los 2
+		                         		      putStrLn("Cursor moving to line:" ++ show (line)++" .Dir:"++show (dir)++ " " ++ show b ++ "BotomLimit: " ++ (show botomLimit))
 movedCursorEvent buffer _ a b _ = do putStrLn("Cursor moved")
 
 searchWord :: Entry -> TextBuffer -> TextTag -> IO()
 searchWord searchEntry buffer tag =  do str <- entryGetText searchEntry
                                         markWord buffer tag str
+
+

@@ -38,7 +38,7 @@ flipParenthesis c | c == ')' = '(' | c == '(' = ')' | otherwise = ' '
 --TextBuffer, Character to search, Direction, CurrentPositionTextIter
 searchNextParenthesis :: TextBuffer -> Char -> Int -> TextIter -> Int -> IO (Maybe TextIter)
 searchNextParenthesis buffer c direction iter flag= do
-														putStrLn("Getting flag "++show flag)
+														--putStrLn("Getting flag "++show flag)
 														currentchar <- textIterGetChar iter
 														if ((compareMaybeChar currentchar c))
 															then do
@@ -57,7 +57,7 @@ searchNextParenthesis buffer c direction iter flag= do
 														else do
 															if ((compareMaybeChar currentchar (flipParenthesis c)))
 																then do
-																	putStrLn("Increasing flag")
+																	--putStrLn("Increasing flag")
 																	totalcount <- textBufferGetCharCount buffer
 																	offset <- textIterGetOffset iter
 																	if ((offset < totalcount) && (offset > 0))

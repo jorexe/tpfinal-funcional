@@ -173,10 +173,10 @@ updateButtonsRec::Table->Int->ToggleButton->Bool->[Widget]->IO()
 updateButtonsRec table lines callingButton True  (x:xs)= do
 						
 						updateButton table lines x 
-						updateButtonRec table lines callingButton True  xs
+						updateButtonsRec table lines callingButton True  xs
 updateButtonsRec table lines callingButton False  (x:xs)= do
 							let currentButton=castToToggleButton x
-							updateButtonRec table lines callingButton (currentButton==callingButton)  xs
+							updateButtonsRec table lines callingButton (currentButton==callingButton)  xs
 updateButtonsRec table lines callingButton _  _= return ()
 
 --se actualiza un botón en forma individual
