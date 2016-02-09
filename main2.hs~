@@ -221,7 +221,9 @@ checkParenthesisEvent buffer parenthesisTag _ _ _ = do
                                                         case prevop of
                                                                 Nothing -> return ()
                                                                 _ -> do
-                                                                        nextclo <- searchNextParenthesis buffer ')' (1) currentiter 0
+                                                                        nextiteroffset <- textIterGetOffset currentiter
+                                                                        nextiter <- textBufferGetIterAtOffset buffer (nextiteroffset + 1)
+                                                                        nextclo <- searchNextParenthesis buffer ')' (1) nextiter 0
                                                                         highlightParenthesis buffer prevop nextclo parenthesisTag
 
 highlightParenthesis :: TextBuffer -> Maybe TextIter -> Maybe TextIter -> TextTag -> IO()
@@ -254,7 +256,7 @@ movedCursorEvent  buffer table MovementDisplayLines dir b  = do
                                                               offset <- textIterGetOffset cursoriter
 						
 							      botomLimit<-textBufferGetLineCount buffer
-							      if( (line==botomLimit) && dir <0)
+							      if( (line== (botomLimit-1)) && dir >0)
 									then putStrLn("[movedCursorEvent] reached limit")
 							      else
 		                                                      if (line > supline)
@@ -280,6 +282,7 @@ movedCursorEvent buffer _ a b _ = do putStrLn("Cursor moved")
 
 searchWord :: Entry -> TextBuffer -> TextTag -> IO()
 searchWord searchEntry buffer tag =  do str <- entryGetText searchEntry
+					textTagTableRemove tags tag
                                         markWord buffer tag str
 
 

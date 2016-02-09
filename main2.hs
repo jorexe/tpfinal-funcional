@@ -282,6 +282,8 @@ movedCursorEvent buffer _ a b _ = do putStrLn("Cursor moved")
 
 searchWord :: Entry -> TextBuffer -> TextTag -> IO()
 searchWord searchEntry buffer tag =  do str <- entryGetText searchEntry
+					tags <- textBufferGetTagTable buffer
+					textTagTableRemove tags tag
                                         markWord buffer tag str
 
 
