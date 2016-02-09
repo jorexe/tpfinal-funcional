@@ -221,7 +221,9 @@ checkParenthesisEvent buffer parenthesisTag _ _ _ = do
                                                         case prevop of
                                                                 Nothing -> return ()
                                                                 _ -> do
-                                                                        nextclo <- searchNextParenthesis buffer ')' (1) currentiter 0
+                                                                        nextiteroffset <- textIterGetOffset currentiter
+                                                                        nextiter <- textBufferGetIterAtOffset buffer (nextiteroffset + 1)
+                                                                        nextclo <- searchNextParenthesis buffer ')' (1) nextiter 0
                                                                         highlightParenthesis buffer prevop nextclo parenthesisTag
 
 highlightParenthesis :: TextBuffer -> Maybe TextIter -> Maybe TextIter -> TextTag -> IO()
