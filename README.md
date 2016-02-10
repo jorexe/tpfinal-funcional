@@ -1,20 +1,9 @@
 # tp final-Programación funcional
 
-***Jorge Gomez (legajo 52055), Fernando Bejarano (legajo 52043)***
+***Jorge Gómez (legajo 52055), Fernando Bejarano (legajo 52043)***
 
 En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. Para realizar dicha implementación se analizaron las librerías gráficas GTK2HS, WxHaskell y QtHaskell [5].De estas librerías se eligió la librería GTK2HS ya que la misma posee una excelente documentación en comparación con las otras. Se toma como base el tutorial [1].
 
-## LO QUE FALTA
-+ Poner el legajo de jorge
-+ Emprolijar este informe
-+ Ponerle a este informe la presentación que piden los profesores.
-+ Para implementar la búsqueda de palabras, falta poner en la barra de herramientas un cuadro para ingresar el texto y un botón para activar la búsqueda de la palabra. Una vez que se tiene la palabra a buscar, usar la función "markWord" (esta en el archivo "SearchModule.hs") que ya esta implementada y que te marca la palabra que le pases como parámetro.
-+ implementar el marcado de paréntesis.
-+ probar el programa a fondo.
-+ ver como es el tema del scroleo. Ahora no esta implementado. Si el texto no entra en pantalla, no se ve por mas que se haga bajar el cursor.
-+ actualizar todas las capturas de pantalla con la última versión de la aplicación. No van mas los prototipos, se tiene que ver la versión final.
-+ Las capturas de pantalla de la versión final, van en la carpeta "images".
-+ Los links no deberían estar sueltos por el informe, deberían estar bien citados como la introducción de mas arriba (usando corchetes y un numero)y la correspondiente entrada en bibliografía.
 
 ## Funcionalidades básicas
 Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a presionar CTRL+C) a la ventana de edición de texto, copiar el texto seleccionado al clipboard.
@@ -27,8 +16,7 @@ En la parte superior de la ventana de la aplicación se encuentra una barra de h
 
 El texto del documento se carga con letra negra en un TextView [8] .
 
-En el siguiente diagrama se puede apreciar un esquema sobre la implementación de la interfaz gráfica. Dentro de la ventana principal se ubica una caja vertical que contiene los principales elementos gráficos ordenados en forma vertical: la barra de herramientas, un separador, y una caja horizontal. La caja horizontal contiene dos elementos alineados en forma horizontal: la tabla de botones para la función de colapsado de código, y la ventana de edición de texto (TextView).
-Debajo de la barra de herramientas se encuentra el Input de texto de búsqueda en conjunto con su botón de búsqueda, alineados de forma horizontal.
+En el siguiente diagrama se puede apreciar un esquema sobre la implementación de la interfaz gráfica. Dentro de la ventana principal se ubica una caja vertical que contiene los principales elementos gráficos ordenados en forma vertical: la barra de herramientas, una caja horizontal, un separador, y una segunda caja horizontal. La primer caja horizontal contiene los elementos visuales que se utilizan para la funcionalidad de búsqueda de texto alineados de forma horizontal, estos son: una etiqueta (para indicar la funcionalidad), una caja que permite ingresar el texto a buscar, y un botón que activa la búsqueda. La segunda caja horizontal contiene dos elementos alineados en forma horizontal: la tabla de botones para la función de colapsado de código, y la ventana de edición de texto (TextView).
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/images/Diagrama-Final programacion funcional.png)
 
 
@@ -128,7 +116,7 @@ Esta funcionalidad se puede apreciar en el siguiente prototipo:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/parentesis.png)
 
-Debido a las limitaciones de la interfaz gráfica utilizada, no se pudo encontrar una forma de interceptar el evento luego de que se mueve el cursor en el texto, solo el evento antes de moverse. Por ese motivo, se resaltan los parentesis que contienen a la posicion anterior luego de mover el cursor. Si bien, dentro de una funcion con mucha distancia entre los paréntesis este efecto no se puede notar, si se nota cuando la distancia entre los parentesis es muy corta.
+Debido a las limitaciones de la interfaz gráfica utilizada, no se pudo encontrar una forma de interceptar el evento luego de que se mueve el cursor en el texto, solo el evento antes de moverse. Por ese motivo, se resaltan los parentesis que contienen a la posicion anterior luego de mover el cursor. Si bien, dentro de una función con mucha distancia entre los paréntesis este efecto no se puede notar, si se nota cuando la distancia entre los parentesis es muy corta.
 
 ## Búsqueda de palabras
 Junto con los botones mencionados anteriormente, se ofrece en la barra superior un campo en el cual se puede ingresar una cadena de caracteres a buscar. Al lado de dicho campo hay un botón que al presionarlo se resaltan con fondo amarillo aquellas cadenas que coincidan con lo buscado.
