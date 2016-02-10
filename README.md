@@ -23,7 +23,7 @@ Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se ten
 
 ## Interfaz gráfica
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/images/example/intro.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/intro.png)
 
 En la parte superior de la ventana de la aplicación se encuentra una barra de herramientas con los botones que proveen las funcionalidades. Los iconos de dichos botones son los que vienen por defecto en la librería GTK [7].
 
