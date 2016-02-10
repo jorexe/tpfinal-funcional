@@ -7,7 +7,6 @@ modulo:: Punto -> Float
 modulo (Punto2D x y) = sqrt ( x^2 + y^2)
 modulo (Punto3D x y z)= sqrt ( x^2 + y^2 +z^2)
 	
-
 restaMain:: Punto ->Punto -> Punto
 restaMain (Punto2D x1 y1) (Punto2D x2 y2) = ansMain 
 					where ansMain =Punto2D (x1-x2) (y1-y2)
@@ -21,6 +20,6 @@ distanciaA punto1 punto2= modulo (restaMain punto1 punto2)
 doIncrement::Punto -> Punto
 doIncrement (Punto2D x y)=Punto2D (x+1) (y+1)
 doIncrement (Punto3D x y z)=Punto3D (x+1) (y+1) (z+1)
-
 --
 data Fruit= Orange | Banana
+

@@ -7,7 +7,7 @@ import SearchModule
 import SyntaxHighlightModule
 import FoldingModule
 --cantidad de filas que se muestran, por ahora esta fijo
-totalRows=39
+totalRows=49
 infline=0
 supline=38
 main :: IO ()
@@ -87,7 +87,7 @@ main= do
     --containerAdd horizontalBox textview
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "FileModule.hs" textview table 	
+    readFileIntoTextView "codigoPrueba.hs" textview table 	
     
     
    
@@ -282,6 +282,7 @@ movedCursorEvent buffer _ a b _ = do putStrLn("Cursor moved")
 
 searchWord :: Entry -> TextBuffer -> TextTag -> IO()
 searchWord searchEntry buffer tag =  do str <- entryGetText searchEntry
+					tags <- textBufferGetTagTable buffer
 					textTagTableRemove tags tag
                                         markWord buffer tag str
 

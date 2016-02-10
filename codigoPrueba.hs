@@ -1,5 +1,4 @@
 --CODIGO HASKELL DE EJEMPLO PARA PROBAR EL RESALTADO DE SINTAXIS
-
 --esto deberia estar en el mismo color que el comentario: data, where
 data Punto =Punto2D Float Float | Punto3D Float Float Float 
 
