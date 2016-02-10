@@ -23,7 +23,7 @@ Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se ten
 
 ## Interfaz gráfica
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/base.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/images/example/intro.png)
 
 En la parte superior de la ventana de la aplicación se encuentra una barra de herramientas con los botones que proveen las funcionalidades. Los iconos de dichos botones son los que vienen por defecto en la librería GTK [7].
 
@@ -74,7 +74,7 @@ En cuanto al código, se lee el texto hasta que se encuentra un separador de pal
 Para marcar las palabras mal escritas se utilizan etiquetas en la ventana de edición de texto (TextView) del aplicativo, asignándoles color de letra rojo con itálica. Se emplean iteradores que poseen la posición de comienzo y de fin de la palabra que se analiza en el buffer de la ventana de edición de texto; estos iteradores se especifican junto con la etiqueta para realizar el marcado. Por ejemplo, dado el siguiente texto con errores ortográficos la aplicación se ve de la siguiente manera antes de tocar el botón del corrector:
 
 	
-![Alt text](https://github.com/jorexe/tpfinal-funcional/master/images/example/correct1.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/correct1.png)
 
 Después de tocar el botón del corrector se obtiene lo siguiente:
 
