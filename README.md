@@ -28,6 +28,7 @@ En la parte superior de la ventana de la aplicación se encuentra una barra de h
 El texto del documento se carga con letra negra en un TextView [8] .
 
 En el siguiente diagrama se puede apreciar un esquema sobre la implementación de la interfaz gráfica. Dentro de la ventana principal se ubica una caja vertical que contiene los principales elementos gráficos ordenados en forma vertical: la barra de herramientas, un separador, y una caja horizontal. La caja horizontal contiene dos elementos alineados en forma horizontal: la tabla de botones para la función de colapsado de código, y la ventana de edición de texto (TextView).
+Debajo de la barra de herramientas se encuentra el Input de texto de búsqueda en conjunto con su botón de búsqueda, alineados de forma horizontal.
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/images/Diagrama-Final programacion funcional.png)
 
 
