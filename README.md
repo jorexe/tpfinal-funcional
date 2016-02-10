@@ -1,10 +1,8 @@
 # tp final-Programación funcional
 
-***Jorge Gomez , Fernando Bejarano (legajo 52043)***
+***Jorge Gomez (legajo 52055), Fernando Bejarano (legajo 52043)***
 
-En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. 
-Se emplea la librería gráfica GTK2HS ya que la misma es bastante madura y posee una excelente documentación. Otras librerías analizadas para realizar la implementación fueron: WxHaskell y QtHaskell [5]; las misma fueron descartadas debido a que ...COMPLETAR ESTO!!!.
-Se toma como base el tutorial [1].
+En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. Para realizar dicha implementación se analizaron las librerías gráficas GTK2HS, WxHaskell y QtHaskell [5].De estas librerías se eligió la librería GTK2HS ya que la misma posee una excelente documentación en comparación con las otras. Se toma como base el tutorial [1].
 
 ## LO QUE FALTA
 + Poner el legajo de jorge
