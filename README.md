@@ -38,7 +38,7 @@ Debajo de la barra de herramientas se encuentra el Input de texto de búsqueda e
 
 La idea es que el resaltado de sintaxis se vea forma similar a como lo realiza el editor de texto "gedit", de manera que se asigne un color representativo a cada elemento de la sintaxis:
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/images/example/haskell.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/haskell.png)
 
 Los colores que se emplean sobre la fuente de las letras para representar elementos de la sintaxis son los siguientes:
 + nombre de función: negro en cursiva.
@@ -74,11 +74,11 @@ En cuanto al código, se lee el texto hasta que se encuentra un separador de pal
 Para marcar las palabras mal escritas se utilizan etiquetas en la ventana de edición de texto (TextView) del aplicativo, asignándoles color de letra rojo con itálica. Se emplean iteradores que poseen la posición de comienzo y de fin de la palabra que se analiza en el buffer de la ventana de edición de texto; estos iteradores se especifican junto con la etiqueta para realizar el marcado. Por ejemplo, dado el siguiente texto con errores ortográficos la aplicación se ve de la siguiente manera antes de tocar el botón del corrector:
 
 	
-![Alt text](https://github.com/jorexe/tpfinal-funcional/images/example/correct1.png)
+![Alt text](https://github.com/jorexe/tpfinal-funcional/master/images/example/correct1.png)
 
 Después de tocar el botón del corrector se obtiene lo siguiente:
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/images/example/correct.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/correct.png)
 
 
 NOTA:se puede editar mientras se este en modo de corrección. Luego de editar, es necesario volver a activar esta funcionalidad para que se actualice el marcado de la ortografía.
@@ -105,12 +105,12 @@ Se copia el contenido del clipboard en la posición del cursor en la ventana de 
 ## Colapsar definiciones.
 Cuando se tiene el texto resaltado con la sintaxis de Haskell, se ofrece la posibilidad de colapsar las definiciones de funciones de Haskell. Se muestra un botón con el símbolo "[-]" en el margen izquierdo de la línea donde esta definida la función. Esto se puede apreciar en la siguiente captura de pantalla:
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/images/example/collapse.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/collapse.png)
 
 
 Cuando se presiona dicho botón,  se colapsa la definición completa de la función y solo se deja el nombre; luego de realizar esto, dicho botón queda oscurecido para indicar que la función se encuentra activada.  Esto se puede ver en la siguiente captura de pantalla de la aplicación:
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/images/example/collapsed.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/collapsed.png)
 
 En caso de que se vuelva a presionar el botón, se vuelve a mostrar la definición de la función y botón vuelve a su estado anterior (no oscurecido para indicar que no esta activada esta funcionalidad).
 
@@ -128,14 +128,14 @@ En el caso de se ubique el cursor al lado de una apertura de paréntesis, se res
 Para el resaltado, se emplea el color verde como color de fondo del símbolo a resaltar; el color de la fuente no se modifica.
 Esta funcionalidad se puede apreciar en el siguiente prototipo:
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/images/example/parenthesis.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/parenthesis.png)
 
 Debido a las limitaciones de la interfaz gráfica utilizada, no se pudo encontrar una forma de interceptar el evento luego de que se mueve el cursor en el texto, solo el evento antes de moverse. Por ese motivo, se resaltan los parentesis que contienen a la posicion anterior luego de mover el cursor. Si bien, dentro de una funcion con mucha distancia entre los paréntesis este efecto no se puede notar, si se nota cuando la distancia entre los parentesis es muy corta.
 
 ## Búsqueda de palabras
 Junto con los botones mencionados anteriormente, se ofrece en la barra superior un campo en el cual se puede ingresar una cadena de caracteres a buscar. Al lado de dicho campo hay un botón que al presionarlo se resaltan con fondo amarillo aquellas cadenas que coincidan con lo buscado.
 
-![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/images/example/search.png)
+![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/search.png)
 
 ## Códigos y módulos implementados
 + Main2.hs: es el código principal de la aplicación. En el mismo se inicializa la interfaz gráfica y se inicializan las funciones que se pueden realizar con los botones de la barra de herramientas.
