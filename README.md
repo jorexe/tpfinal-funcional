@@ -122,15 +122,17 @@ Una vez que se tiene la posición inicial y final del texto de la definición de
 Para ocultar el texto, se emplean etiquetas en el buffer de la ventana de edición que lo vuelven "invisible" [11], aunque en realidad no se lo borra. Para volver a mostrar este texto, simplemente se quitan estas marcas y luego el texto vuelve a ser visible en la la ventana de edición.
 
 
-## Macheo de paréntesis y de llaves [falta implementar]
+## Macheo de paréntesis y de llaves
 En el caso de se ubique el cursor al lado de una apertura de paréntesis, se resalta dicha apertura de paréntesis junto con el paréntesis que cierra. Por otra parte, si no se cierra el paréntesis que abre, no se lo resalta.
-Este mismo comportamiento se realiza con la apertura y cierre de llaves. Para el resaltado, se emplea el color amarillo como color de fondo del símbolo a resaltar; el color de la fuente no se modifica.
+Para el resaltado, se emplea el color verde como color de fondo del símbolo a resaltar; el color de la fuente no se modifica.
 Esta funcionalidad se puede apreciar en el siguiente prototipo:
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/parentesis.png)
 
-## Búsqueda de palabras [falta implementar un botón y un cuadro para ingresar la palabra a buscar, lo otro esta]
-Junto con los botones mencionados anteriormente, se ofrece en la barra superior un campo en el cual se puede ingresar una cadena de caracteres a buscar. Al lado de dicho campo hay un botón que al presionarlo se resaltan en rojo aquellas cadenas coincidan con la que se esta buscando.
+Debido a las limitaciones de la interfaz gráfica utilizada, no se pudo encontrar una forma de interceptar el evento luego de que se mueve el cursor en el texto, solo el evento antes de moverse. Por ese motivo, se resaltan los parentesis que contienen a la posicion anterior luego de mover el cursor. Si bien, dentro de una funcion con mucha distancia entre los paréntesis este efecto no se puede notar, si se nota cuando la distancia entre los parentesis es muy corta.
+
+## Búsqueda de palabras
+Junto con los botones mencionados anteriormente, se ofrece en la barra superior un campo en el cual se puede ingresar una cadena de caracteres a buscar. Al lado de dicho campo hay un botón que al presionarlo se resaltan con fondo amarillo aquellas cadenas que coincidan con lo buscado.
 
 ![Alt text](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/haskellSintax/prototipo/busqueda.png)
 
