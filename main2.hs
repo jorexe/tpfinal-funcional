@@ -87,7 +87,7 @@ main= do
     --containerAdd horizontalBox textview
     
     --BORRAR luego la siguiente linea, es para testing. abre un archivo 
-    readFileIntoTextView "codigoPrueba.hs" textview table 	
+    --readFileIntoTextView "codigoPrueba.hs" textview table 	
     
     
    

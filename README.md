@@ -1,19 +1,25 @@
-# Tp final-Programación funcional
+% Tp final-Programación funcional
+% ***Integrantes :***Jorge Gómez (legajo 52055), Fernando Bejarano (legajo 52043)
+% ***Profesores:***Pablo Martínez López, Valeria Pennella.
 
-***Integrantes :***Jorge Gómez (legajo 52055), Fernando Bejarano (legajo 52043)
-***Profesores:*** Pablo Martínez López, Valeria Pennella.
-**Fecha de entrega:** 22/02/2016.
+
 \newpage
 
 ## Introducción
-Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Porgramación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto utilizando la interfaz gráfica GTK.
-En el presente informe, se detalla la implementación del mismo. Para realizar dicha implementación se analizaron las librerías gráficas GTK2HS, WxHaskell y QtHaskell [5].De estas librerías se eligió la librería GTK2HS ya que posee una excelente documentación en comparación con las otras. Se toma como base el tutorial [1].
+Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Porgramación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto plano utilizando la interfaz gráfica GTK.
+En el presente informe, se detalla la implementación del mismo. 
 
 ## Programación Funcional
 La programación funcional es un estilo de programación en el cuál las funciones no tienen efectos colaterales, es decir, solo realizan un cálculo y retornan un resultado. Esto es conocido como transparencia referencial y los lenguajes orientados a objetos e imperativos no lo cumplen. De esta forma, los resultados de una función se pueden predecir facilmente, y se pueden encontrar funciones equivalentes.
 
-## Interfaz gráfica
+## Desiciones de diseño.
+Se decidió emplear el lenguaje Haskell ya que fue el lenguage funcional visto en la materia, y además ya que el mismo es compatible con la librería GTK.
+Para realizar la implementación de este trabajo se analizaron las librerías gráficas GTK2HS, WxHaskell y QtHaskell [5].De estas librerías se eligió la librería GTK2HS ya que posee una excelente documentación en comparación con las otras. Se toma como base el tutorial [1].
+Entre las funcionalidades que ofrece este editor, se encuentra el resaltado de texto con sintaxis Haskell y resaltado de paréntesis para hacer de esta una herramienta útil de programación en Haskell.
+Otras de las funcionalidades que ofrece es la corrección ortográfica; para esto se empleó una librería que utilizando Haskell invoca a  la librería ortográfica Aspell de Linux; se decidió emplear Aspell porque es una de las librerías más reconocidas en Linux (de hecho viene instalada en algunas distribuciones como Ubuntu).
+Respecto al código, se decidió separarlo en módulos según cada funcionalidad para facilitar la comprensión del código y reutilizarlo en múltiples partes.
 
+## Interfaz gráfica
 ![](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/intro.png)
 
 En la parte superior de la ventana de la aplicación se encuentra una barra de herramientas con los botones que proveen las funcionalidades. Los iconos de dichos botones son los que vienen por defecto en la librería GTK [7].
@@ -25,8 +31,26 @@ En el siguiente diagrama se puede apreciar un esquema sobre la implementación d
 
 ## Funcionalidades.
 
-### Funcionalidades básicas
-Funcionalidades básicas de un editor de texto: Abrir archivo (con ventana de dialogo), guardar archivo, editar archivo, pegar lo que se tenga en el clipboard (equivalente a presionar CTRL+C) a la ventana de edición de texto, copiar el texto seleccionado al clipboard.
+### Abrir archivo
+Para abrir un archivo se debe tocar el botón correspondiente en la barra de herramientas. Al presionarlo, se abre una ventana de diálogo que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se carga el contenido del mismo en la ventana de edición de texto.
+
+En cuanto al código, lo que se realiza internamente es utilizar la función "openFile" del módulo "System.IO" para abrir el archivo en modo lectura. Como resultado de esto, se obtiene un "Handle"; mas tarde se obtiene el texto del archivo empleando la función "hGetContents" la cual recive como parámetro el handle.
+Una vez que se tiene el contenido del archivo, se lo carga en el buffer de la ventana de edición de texto ( [8] ). Por último, se cierra el handle. 
+
+### Guardar un archivo
+Para utilizar esta funcionalidad se debe presionar el correspondiente botón en la barra de herramientas. Al presionarlo se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Luego de confirmar estos datos, se guarda el contenido de la ventana de edición de texto (TextView) en un archivo.
+
+Internamente se extrae el texto de la ventana de edición, y se emplea la función "writeFile" del módulo "System.IO" de Haskell para grabar este texto en archivo con el nombre y ubicación indicados. 
+
+### Nuevo archivo.
+Se borra el contenido del buffer ( [10] ) de la ventana de edición de texto ( [8] ). También se eliminan los botones del colapsado de código que hayan quedado del archivo que se tenía abierto.
+
+### Copiar 
+Se copia en el clipboard, lo que se haya seleccionado de la ventana principal de edición de texto. Para lograr esto, se obtiene el clipboard de selección de la interfaz gráfica y el clipboard general del sistema operativo. Por último,  el texto seleccionado en el clipboard de la interfaz gráfica (texto marcado en la ventana de edición) se graba en el clipboard del sistema operativo.
+
+### Pegar
+Se copia el contenido del clipboard en la posición del cursor en la ventana de edición de texto. Internamente, se obtiene el clipboard del sistema operativo, se obtiene el texto que se encuentra en dicho clipboard y por último se lo copia en el buffer de la ventana de edición de texto.
+
 
 ### Resaltado de sintaxis de haskell
 
@@ -80,26 +104,6 @@ Después de tocar el botón del corrector se obtiene lo siguiente:
 
 
 NOTA:se puede editar mientras se este en modo de corrección. Luego de editar, es necesario volver a activar esta funcionalidad para que se actualice el marcado de la ortografía.
-
-### Abrir archivo
-Para abrir un archivo se debe tocar el botón correspondiente en la barra de herramientas. Al presionarlo, se abre una ventana de diálogo que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se carga el contenido del mismo en la ventana de edición de texto.
-
-En cuanto al código, lo que se realiza internamente es utilizar la función "openFile" del módulo "System.IO" para abrir el archivo en modo lectura. Como resultado de esto, se obtiene un "Handle"; mas tarde se obtiene el texto del archivo empleando la función "hGetContents" la cual recive como parámetro el handle.
-Una vez que se tiene el contenido del archivo, se lo carga en el buffer de la ventana de edición de texto ( [8] ). Por último, se cierra el handle. 
-
-### Guardar un archivo
-Para utilizar esta funcionalidad se debe presionar el correspondiente botón en la barra de herramientas. Al presionarlo se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Luego de confirmar estos datos, se guarda el contenido de la ventana de edición de texto (TextView) en un archivo.
-
-Internamente se extrae el texto de la ventana de edición, y se emplea la función "writeFile" del módulo "System.IO" de Haskell para grabar este texto en archivo con el nombre y ubicación indicados. 
-
-### Nuevo archivo.
-Se borra el contenido del buffer ( [10] ) de la ventana de edición de texto ( [8] ). También se eliminan los botones del colapsado de código que hayan quedado del archivo que se tenía abierto.
-
-### Copiar 
-Se copia en el clipboard, lo que se haya seleccionado de la ventana principal de edición de texto. Para lograr esto, se obtiene el clipboard de selección de la interfaz gráfica y el clipboard general del sistema operativo. Por último,  el texto seleccionado en el clipboard de la interfaz gráfica (texto marcado en la ventana de edición) se graba en el clipboard del sistema operativo.
-
-### Pegar
-Se copia el contenido del clipboard en la posición del cursor en la ventana de edición de texto. Internamente, se obtiene el clipboard del sistema operativo, se obtiene el texto que se encuentra en dicho clipboard y por último se lo copia en el buffer de la ventana de edición de texto.
 
 ### Colapsar definiciones.
 Cuando se tiene el texto resaltado con la sintaxis de Haskell, se ofrece la posibilidad de colapsar las definiciones de funciones de Haskell. Se muestra un botón con el símbolo "[-]" en el margen izquierdo de la línea donde esta definida la función. Esto se puede apreciar en la siguiente captura de pantalla:
@@ -170,6 +174,17 @@ Las mismas se pueden instalar utilizando el script para Linux "setupEnviroment.s
 ## Compilación y ejecución del proyecto
 Antes de compilar el programa, se necesitan tener instaladas las dependencias descriptas en el punto anterior.
 Para compilar el programa, se utiliza el compilador de Haskell "ghc" ("Glasgow Haskell compiler"). En el script de Linux "correr.sh" se puede ver como se compila y se ejecuta el programa. En el mismo, el ejecutable que se obtienen se llama "app".
+
+## Conclusiones
+Si bien la librería gráfica GTK ofrece una completa documentación, presentó múltiples problemas y limitaciones:
++ la documentación carece de ejemplos.
++ es imperativo.
++ resulta incómodo para el manejo de interfaces gráficas con cierta complejidad por la cantidad de líneas que se necesitan en comparación con otros lenguajes. 
++ carece del manejo de ciertos eventos.
++ es complejo de implementar el desplazamiento conjunto entre la ventana de texto y la tabla de botones.
+
+Por otra parte, el lenguaje Haskell es muy práctico para realizar funciones matemáticas, manejo de tipo, recursividades y algoritmos. Ya que las herramientas de currificación, pattern matching y las características propias de un lenguaje funcional facilitan el desarrollo de la aplicación. 
+Además resulta muy conveniente la separación que realiza Haskell entre lenguaje funcional puro y lenguaje impuro (con operaciones de IO).
 
 ## Bibliografía
 + [1] http://www.muitovar.com/gtk2hs/index.html
