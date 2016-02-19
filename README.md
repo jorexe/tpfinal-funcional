@@ -6,14 +6,13 @@
 \newpage
 
 ## Introducción
-En el presente informe, se detalla la implementación de un editor de texto con interfaz gráfica en lenguaje Haskell. Para realizar dicha implementación se analizaron las librerías gráficas GTK2HS, WxHaskell y QtHaskell [5].De estas librerías se eligió la librería GTK2HS ya que la misma posee una excelente documentación en comparación con las otras. Se toma como base el tutorial [1].
+Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Porgramación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto utilizando la interfaz gráfica GTK.
+En el presente informe, se detalla la implementación del mismo. Para realizar dicha implementación se analizaron las librerías gráficas GTK2HS, WxHaskell y QtHaskell [5].De estas librerías se eligió la librería GTK2HS ya que posee una excelente documentación en comparación con las otras. Se toma como base el tutorial [1].
 
-## Funcionalidades.
+## Programación Funcional
+La programación funcional es un estilo de programación en el cuál las funciones no tienen efectos colaterales, es decir, solo realizan un cálculo y retornan un resultado. Esto es conocido como transparencia referencial y los lenguajes orientados a objetos e imperativos no lo cumplen. De esta forma, los resultados de una función se pueden predecir facilmente, y se pueden encontrar funciones equivalentes.
 
-### Funcionalidades básicas
-Abrir archivo (con ventana de dialogo), guardarlo, editarlo, pegar lo que se tenga en el clipboard (equivalente a presionar CTRL+C) a la ventana de edición de texto, copiar el texto seleccionado al clipboard.
-
-### Interfaz gráfica
+## Interfaz gráfica
 
 ![](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/intro.png)
 
@@ -24,6 +23,10 @@ El texto del documento se carga con letra negra en un TextView [8] .
 En el siguiente diagrama se puede apreciar un esquema sobre la implementación de la interfaz gráfica. Dentro de la ventana principal se ubica una caja vertical que contiene los principales elementos gráficos ordenados en forma vertical: la barra de herramientas, una caja horizontal, un separador, y una segunda caja horizontal. La primera caja horizontal contiene los elementos visuales que se utilizan para la funcionalidad de búsqueda de texto alineados de forma horizontal, estos son: una etiqueta (para indicar la funcionalidad), una caja que permite ingresar el texto a buscar, y un botón que activa la búsqueda. La segunda caja horizontal contiene dos elementos alineados en forma horizontal: la tabla de botones para la función de colapsado de código, y la ventana de edición de texto (TextView).
 ![](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/Diagrama-Final%20programacion%20funcional%20.png)
 
+## Funcionalidades.
+
+### Funcionalidades básicas
+Funcionalidades básicas de un editor de texto: Abrir archivo (con ventana de dialogo), guardar archivo, editar archivo, pegar lo que se tenga en el clipboard (equivalente a presionar CTRL+C) a la ventana de edición de texto, copiar el texto seleccionado al clipboard.
 
 ### Resaltado de sintaxis de haskell
 
@@ -60,7 +63,7 @@ En cuanto a las palabras reservadas, se busca cada una en todo el texto. En caso
 Por último, en cuando al resaltado de los comentarios, el mismo se realiza en caso de que haya sintaxis válida de Haskell. Para lograr este resaltado, se buscan ocurrencias en el texto de dos guiones seguidos ("--"); cuando esto ocurre, se marca como comentario a todo el texto que se encuentre desde los guiones hasta el final de la línea.
 
 ### Corrector ortográfico
-Para detectar las palabras mal escritas , se emplea la librería Aspell para Haskell (Haspell) [6]. Esta librería indica como incorrectas a aquellas palabras que no se encuentren en el diccionario que se esta empleando; la implementación hecha para este trabajo ofrece soporte para el diccionario español.
+Para detectar las palabras mal escritas, se emplea la librería Aspell para Haskell (Haspell) [6]. Esta librería indica como incorrectas a aquellas palabras que no se encuentren en el diccionario que se esta empleando; la implementación hecha para este trabajo ofrece soporte para el diccionario español.
 
 En cuanto al código, se lee el texto hasta que se encuentra un separador de palabras. Se considera como separador de palabras a los espacios, el símbolo ":" y el punto y coma. Cuando se encuentra un separador, se analiza el texto leído hasta dicho separador; en este sentido se emplea la función "spellCheckerWithOptions" de la librería Aspell para determinar si la palabra esta correctamente escrita. En caso de que dicha palabra no sea correcta, se procede a marcarla en la ventana de edición de texto.
 
@@ -143,6 +146,12 @@ Junto con los botones mencionados anteriormente, se ofrece en la barra superior 
 + SyntaxHighlightModule.hs: contiene la implementación del parseo y marcado de la sintaxis de Haskell.
 + SyntaxUtilsModule.hs: contiene funciones de uso común para los módulos "SyntaxHighlightModule.hs" y "FoldingModule.hs".
 + TagsModule: modulo que implementa distintas marcas que se utilizan en varios módulos y que se pueden aplicar sobre partes del texto.
+
+## Código Relevante
+```haskell
+	main :: IO ()
+```
+Función main ubicada en Main2.hs. Función principal donde se inicializa la interfaz gráfica.
 
 ## Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:
