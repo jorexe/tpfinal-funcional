@@ -5,6 +5,7 @@ import Control.Monad.IO.Class
 import System.IO
 import SyntaxHighlightModule
 import FoldingModule
+import System.IO.Error
 
 --definición de funciones
 
@@ -12,16 +13,20 @@ import FoldingModule
 --No reterna nada. Inserta el texto del archivo en el buffer del textview.
 readFileIntoTextView:: FilePath -> TextView->Table -> IO ()
 readFileIntoTextView fileName txtView table =
-		do	putStrLn ("Opening file: " ++ fileName)
-			handle <- openFile fileName ReadMode
-  			contents <- hGetContents handle
-			txtBuffer <- textViewGetBuffer txtView
-   			textBufferSetText txtBuffer contents
-		  	--putStr contents
-			hClose handle
-			clearButtons table --se borran los botones para colapsar código del archivo anterior
-			highlightSyntax txtView	table 
-			return ()
+		catchIOError	( 
+						do	putStrLn ("Opening file: " ++ fileName)
+							handle <- openFile fileName ReadMode
+				  			contents <- hGetContents handle
+							txtBuffer <- textViewGetBuffer txtView
+				   			textBufferSetText txtBuffer contents
+						  	--putStr contents
+							hClose handle
+							clearButtons table --se borran los botones para colapsar código del archivo anterior
+							highlightSyntax txtView	table 
+							return ()
+						) (\x -> do
+									putStrLn("INVALID FILE")
+									return ())
 
 --recibe el string del nombre del archivo y el textview.
 --No reterna nada. Inserta el texto del buffer del textview al archivo.
