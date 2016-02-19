@@ -1,19 +1,24 @@
-# Tp final-Programación funcional
+% Tp final-Programación funcional
+% ***Integrantes :***Jorge Gómez (legajo 52055), Fernando Bejarano (legajo 52043)
+% ***Profesores:***Pablo Martínez López, Valeria Pennella.
 
-***Integrantes :***Jorge Gómez (legajo 52055), Fernando Bejarano (legajo 52043)
-***Profesores:*** Pablo Martínez López, Valeria Pennella.
-**Fecha de entrega:** 22/02/2016.
+
 \newpage
 
 ## Introducción
 Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Porgramación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto utilizando la interfaz gráfica GTK.
-En el presente informe, se detalla la implementación del mismo. Para realizar dicha implementación se analizaron las librerías gráficas GTK2HS, WxHaskell y QtHaskell [5].De estas librerías se eligió la librería GTK2HS ya que posee una excelente documentación en comparación con las otras. Se toma como base el tutorial [1].
+En el presente informe, se detalla la implementación del mismo. 
 
 ## Programación Funcional
 La programación funcional es un estilo de programación en el cuál las funciones no tienen efectos colaterales, es decir, solo realizan un cálculo y retornan un resultado. Esto es conocido como transparencia referencial y los lenguajes orientados a objetos e imperativos no lo cumplen. De esta forma, los resultados de una función se pueden predecir facilmente, y se pueden encontrar funciones equivalentes.
 
-## Interfaz gráfica
+## Desiciones de diseño.
+Se decidió emplear el lenguaje Haskell ya que fue el lenguage funcional visto en la materia, y además ya que el mismo es compatible con la librería GTK.
+Para realizar la implementación de este trabajo se analizaron las librerías gráficas GTK2HS, WxHaskell y QtHaskell [5].De estas librerías se eligió la librería GTK2HS ya que posee una excelente documentación en comparación con las otras. Se toma como base el tutorial [1].
+Entre las funcionalidades que ofrece este editor, se encuentra el resaltado de texto con sintaxis Haskell y resaltado de paréntesis para hacer de esta una herramienta útil de programación en Haskell.
+Otras de las funcionalidades que ofrece es la corrección ortográfica; para esto se empleó una librería que utilizando Haskell invoca a  la librería ortográfica Aspell de Linux; se decidió emplear Aspell porque es una de las librerías más reconocidas en Linux (de hecho viene instalada en algunas distribuciones como Ubuntu).
 
+## Interfaz gráfica
 ![](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/intro.png)
 
 En la parte superior de la ventana de la aplicación se encuentra una barra de herramientas con los botones que proveen las funcionalidades. Los iconos de dichos botones son los que vienen por defecto en la librería GTK [7].
