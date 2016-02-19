@@ -7,7 +7,7 @@ import SearchModule
 import SyntaxHighlightModule
 import FoldingModule
 --cantidad de filas que se muestran, por ahora esta fijo
-totalRows=49
+totalRows=39
 infline=0
 supline=38
 main :: IO ()

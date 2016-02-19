@@ -6,7 +6,7 @@
 \newpage
 
 ## Introducción
-Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Porgramación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto utilizando la interfaz gráfica GTK.
+Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Porgramación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto plano utilizando la interfaz gráfica GTK.
 En el presente informe, se detalla la implementación del mismo. 
 
 ## Programación Funcional
@@ -18,6 +18,7 @@ Para realizar la implementación de este trabajo se analizaron las librerías gr
 Entre las funcionalidades que ofrece este editor, se encuentra el resaltado de texto con sintaxis Haskell y resaltado de paréntesis para hacer de esta una herramienta útil de programación en Haskell.
 Otras de las funcionalidades que ofrece es la corrección ortográfica; para esto se empleó una librería que utilizando Haskell invoca a  la librería ortográfica Aspell de Linux; se decidió emplear Aspell porque es una de las librerías más reconocidas en Linux (de hecho viene instalada en algunas distribuciones como Ubuntu).
 Respecto al código, se decidió separarlo en módulos según cada funcionalidad para facilitar la comprensión del código y reutilizarlo en múltiples partes.
+
 ## Interfaz gráfica
 ![](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/intro.png)
 

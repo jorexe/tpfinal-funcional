@@ -6,7 +6,7 @@
 \newpage
 
 ## Introducción
-Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Porgramación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto utilizando la interfaz gráfica GTK.
+Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Porgramación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto plano utilizando la interfaz gráfica GTK.
 En el presente informe, se detalla la implementación del mismo. 
 
 ## Programación Funcional
@@ -178,11 +178,13 @@ Para compilar el programa, se utiliza el compilador de Haskell "ghc" ("Glasgow H
 Si bien la librería gráfica GTK ofrece una completa documentación, presentó múltiples problemas y limitaciones:
 + la documentación carece de ejemplos.
 + es imperativo.
-+ resulta incómodo para el manejo de interfaces gráficas con cierta complejidad. 
++ resulta incómodo para el manejo de interfaces gráficas con cierta complejidad por la cantidad de líneas que se necesitan en comparación con otros lenguajes. 
 + carece del manejo de ciertos eventos.
 + es complejo de implementar el desplazamiento conjunto entre la ventana de texto y la tabla de botones.
 
-Por otra parte, el lenguaje Haskell es muy práctico para realizar funciones matemáticas, manejo de tipo, manejo de recursividades, etc; 
+Por otra parte, el lenguaje Haskell es muy práctico para realizar funciones matemáticas, manejo de tipo, recursividades y algoritmos. Ya que las herramientas de currificación, pattern matching y las características propias de un lenguaje funcional facilitan el desarrollo de la aplicación. 
+Además resulta muy conveniente la separación que realiza Haskell entre lenguaje funcional puro y lenguaje impuro (con operaciones de IO).
+
 ## Bibliografía
 + [1] http://www.muitovar.com/gtk2hs/index.html
 + [2] Bryan O'Sullivan, Don Stewart, and John Goerzen. Real World Haskell. O' Reilly, First Edition, 2009.
