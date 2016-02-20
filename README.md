@@ -129,13 +129,117 @@ Junto con los botones mencionados anteriormente, se ofrece en la barra superior 
 
 
 # Código Relevante
-
 ## Main (Main2.hs)
-Función principal donde se inicializa la interfaz gráfica.
-
+Función main ubicada en Main2.hs. Función principal donde se inicializa la interfaz gráfica.
 ```haskell
 	main :: IO ()
 ```
+
+## searchNextParenthesis (SearchModule.hs)
+
+Función que busca el próximo paréntesis a resaltar recursivamente. Si encuentra un paréntesis opuesto al buscado incrementa el flag, si encuentra el paréntesis y el flag es 0 retorna la posición. Si el flag es mayor, se invoca nuevamente con el flag - 1. Si se llega al final del archivo retorna Nothing.
+```haskell
+--TextBuffer, Character to search, Direction, CurrentPositionTextIter
+searchNextParenthesis :: TextBuffer -> Char -> Int -> TextIter -> Int -> IO (Maybe TextIter)
+searchNextParenthesis buffer c direction iter flag = 
+            do
+                currentchar <- textIterGetChar iter
+                if ((compareMaybeChar currentchar c))
+                    then do
+                        if (flag == 0)
+                            then do
+                                return (Just iter)
+                        else do
+                            totalcount <- textBufferGetCharCount buffer
+                            offset <- textIterGetOffset iter
+                            if ((offset < totalcount) && (offset > 0))
+                                then do
+                                    nextiter <- textBufferGetIterAtOffset buffer (offset+direction)
+                                    searchNextParenthesis buffer c direction nextiter (flag-1)
+                            else do
+                                return (Nothing)
+                else do
+                    if ((compareMaybeChar currentchar (flipParenthesis c)))
+                        then do
+                            totalcount <- textBufferGetCharCount buffer
+                            offset <- textIterGetOffset iter
+                            if ((offset < totalcount) && (offset > 0))
+                                then do
+                                    nextiter <- textBufferGetIterAtOffset buffer (offset+direction)
+                                    searchNextParenthesis buffer c direction nextiter (flag+1)
+                            else do
+                                return (Nothing)
+                    else do
+                        totalcount <- textBufferGetCharCount buffer
+                        offset <- textIterGetOffset iter
+                        if ((offset < totalcount) && (offset > 0))
+                            then do
+                                nextiter <- textBufferGetIterAtOffset buffer (offset+direction)
+                                searchNextParenthesis buffer c direction nextiter flag
+                        else do
+                            return (Nothing)
+```
+
+## checkParenthesisEvent (Main2.hs)
+Función que prepara los tags e iteradores para iniciar la búsqueda de paréntesis y luego marcarlos. En el caso de no encontrar un paréntesis '(' a la izquierda de la posición actual, ya no hace falta continuar con la búsqueda porque no hay paréntesis que marcar.
+```haskell
+
+checkParenthesisEvent :: TextBuffer -> TextTag -> MovementStep -> Int -> Bool -> IO()
+checkParenthesisEvent buffer parenthesisTag _ _ _ = 
+            do
+                insertmark <- textBufferGetInsert buffer
+                tags <- textBufferGetTagTable buffer
+                textTagTableRemove tags parenthesisTag
+                currentiter <- textBufferGetIterAtMark buffer insertmark
+                prevop <- searchNextParenthesis buffer '(' (-1) currentiter 0
+                case prevop of
+                        Nothing -> return ()
+                        _ -> do
+                                nextiteroffset <- textIterGetOffset currentiter
+                                nextiter <- textBufferGetIterAtOffset buffer (nextiteroffset + 1)
+                                nextclo <- searchNextParenthesis buffer ')' (1) nextiter 0
+                                highlightParenthesis buffer prevop nextclo parenthesisTag
+```
+
+## highlightParenthesis (Main2.hs)
+
+Función que dados los paréntesis los resalta.
+
+```haskell
+highlightParenthesis :: TextBuffer -> Maybe TextIter -> Maybe TextIter -> TextTag -> IO()
+highlightParenthesis buffer (Just prev) (Just next) tag = 
+            do
+                tags <- textBufferGetTagTable buffer
+                textTagTableAdd tags tag
+                highlightChar buffer prev tag
+                highlightChar buffer next tag
+highlightParenthesis _ _ _ _ = do return ()
+```
+
+## highlightChar
+
+Función que aplica un tag a un caracter. 
+
+
+```haskell
+highlightChar :: TextBuffer -> TextIter -> TextTag -> IO()
+highlightChar buffer iter tag = 
+            do
+                endoffset <- textIterGetOffset iter
+                end <- textBufferGetIterAtOffset buffer (endoffset+1)
+                textBufferApplyTag buffer tag iter end
+```
+
+##flipParenthesis
+
+Función que dado un paréntesis retorna el inverso
+
+```haskell
+flipParenthesis :: Char -> Char
+flipParenthesis c | c == ')' = '(' | c == '(' = ')' | otherwise = ' '
+```
+
+
 ## CopyFromClipboard (ClipboardModule.hs) .
 
 Se emplea para brindar la funcionalidad de "copiar".
