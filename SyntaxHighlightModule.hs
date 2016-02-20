@@ -18,7 +18,6 @@ highlightSyntaxMain (a,textview,table) = onActionActivate a $ do
 							highlightSyntax textview table
 							putStrLn("[highlightSyntaxMain] done")							
 --
---hbox es la caja horizontal en la que se encuentra la tabla
 highlightSyntax:: TextView->Table ->IO()
 highlightSyntax txtview table =do
 			txtBuffer <- textViewGetBuffer txtview

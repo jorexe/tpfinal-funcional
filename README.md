@@ -66,22 +66,6 @@ Los colores que se emplean sobre la fuente de las letras para representar elemen
 
 Esta funcionalidad se realiza en forma automática cuando se abre un archivo. En caso de que la sintaxis no sea válida, no se la resalta. En forma adicional, esta funcionalidad se puede activar con un botón en la barra de herramientas. Si luego de haberse realizado el resaltado de la sintaxis se realiza algún cambio sobre el texto, es necesario volver a presionar este botón para que se ajuste el resaltado al nuevo texto que se tiene.
 
-En cuanto al código implementado, el módulo que se utiliza para realizar el parseo de la sintaxis de Haskel es "Language.Haskell.Parser" [9]; en particular se emplea la función "parseModule". Si se obtiene un resultado de tipo "ParseOk" (el parseo del texto fue exitoso ya que presenta sintaxis de Haskell válida) se resalta gráficamente el código. Si se obtiene un resultado de tipo "ParseFailed" no se resalta el código.
-
-En caso del que la sintaxis sea válida, dentro del resultado "ParseOk" se obtiene un valor tipo "HsModule" el cual representa un módulo de código fuente. El quinto parámetro que recibe el constructor de un "HsModule" es de tipo "[HsDecl]"; esto último representa un arreglo de declaraciones de Haskell. Una declaración de Haskell
-(valor tipo "HsDecl") puede ser tipo "HsTypeSig","HsDataDecl", o "HsFunBind"  entre otros tipos.
-
-El tipo "HsTypeSig" representa una declaración de tipos o "signature" de una función. Contiene la ubicación de dicha declaración en el texto y el nombre de la función; estos datos se emplean para resaltar el nombre de la función. Adicionalmente, el tipo "HsTypeSig" contiene un valor tipo "HsQualType" el cual representa al conjunto de tipos de datos que se declaran en el signature de la función (tipos de los parámetros y del valor de retorno); este último dato se emplea para resaltar los tipos que se declaran en el signature.
-
-Por otra parte, el tipo "HsDataDecl" representa la declaración de un nuevo tipo de datos mediante el empleo de la palabra reservada "data". Este tipo contiene el nombre del nuevo tipo junto con la ubicación de dicha declaración en el texto; esto se emplea para resaltar el nombre de dicho tipo. Adicionalmente, el constructor del tipo "HsDataDecl" contiene una lista de valores tipo "HsConDecl" que representan una lista de los distintos constructores que posee el tipo de dato que se esta definiendo en sintaxis de Haskell. 
-
-Cada valor de tipo "HsConDecl" contiene el nombre y la ubicación de cada constructor (del nuevo tipo de datos) en el texto. Además, contiene una lista de los tipos que recibe cada constructor. Tanto el nombre del constructor como los tipos de datos que recive cada constructor se resaltan del color seleccionado para los tipos, empleando los datos mencionados.
-
-También se tiene el tipo "HsFunBind", el cual representa a un conjunto de definiciones de una función (polimorfismo paramétrico). Cada definición de una función se representa con el tipo "HsMatch"; este último tipo contiene el nombre de la función que se esta declarando y su ubicación. Con estos datos, se procede a resaltar el nombre de la función que se declara. 
-
-En cuanto a las palabras reservadas, se busca cada una en todo el texto. En caso de que se encuentre una ocurrencia de dicha palabra, se la resalta. Este resaltado de palabras reservadas solo se realiza en caso de que el texto presente sintaxis de Haskell válida.
-
-Por último, en cuando al resaltado de los comentarios, el mismo se realiza en caso de que haya sintaxis válida de Haskell. Para lograr este resaltado, se buscan ocurrencias en el texto de dos guiones seguidos ("--"); cuando esto ocurre, se marca como comentario a todo el texto que se encuentre desde los guiones hasta el final de la línea.
 
 ## Corrector ortográfico
 Para detectar las palabras mal escritas, se emplea la librería Aspell para Haskell (Haspell) [6]. Esta librería indica como incorrectas a aquellas palabras que no se encuentren en el diccionario que se esta empleando; la implementación hecha para este trabajo ofrece soporte para el diccionario español.
@@ -169,7 +153,7 @@ Se emplea para brindar la funcionalidad de "copiar".
 "selectionClipboard" es una función que devuelve clipboard general del sistema operativo y "selectionPrimary" es el clipboard de selección de la ventana de edición de texto (TextView).
 Con la función "copyCallback" se termina copiando el texto al clipboard del sistema operativo.
 
-## "pasteFromClipboard" (ClipboardModule.hs)
+## pasteFromClipboard (ClipboardModule.hs)
 
 Se utiliza para brindar la funcionalidad de "pegar".
 ```haskell
@@ -183,7 +167,7 @@ pasteFromClipboard (a, txtview) = onActionActivate a $
 Primero se obtiene el clipboard del sistema operativo, luego se obtiene el texto que se encuentra en dicho clipboard y por último se lo copia en el buffer de la ventana de edición de texto empleando la función "pasteCallBack"; esta última se emplea en forma asincrónica a través de la función "clipboardRequest".
 La función "selectionClipboard" devuelve el clipboard general del sistema operativo.
 
-## "readFileIntoTextView" (FileModule.hs).
+## readFileIntoTextView (FileModule.hs).
 
 Esta función se utiliza para brindar la funcionalidad de abrir un archivo. 
 
@@ -231,6 +215,75 @@ writeFileFromTextView fileName txtView=
 Recibe el string del nombre con el cual se desea guardar el archivo y el textview; luego copia el contenido completo del textview (dejando de lado las etiquetas) en un archivo con el nombre indicado.
 
 ## Funciones de SyntaxHighlightModule.hs
+
+Las funciones de este módulo son las que se emplean para resaltar la sintaxis de Haskell. Este proceso comienza en la función "highlightSyntax". El módulo que se utiliza para realizar el parseo de la sintaxis de Haskel es "Language.Haskell.Parser" [9]; en particular se emplea la función "parseModule". Una vez que se obtiene el resultado del parseo, se le pasa dicho resultado a la función "processResult".
+
+
+```haskell
+
+highlightSyntax:: TextView->Table ->IO()
+highlightSyntax txtview table =do
+			txtBuffer <- textViewGetBuffer txtview
+			start <- textBufferGetStartIter txtBuffer
+			
+			end <- textBufferGetEndIter txtBuffer
+			
+			contents <- textBufferGetText txtBuffer start end False
+			--se remueven marcas previas
+			textBufferRemoveAllTags txtBuffer start end			
+			
+			
+			
+			--parseo y marcado de sintaxis. También se agregan los botones para colapsar el código.
+			let parseResult=Language.Haskell.Parser.parseModule contents
+			processResult parseResult txtBuffer table 
+			
+
+```
+
+La función "processResult" procesa el resultado del parseo que se obtiene del parser de sintaxis de Haskell. Si se obtiene un resultado de tipo "ParseOk" (el parseo del texto fue exitoso ya que presenta sintaxis de Haskell válida) se resalta gráficamente el código. Si se obtiene un resultado de tipo "ParseFailed" no se resalta el código.
+
+En caso del que la sintaxis sea válida, dentro del resultado tipo "ParseOk" se obtiene un valor tipo "HsModule" el cual representa un módulo de código fuente. 
+Cuando se recibe este módulo de código fuente, se marcan las palabras reservadas, se procesa el módulo de codigo fuente con la función "processModule", se agregan los botones para la funcionalidad de colapsado de código y por último se marcan los comentarios
+
+```haskell
+processResult::ParseResult HsModule->TextBuffer->Table-> IO()
+processResult (ParseOk modul) buffer table = do
+				putStrLn("[highlightSyntax] ParseOK")
+
+				--se marcan palabras clave de la sintaxis de Haskell.
+				markReservedWords buffer	
+				--putStrLn(show modul)
+				
+				--se marca la sintaxis segun lo parseado				
+				processModule modul buffer
+				--se agregan los botones para colapsar el código
+				processFolding modul buffer table 
+				--se marcan comentarios
+				markComments buffer
+processResult (ParseFailed _ _) _ _  =do
+					putStrLn("[highlightSyntax] ParseFailed (not valid Haskell syntax)")
+					return ()
+
+```
+
+
+
+El quinto parámetro que recibe el constructor de un "HsModule" es de tipo "[HsDecl]"; esto último representa un arreglo de declaraciones de Haskell. Una declaración de Haskell
+(valor tipo "HsDecl") puede ser tipo "HsTypeSig","HsDataDecl", o "HsFunBind"  entre otros tipos.
+
+El tipo "HsTypeSig" representa una declaración de tipos o "signature" de una función. Contiene la ubicación de dicha declaración en el texto y el nombre de la función; estos datos se emplean para resaltar el nombre de la función. Adicionalmente, el tipo "HsTypeSig" contiene un valor tipo "HsQualType" el cual representa al conjunto de tipos de datos que se declaran en el signature de la función (tipos de los parámetros y del valor de retorno); este último dato se emplea para resaltar los tipos que se declaran en el signature.
+
+Por otra parte, el tipo "HsDataDecl" representa la declaración de un nuevo tipo de datos mediante el empleo de la palabra reservada "data". Este tipo contiene el nombre del nuevo tipo junto con la ubicación de dicha declaración en el texto; esto se emplea para resaltar el nombre de dicho tipo. Adicionalmente, el constructor del tipo "HsDataDecl" contiene una lista de valores tipo "HsConDecl" que representan una lista de los distintos constructores que posee el tipo de dato que se esta definiendo en sintaxis de Haskell. 
+
+Cada valor de tipo "HsConDecl" contiene el nombre y la ubicación de cada constructor (del nuevo tipo de datos) en el texto. Además, contiene una lista de los tipos que recibe cada constructor. Tanto el nombre del constructor como los tipos de datos que recive cada constructor se resaltan del color seleccionado para los tipos, empleando los datos mencionados.
+
+También se tiene el tipo "HsFunBind", el cual representa a un conjunto de definiciones de una función (polimorfismo paramétrico). Cada definición de una función se representa con el tipo "HsMatch"; este último tipo contiene el nombre de la función que se esta declarando y su ubicación. Con estos datos, se procede a resaltar el nombre de la función que se declara. 
+
+En cuanto a las palabras reservadas, se busca cada una en todo el texto. En caso de que se encuentre una ocurrencia de dicha palabra, se la resalta. Este resaltado de palabras reservadas solo se realiza en caso de que el texto presente sintaxis de Haskell válida.
+
+Por último, en cuando al resaltado de los comentarios, el mismo se realiza en caso de que haya sintaxis válida de Haskell. Para lograr este resaltado, se buscan ocurrencias en el texto de dos guiones seguidos ("--"); cuando esto ocurre, se marca como comentario a todo el texto que se encuentre desde los guiones hasta el final de la línea.
+
 
 ## Funciones de FoldingModule.hs
 
@@ -475,7 +528,7 @@ Luego, si se llega a un caracter de puntuación o un espacio, se realiza una nue
 
 ## Funciones de SpellingModule.hs
 
-Para realizar el marcado de palabras mal escritas se llama a la función "markSpelling", la cual a su vez llama a la función "markSpellingRec".
+Para realizar el marcado de palabras mal escritas se llama a la función "markSpelling", la cual a su vez llama a la función recursiva "markSpellingRec" especificándole el tipo de etiqueta con el cual se marca a las palabras.
 
 ```haskell
 markSpelling:: TextView->IO()
@@ -500,18 +553,11 @@ markSpelling txtview=do
 			textTagTableAdd tags kindaRedItalic
 			end' <- textIterCopy start
 			markSpellingRec contents start end' "" txtBuffer kindaRedItalic
---
+
 ```
 
-La función "markSpellingRec" realiza el marcado en forma recursiva sobre todo el texto. En este sentido, se lee el texto hasta que se encuentra un separador de palabras. Se considera como separador de palabras a los espacios, el símbolo ":" y el punto y coma. 
-Cuando se encuentra un separador, se analiza el texto leído hasta dicho separador; en este sentido se emplea la función
-
-
-
- "spellCheckerWithOptions" de la librería Aspell para determinar si la palabra esta correctamente escrita. En caso de que dicha palabra no sea correcta, se procede a marcarla en la ventana de edición de texto.
-
-Para marcar las palabras mal escritas se utilizan etiquetas en la ventana de edición de texto (TextView) del aplicativo, asignándoles color de letra rojo con itálica. Se emplean iteradores que poseen la posición de comienzo y de fin de la palabra que se analiza en el buffer de la ventana de edición de texto; estos iteradores se especifican junto con la etiqueta para realizar el marcado. 
-
+La función "markSpellingRec" realiza el marcado en forma recursiva sobre todo el texto. En este sentido, se lee el texto hasta que se encuentra un separador de palabras. Se considera como separador de palabras a los espacios y a los signos de puntuación.
+Cuando se encuentra un separador, se analiza el texto leído hasta dicho separador; en este sentido se emplea la función auxiliar "spellCheck". En caso de que dicha palabra no sea correcta, se procede a marcarla en la ventana de edición de texto.
 
 ```haskell
 
@@ -520,8 +566,10 @@ markSpellingRec [] start end acum txtbuffer tag=return ()
 markSpellingRec (x:xs) start end acum txtbuffer tag=do
 					startOffset'<-textIterGetOffset start
 					endOffset'<-textIterGetOffset end
-					--putStrLn ("start"++(show startOffset')++" end"++(show endOffset') )					
-					if (DC.isSpace x || (x == '.') || (x == ':')|| (x == ';'))
+					if (DC.isSpace x 
+					|| (x == '.') 
+					|| (x == ':')
+					|| (x == ';'))
 						then
 							do
 							spellPass<-spellCheck acum
@@ -532,7 +580,6 @@ markSpellingRec (x:xs) start end acum txtbuffer tag=do
 									auxStart <-textIterCopy end
 									startOffset<-textIterGetOffset start
 									endOffset<-textIterGetOffset end
-									putStrLn ("start"++(show startOffset)++" end"++(show endOffset) ++" error ortográfico: "++acum)
 									--se marca el error
 									textBufferApplyTag txtbuffer tag start end
 									textIterForwardChars end 1
@@ -546,7 +593,26 @@ markSpellingRec (x:xs) start end acum txtbuffer tag=do
 						else do
 							textIterForwardChars end 1
 							markSpellingRec xs start end (acum ++ [x]) txtbuffer tag
-		
+							
+
+
+
+```
+
+
+Dentro de la función "spellCheck" se obtiene un corrector ortográfico mediante la función "spellCheckerWithOptions" de la librería Aspell, y luego se termina utilizando este corrector junto con la palabra para determinar si la misma esta correctamente escrita. 
+
+
+```haskell
+spellCheck::String ->IO Bool
+spellCheck string=do
+			aux <-spellCheckerWithOptions 
+[(LAO.Dictionary bytestringLang),LAO.Encoding LAO.Latin1]
+			let 	checker = unpack' aux
+			let 	bytestringInput =BC.pack string
+			--se termina llamando al corrector ortografico	
+			return (check checker bytestringInput)
+
 ```
 
 # Dependencias del proyecto
