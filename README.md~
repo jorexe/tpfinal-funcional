@@ -85,10 +85,9 @@ Por último, en cuando al resaltado de los comentarios, el mismo se realiza en c
 
 ## Corrector ortográfico
 Para detectar las palabras mal escritas, se emplea la librería Aspell para Haskell (Haspell) [6]. Esta librería indica como incorrectas a aquellas palabras que no se encuentren en el diccionario que se esta empleando; la implementación hecha para este trabajo ofrece soporte para el diccionario español.
+Cuando se detecta una palabra mal escrita, se le asigna color de letra rojo con itálica.
 
-En cuanto al código, se lee el texto hasta que se encuentra un separador de palabras. Se considera como separador de palabras a los espacios, el símbolo ":" y el punto y coma. Cuando se encuentra un separador, se analiza el texto leído hasta dicho separador; en este sentido se emplea la función "spellCheckerWithOptions" de la librería Aspell para determinar si la palabra esta correctamente escrita. En caso de que dicha palabra no sea correcta, se procede a marcarla en la ventana de edición de texto.
-
-Para marcar las palabras mal escritas se utilizan etiquetas en la ventana de edición de texto (TextView) del aplicativo, asignándoles color de letra rojo con itálica. Se emplean iteradores que poseen la posición de comienzo y de fin de la palabra que se analiza en el buffer de la ventana de edición de texto; estos iteradores se especifican junto con la etiqueta para realizar el marcado. Por ejemplo, dado el siguiente texto con errores ortográficos la aplicación se ve de la siguiente manera antes de tocar el botón del corrector:
+Por ejemplo, dado el siguiente texto con errores ortográficos la aplicación se ve de la siguiente manera antes de tocar el botón del corrector:
 
 	
 ![](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/correct1.png)
@@ -360,10 +359,91 @@ markWord buffer  tag name=do
 				start<-textBufferGetStartIter buffer 
 				end<-textIterCopy start
 				tags <- textBufferGetTagTable buffer
-				--textTagTableRemove tags tag
 				textTagTableAdd tags tag
 				markWordRec buffer name start end "" tag 0 False False
 ```
+
+La anterior función llama a la función recursiva "markWordRec", la cual es la que realiza la búsqueda y marcado de una palabra en forma recursiva.
+
+```haskell
+
+markWordRec::TextBuffer->String->TextIter->TextIter->String->TextTag->Int->Bool->Bool->IO()
+markWordRec buffer name start end acum tag nameOffset inOtherWord stopOnNewLine=do
+						startOffset<-textIterGetOffset start
+						endOffset<-textIterGetOffset end
+						--posición limite
+						top<-textBufferGetEndIter buffer
+						topOffset<-textIterGetOffset top
+						
+						if( (not inOtherWord) && (compare name acum)== EQ)
+							then do
+								
+								startOffset<-textIterGetOffset start
+								endOffset<-textIterGetOffset end
+								
+								--se evitan ocurrencias parciales al marcar
+								nextIter<-textIterCopy end
+								textIterForwardChars nextIter 1
+								currentString<-textBufferGetText  buffer end nextIter False								
+								let nextChar'=currentString !! 0
+								CM.when ((endOffset == topOffset) || DC.isSpace nextChar' || (nextChar' == '.') || (nextChar' == ':')|| (nextChar' == ';')|| (nextChar' == ',')|| (nextChar' == '-')|| (nextChar' == ']')|| (nextChar' == '='))	(textBufferApplyTag buffer tag start end)
+								
+								--se busca siguiente ocurrencias si no se encuentra en el final del buffer
+								if (endOffset < topOffset)
+									then do
+										textIterForwardChars end 1
+										start<-textIterCopy end
+										markWordRec buffer name start end "" tag 0 False stopOnNewLine
+								else
+									return ()
+														
+						else do
+							--posición caracter actual			
+							current<-textIterCopy end
+							
+							textIterForwardChars end 1
+							currentString<-textBufferGetText buffer current end False	
+							let currentChar=currentString !! 0
+							--caso en el cual se encuentre en el último elemento del buffer
+							if (endOffset == topOffset || ( (compare currentChar '\n')==EQ && stopOnNewLine) )
+								then return ()
+							else do
+								
+								
+								--el elemento buscado no esta en esta posición, se busca mas adelante
+								if( (length name)<= nameOffset ||not( (compare currentString [(name !! nameOffset)])==EQ))
+									then do
+										start<-textIterCopy end
+										let inOtherWord=not (DC.isSpace currentChar || (currentChar == '.') || (currentChar == ':')|| (currentChar == ';')|| (currentChar == ',') || (currentChar == '=') || (currentChar == '>')|| (currentChar == '[')|| (currentChar == '('))
+										markWordRec buffer name start end "" tag 0 inOtherWord stopOnNewLine
+								
+								else do
+								--se obtiene el siguiente caracter
+									contents <- textBufferGetText buffer start end False	
+									markWordRec buffer name start end contents tag (nameOffset +1) inOtherWord stopOnNewLine
+	
+```
+ La función "markWordRec" recibe los siguientes parámetros:
++ el buffer del textview.
++ la palabra a marcar.
++ un iterador que apunta al comienzo del nombre de la palabra actual en el buffer.
++ un iterador que apunta al final de la palabra.
++ la cadena leida hasta el momento en el buffer,
++ la etiqueta a emplear.
++ un contador que indica la cantidad de caracteres de la palabra actual que coinciden con la palabra buscada.
++ un valor booleano que indica si se esta iterando sobre una palabra distintinta de la que se busca
++ un booleano que indica si se debe parar de buscar la palabra frente a un fin de linea.
+
+Lo primero que realiza esta función es comprobar si la cadena de caracteres acumulada coincide con la palabra buscada y además se verifica que la palabra no se encuentre dentro de otra (para evitar búsquedas parciales); si esto se cumple se procede a marcar la ocurrencia actual de la palabra y luego se realizaa una llamada recursiva para seguir buscando ocurrencias.
+
+Si el anterior caso no se dio, se analiza el siguiente caracter en el texto. Si este caracter resulta ser un salto de línea y si se realiza una búsqueda hasta el primer salto de línea, se deja de buscar la palabra. Por otro lado, si se llega a un salto de línea y se realiza una búsqueda en todo el texto (no hasta el primer salto de línea), se continua buscando en el resto del texto.
+
+Luego, si se llega a un caracter de puntuación o un espacio, se realiza una nueva búsqueda de la palabra. 
+
+## Funciones de SpellingModule.hs
+
+
+
 # Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:
 
