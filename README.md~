@@ -296,7 +296,7 @@ processHsMatch _ _ _  _ =return ()
 
 Una vez que se tiene la posición inicial (iterador guardado en la variable "start") y final (iterador guardado en la variable "end") del texto de la definición de función a ocultar, se crea un botón que se encuentre en la misma línea respecto de la definición de función. A dicho botón se lo configura para que al ser presionado, invoque una función (llamada "buttonSwitch" en el modulo "FoldingModule.hs") que  realiza el ocultamiento del texto entre las posiciones que se tienen (posición inicial y final) y además invoca otra función que lleva a cabo el reordenamiento de los otros botones.
 
-Para ocultar el texto, se emplean etiquetas en el buffer de la ventana de edición que lo vuelven "invisible" [11], aunque en realidad no se lo borra. Para volver a mostrar este texto, simplemente se quitan estas marcas y luego el texto vuelve a ser visible en la la ventana de edición.
+Para ocultar el texto, se emplean etiquetas en el buffer de la ventana de edición que lo vuelven "invisible" [11], aunque en realidad no se lo borra.Estas etiquetas son creadas con la función "invisibleTag". Para volver a mostrar este texto, simplemente se quitan estas marcas y luego el texto vuelve a ser visible en la la ventana de edición.
 
 El comienzo de la siguiente declaración se extrae del valor tipo SrcLoc que contine dicha declaración. Esto se encuentra implementado en las funciones getStartIter y getStartIterRec:
 
@@ -348,6 +348,22 @@ getIterForSrcLoc srcLoc buffer=do
 				return (iter,line)
 ```
 
+## markWord (SearchModule).
+Esta función se emplea para marcar una determinada palabra con una determinada etiqueta. Esta función es llamada en la implementación de la funcionalidad de búsqueda de palabras y en el resaltado de palabras reservadas del lenguaje Haskell.
+
+```haskell
+--primer parametro es el buffer
+--el segunto parámetro es la etiqueta a emplear para marcar
+--el tercer parámetro es la palabra que se busca.
+markWord::TextBuffer->TextTag->String->IO()
+markWord buffer  tag name=do
+				start<-textBufferGetStartIter buffer 
+				end<-textIterCopy start
+				tags <- textBufferGetTagTable buffer
+				--textTagTableRemove tags tag
+				textTagTableAdd tags tag
+				markWordRec buffer name start end "" tag 0 False False
+```
 # Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:
 

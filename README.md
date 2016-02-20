@@ -348,6 +348,21 @@ getIterForSrcLoc srcLoc buffer=do
 				return (iter,line)
 ```
 
+## markWord (SearchModule).
+Esta función se emplea para marcar una determinada palabra con una determinada etiqueta. Esta función es llamada en la implementación de la funcionalidad de búsqueda de palabras y en el resaltado de palabras reservadas del lenguaje Haskell.
+
+```haskell
+--primer parametro es el buffer
+--el segunto parámetro es la etiqueta a emplear para marcar
+--el tercer parámetro es la palabra que se busca.
+markWord::TextBuffer->TextTag->String->IO()
+markWord buffer  tag name=do
+				start<-textBufferGetStartIter buffer 
+				end<-textIterCopy start
+				tags <- textBufferGetTagTable buffer
+				textTagTableAdd tags tag
+				markWordRec buffer name start end "" tag 0 False False
+```
 # Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:
 
