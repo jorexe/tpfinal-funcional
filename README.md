@@ -46,11 +46,10 @@ Internamente se extrae el texto de la ventana de edición, y se emplea la funci�
 Se borra el contenido del buffer ( [10] ) de la ventana de edición de texto ( [8] ). También se eliminan los botones del colapsado de código que hayan quedado del archivo que se tenía abierto.
 
 ### Copiar 
-Se copia en el clipboard, lo que se haya seleccionado de la ventana principal de edición de texto. Para lograr esto, se obtiene el clipboard de selección de la interfaz gráfica y el clipboard general del sistema operativo. Por último,  el texto seleccionado en el clipboard de la interfaz gráfica (texto marcado en la ventana de edición) se graba en el clipboard del sistema operativo.
+Se copia en el clipboard, lo que se haya seleccionado de la ventana principal de edición de texto. 
 
 ### Pegar
-Se copia el contenido del clipboard en la posición del cursor en la ventana de edición de texto. Internamente, se obtiene el clipboard del sistema operativo, se obtiene el texto que se encuentra en dicho clipboard y por último se lo copia en el buffer de la ventana de edición de texto.
-
+Se copia el contenido del clipboard en la posición del cursor en la ventana de edición de texto. 
 
 ### Resaltado de sintaxis de haskell
 
@@ -151,11 +150,46 @@ Junto con los botones mencionados anteriormente, se ofrece en la barra superior 
 + SyntaxUtilsModule.hs: contiene funciones de uso común para los módulos "SyntaxHighlightModule.hs" y "FoldingModule.hs".
 + TagsModule: modulo que implementa distintas marcas que se utilizan en varios módulos y que se pueden aplicar sobre partes del texto.
 
+
+
 ## Código Relevante
+
+### Función main ubicada en Main2.hs.
+Función principal donde se inicializa la interfaz gráfica.
+
 ```haskell
 	main :: IO ()
 ```
-Función main ubicada en Main2.hs. Función principal donde se inicializa la interfaz gráfica.
+### Función copyFromClipboard ubicada en ClipboardModule.hs .
+Se emplea para brindar la funcionalidad de "copiar".
+```haskell
+	
+	copyFromClipboard:: ActionClass self => (self,TextView) -> IO (ConnectId self)
+	copyFromClipboard (a, txtview) = onActionActivate a $
+			do	putStrLn ("Copy to clipboard")
+				readClipboard <-clipboardGet selectionPrimary
+				writeClipboard <-clipboardGet selectionClipboard
+				clipboardRequestText readClipboard (copyCallBack writeClipboard)
+
+```
+ Se obtiene el clipboard de selección de la interfaz gráfica y el clipboard general del sistema operativo. Por último,  el texto seleccionado en el clipboard de la interfaz gráfica (texto marcado en la ventana de edición) se graba en el clipboard del sistema operativo.
+"selectionClipboard" es una función que devuelve clipboard general del sistema operativo y "selectionPrimary" es el clipboard de selección de la ventana de edición de texto (TextView).
+Con la función "copyCallback" se termina copiando el texto al clipboard del sistema operativo.
+
+### Función "pasteFromClipboard" implementada en ClipboardModule.hs
+
+Se utiliza para brindar la funcionalidad de "pegar".
+```haskell
+--"selectionClipboard" es el clipboard general del sistema operativo
+--"selectionPrimary"es el clipboard de selección de texto de la ventana de edición de texto.
+pasteFromClipboard:: ActionClass self => (self,TextView) -> IO (ConnectId self)
+pasteFromClipboard (a, txtview) = onActionActivate a $
+		do	putStrLn ("Paste from clipboard")
+			clipboard <-clipboardGet selectionClipboard
+			clipboardRequestText clipboard (pasteCallback txtview)
+
+```
+Primero se obtiene el clipboard del sistema operativo, luego se obtiene el texto que se encuentra en dicho clipboard y por último se lo copia en el buffer de la ventana de edición de texto empleando la función "pasteCallBack"; esta última se emplea en forma asincrónica a través de la función "clipboardRequest".
 
 ## Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:

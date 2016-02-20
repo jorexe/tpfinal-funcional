@@ -10,7 +10,7 @@ import System.IO.Error
 --definición de funciones
 
 --recibe el string del nombre del archivo y el textview.
---No reterna nada. Inserta el texto del archivo en el buffer del textview.
+--No retorna nada. Inserta el texto del archivo en el buffer del textview.
 readFileIntoTextView:: FilePath -> TextView->Table -> IO ()
 readFileIntoTextView fileName txtView table =
 		catchIOError	( 

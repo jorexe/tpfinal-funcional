@@ -7,6 +7,7 @@ import System.IO
 
 
 -- se lee del clipboard de seleccion, luego se graba en el clipboard general
+--"selectionPrimary" es el clipboard de selección de texto de la ventana de edición de texto.
 copyFromClipboard:: ActionClass self => (self,TextView) -> IO (ConnectId self)
 copyFromClipboard (a, txtview) = onActionActivate a $
 		do	putStrLn ("Copy to clipboard")
@@ -15,7 +16,7 @@ copyFromClipboard (a, txtview) = onActionActivate a $
 			clipboardRequestText readClipboard (copyCallBack writeClipboard)
 
 --"selectionClipboard" es el clipboard general del sistema operativo
---"selectionPrimary"es el clipboard de selección de texto de la ventana de edición de texto.
+
 pasteFromClipboard:: ActionClass self => (self,TextView) -> IO (ConnectId self)
 pasteFromClipboard (a, txtview) = onActionActivate a $
 		do	putStrLn ("Paste from clipboard")
