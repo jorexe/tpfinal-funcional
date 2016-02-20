@@ -6,14 +6,14 @@
 \newpage
 
 # Introducción
-Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Porgramación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto plano utilizando la interfaz gráfica GTK.
+Este trabajo consiste en plasmar los conocimientos aprendidos durante la materia Programación Funcional. Como tema para el desarrollo del mismo se decidió elegir Interfaces Gráficas en el lenguaje aprendido en la materia, Haskell. Para cumplir con el objetivo del trabajo, se decidió implementar un editor de texto plano utilizando la interfaz gráfica GTK.
 En el presente informe, se detalla la implementación del mismo. 
 
 # Programación Funcional
-La programación funcional es un estilo de programación en el cuál las funciones no tienen efectos colaterales, es decir, solo realizan un cálculo y retornan un resultado. Esto es conocido como transparencia referencial y los lenguajes orientados a objetos e imperativos no lo cumplen. De esta forma, los resultados de una función se pueden predecir facilmente, y se pueden encontrar funciones equivalentes.
+La programación funcional es un estilo de programación en el cuál las funciones no tienen efectos colaterales, es decir, solo realizan un cálculo y retornan un resultado. Esto es conocido como transparencia referencial y los lenguajes orientados a objetos e imperativos no lo cumplen. De esta forma, los resultados de una función se pueden predecir fácilmente, y se pueden encontrar funciones equivalentes.
 
-# Desiciones de diseño.
-Se decidió emplear el lenguaje Haskell ya que fue el lenguage funcional visto en la materia, y además ya que el mismo es compatible con la librería GTK.
+# Decisiones de diseño.
+Se decidió emplear el lenguaje Haskell ya que fue el lenguaje funcional visto en la materia, y además ya que el mismo es compatible con la librería GTK.
 Para realizar la implementación de este trabajo se analizaron las librerías gráficas GTK2HS, WxHaskell y QtHaskell [5].De estas librerías se eligió la librería GTK2HS ya que posee una excelente documentación en comparación con las otras. Se toma como base el tutorial [1].
 Entre las funcionalidades que ofrece este editor, se encuentra el resaltado de texto con sintaxis Haskell y resaltado de paréntesis para hacer de esta una herramienta útil de programación en Haskell.
 Otras de las funcionalidades que ofrece es la corrección ortográfica; para esto se empleó una librería que utilizando Haskell invoca a  la librería ortográfica Aspell de Linux; se decidió emplear Aspell porque es una de las librerías más reconocidas en Linux (de hecho viene instalada en algunas distribuciones como Ubuntu).
@@ -108,7 +108,7 @@ Esta funcionalidad se puede apreciar en el siguiente prototipo:
 
 ![](https://raw.githubusercontent.com/jorexe/tpfinal-funcional/master/images/example/parenthesis.png)
 
-Debido a las limitaciones de la interfaz gráfica utilizada, no se pudo encontrar una forma de interceptar el evento luego de que se mueve el cursor en el texto, solo el evento antes de moverse. Por ese motivo, se resaltan los parentesis que contienen  la posicion anterior luego de mover el cursor. Si bien, dentro de una función con mucha distancia entre los paréntesis este efecto no se puede notar, si se nota cuando la distancia entre los parentesis es muy corta.
+Debido a las limitaciones de la interfaz gráfica utilizada, no se pudo encontrar una forma de interceptar el evento luego de que se mueve el cursor en el texto, solo el evento antes de moverse. Por ese motivo, se resaltan los paréntesis que contienen  la posición anterior luego de mover el cursor. Si bien, dentro de una función con mucha distancia entre los paréntesis este efecto no se puede notar, si se nota cuando la distancia entre los paréntesis es muy corta.
 
 ## Búsqueda de palabras
 Junto con los botones mencionados anteriormente, se ofrece en la barra superior un campo en el cual se puede ingresar una cadena de caracteres a buscar. Al lado de dicho campo hay un botón que al presionarlo se resaltan con fondo amarillo aquellas cadenas que coincidan con lo buscado.
@@ -218,7 +218,7 @@ highlightParenthesis _ _ _ _ = do return ()
 
 ## highlightChar
 
-Función que aplica un tag a un caracter. 
+Función que aplica un tag a un carácter. 
 
 
 ```haskell
@@ -350,7 +350,7 @@ highlightSyntax txtview table =do
 La función "processResult" procesa el resultado del parseo que se obtiene del parser de sintaxis de Haskell. Si se obtiene un resultado de tipo "ParseOk" (el parseo del texto fue exitoso ya que presenta sintaxis de Haskell válida) se resalta gráficamente el código. Si se obtiene un resultado de tipo "ParseFailed" no se resalta el código.
 
 En caso del que la sintaxis sea válida, dentro del resultado tipo "ParseOk" se obtiene un valor tipo "HsModule" el cual representa un módulo de código fuente. La descripción completa del tipo "HsModule" se puede encontrar en la sección "Anexo".
-Cuando se recibe este módulo de código fuente, se marcan las palabras reservadas, se procesa el módulo de codigo fuente con la función "processModule", se agregan los botones para la funcionalidad de colapsado de código y por último se marcan los comentarios.
+Cuando se recibe este módulo de código fuente, se marcan las palabras reservadas, se procesa el módulo de código fuente con la función "processModule", se agregan los botones para la funcionalidad de colapsado de código y por último se marcan los comentarios.
 
 ```haskell
 processResult::ParseResult HsModule->TextBuffer->Table-> IO()
@@ -361,7 +361,7 @@ processResult (ParseOk modul) buffer table = do
 				markReservedWords buffer	
 				--putStrLn(show modul)
 				
-				--se marca la sintaxis segun lo parseado				
+				--se marca la sintaxis según lo parseado				
 				processModule modul buffer
 				--se agregan los botones para colapsar el código
 				processFolding modul buffer table 
@@ -592,7 +592,7 @@ Esta función se emplea para marcar una determinada palabra con una determinada 
 
 ```haskell
 --primer parámetro es el buffer
---el segunto parámetro es la etiqueta a emplear para marcar
+--el segundo parámetro es la etiqueta a emplear para marcar
 --el tercer parámetro es la palabra que se busca.
 markWord::TextBuffer->TextTag->String->IO()
 markWord buffer  tag name=do
@@ -651,7 +651,7 @@ start end "" tag 0 False stopOnNewLine
 								return ()
 														
 						else do
-							--posición caracter actual			
+							--posición carácter actual			
 							current<-textIterCopy end
 							
 							textIterForwardChars end 1
@@ -688,7 +688,7 @@ posición, se busca mas adelante
 buffer name start end "" tag 0 inOtherWord stopOnNewLine
 								
 								else do
-								--se obtiene el siguiente caracter
+								--se obtiene el siguiente carácter
 								 contents <- textBufferGetText 
 buffer start end False	
 							  	 markWordRec buffer name start end
@@ -700,17 +700,17 @@ contents tag (nameOffset +1) inOtherWord stopOnNewLine
 + la palabra a marcar.
 + un iterador que apunta al comienzo del nombre de la palabra actual en el buffer.
 + un iterador que apunta al final de la palabra.
-+ la cadena leida hasta el momento en el buffer,
++ la cadena leída hasta el momento en el buffer,
 + la etiqueta a emplear.
 + un contador que indica la cantidad de caracteres de la palabra actual que coinciden con la palabra buscada.
-+ un valor booleano que indica si se esta iterando sobre una palabra distintinta de la que se busca
++ un valor booleano que indica si se esta iterando sobre una palabra distinta de la que se busca
 + un booleano que indica si se debe parar de buscar la palabra frente a un fin de linea.
 
-Lo primero que realiza esta función es comprobar si la cadena de caracteres acumulada coincide con la palabra buscada y además se verifica que la palabra no se encuentre dentro de otra (para evitar búsquedas parciales); si esto se cumple se procede a marcar la ocurrencia actual de la palabra y luego se realizaa una llamada recursiva para seguir buscando ocurrencias.
+Lo primero que realiza esta función es comprobar si la cadena de caracteres acumulada coincide con la palabra buscada y además se verifica que la palabra no se encuentre dentro de otra (para evitar búsquedas parciales); si esto se cumple se procede a marcar la ocurrencia actual de la palabra y luego se realiza una llamada recursiva para seguir buscando ocurrencias.
 
-Si el anterior caso no se dio, se analiza el siguiente caracter en el texto. Si este caracter resulta ser un salto de línea y si se realiza una búsqueda hasta el primer salto de línea, se deja de buscar la palabra. Por otro lado, si se llega a un salto de línea y se realiza una búsqueda en todo el texto (no hasta el primer salto de línea), se continua buscando en el resto del texto.
+Si el anterior caso no se dio, se analiza el siguiente carácter en el texto. Si este carácter resulta ser un salto de línea y si se realiza una búsqueda hasta el primer salto de línea, se deja de buscar la palabra. Por otro lado, si se llega a un salto de línea y se realiza una búsqueda en todo el texto (no hasta el primer salto de línea), se continua buscando en el resto del texto.
 
-Luego, si se llega a un caracter de puntuación o un espacio, se realiza una nueva búsqueda de la palabra. 
+Luego, si se llega a un carácter de puntuación o un espacio, se realiza una nueva búsqueda de la palabra. 
 
 ## Funciones de SpellingModule.hs
 
@@ -884,7 +884,7 @@ data HsDecl
 | HsInstDecl SrcLoc HsContext HsQName [HsType] [HsDecl]
 | HsDefaultDecl SrcLoc [HsType]
 | HsTypeSig SrcLoc [HsName] HsQualType--declaracion de tipos de la funcion
-| HsFunBind [HsMatch]  --ESTA ES LA FUNCION.Se compone de multiples definiciones.
+| HsFunBind [HsMatch]  --ESTA ES LA FUNCIÓN.Se compone de multiples definiciones.
 | HsPatBind SrcLoc HsPat HsRhs [HsDecl]
 | HsForeignImport SrcLoc String HsSafety String HsName HsType
 | HsForeignExport SrcLoc String String HsName HsType
@@ -895,7 +895,7 @@ data HsBangType
 = HsBangedTy HsType
 | HsUnBangedTy HsType
 
---HsMatch representa una definición de función con sus respectivos parámetros.SrcLoc contiene linea y columna en el archivo. Hsname el nombre de la funcion. HsPat son los argumentos que recibe la definicion.
+--HsMatch representa una definición de función con sus respectivos parámetros.SrcLoc contiene linea y columna en el archivo. Hsname el nombre de la función. HsPat son los argumentos que recibe la definicion.
 data HsMatch = HsMatch SrcLoc HsName [HsPat] HsRhs [HsDecl] 
 data HsRhs
 = HsUnGuardedRhs HsExp
