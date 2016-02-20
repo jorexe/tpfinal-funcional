@@ -697,7 +697,21 @@ spellCheck string=do
 
 ```
 
+## foldIO (SyntaxUtilsModule)
+
+Es una función auxiliar que se emplea para aplicar una función IO sobre una lista de elementos. Se la utiliza desde los otros módulos.
+
+```haskell
+foldIO:: (a->IO()) -> [a] -> IO()
+foldIO fun []=return ()
+foldIO fun (x:xs)=do
+			fun x
+			foldIO fun xs
+```
+
+
 # Dependencias del proyecto
+
 El proyecto depende de las siguientes programas y librerías:
 
 + ghc
