@@ -197,7 +197,8 @@ readFileIntoTextView fileName txtView table =
 							txtBuffer <-textViewGetBuffer txtView
 				   			textBufferSetText txtBuffer contents
 							hClose handle
-							clearButtons table --se borran los botones para colapsar código del archivo anterior
+							clearButtons table --se borran 
+los botones para colapsar código del archivo anterior
 							highlightSyntax txtView	table 
 							return ()
 						) (\x -> do
@@ -351,7 +352,7 @@ getIterForSrcLoc srcLoc buffer=do
 Esta función se emplea para marcar una determinada palabra con una determinada etiqueta. Esta función es llamada en la implementación de la funcionalidad de búsqueda de palabras y en el resaltado de palabras reservadas del lenguaje Haskell.
 
 ```haskell
---primer parametro es el buffer
+--primer parámetro es el buffer
 --el segunto parámetro es la etiqueta a emplear para marcar
 --el tercer parámetro es la palabra que se busca.
 markWord::TextBuffer->TextTag->String->IO()
@@ -378,49 +379,81 @@ markWordRec buffer name start end acum tag nameOffset inOtherWord stopOnNewLine=
 						if( (not inOtherWord) && (compare name acum)== EQ)
 							then do
 								
-								startOffset<-textIterGetOffset start
-								endOffset<-textIterGetOffset end
+							startOffset<-textIterGetOffset start
+							endOffset<-textIterGetOffset end
 								
-								--se evitan ocurrencias parciales al marcar
-								nextIter<-textIterCopy end
-								textIterForwardChars nextIter 1
-								currentString<-textBufferGetText  buffer end nextIter False								
-								let nextChar'=currentString !! 0
-								CM.when ((endOffset == topOffset) || DC.isSpace nextChar' || (nextChar' == '.') || (nextChar' == ':')|| (nextChar' == ';')|| (nextChar' == ',')|| (nextChar' == '-')|| (nextChar' == ']')|| (nextChar' == '='))	(textBufferApplyTag buffer tag start end)
+							--se evitan ocurrencias parciales al marcar
+							nextIter<-textIterCopy end
+							textIterForwardChars nextIter 1
+							currentString<-textBufferGetText buffer 
+end nextIter False							
+							let nextChar'=currentString !! 0
+							CM.when ((endOffset == topOffset) 
+							|| DC.isSpace nextChar' 
+							|| (nextChar' == '.') 
+							|| (nextChar' == ':')
+							|| (nextChar' == ';')
+							|| (nextChar' == ',')
+							|| (nextChar' == '-')
+							|| (nextChar' == ']')
+							|| (nextChar' == '=')
+								)
+								(textBufferApplyTag buffer tag start end)
 								
-								--se busca siguiente ocurrencias si no se encuentra en el final del buffer
-								if (endOffset < topOffset)
-									then do
-										textIterForwardChars end 1
-										start<-textIterCopy end
-										markWordRec buffer name start end "" tag 0 False stopOnNewLine
-								else
-									return ()
+							--se busca siguiente ocurrencias si no
+se encuentra en el final del buffer
+							if (endOffset < topOffset)
+								then do
+									textIterForwardChars end 1
+									start<-textIterCopy end
+									markWordRec buffer name
+start end "" tag 0 False stopOnNewLine
+							else
+								return ()
 														
 						else do
 							--posición caracter actual			
 							current<-textIterCopy end
 							
 							textIterForwardChars end 1
-							currentString<-textBufferGetText buffer current end False	
+							currentString<-textBufferGetText 
+buffer current end False	
 							let currentChar=currentString !! 0
-							--caso en el cual se encuentre en el último elemento del buffer
-							if (endOffset == topOffset || ( (compare currentChar '\n')==EQ && stopOnNewLine) )
+							--Caso en el cual se 
+encuentre en el último elemento del buffer
+							if (endOffset == topOffset 
+|| ( (compare currentChar '\n')==EQ && stopOnNewLine) )
 								then return ()
 							else do
 								
 								
-								--el elemento buscado no esta en esta posición, se busca mas adelante
-								if( (length name)<= nameOffset ||not( (compare currentString [(name !! nameOffset)])==EQ))
+								--el elemento buscado no esta en esta 
+posición, se busca mas adelante
+								if( (length name)<= nameOffset 
+									||not( (compare currentString
+									 [(name !! nameOffset)])==EQ)
+								   )
 									then do
-										start<-textIterCopy end
-										let inOtherWord=not (DC.isSpace currentChar || (currentChar == '.') || (currentChar == ':')|| (currentChar == ';')|| (currentChar == ',') || (currentChar == '=') || (currentChar == '>')|| (currentChar == '[')|| (currentChar == '('))
-										markWordRec buffer name start end "" tag 0 inOtherWord stopOnNewLine
+									  start<-textIterCopy end
+									  let inOtherWord=not (
+										DC.isSpace currentChar 
+										|| (currentChar == '.') 
+										|| (currentChar == ':')
+										|| (currentChar == ';')
+										|| (currentChar == ',')	
+										|| (currentChar == '=') 
+										|| (currentChar == '>')
+										|| (currentChar == '[')
+										|| (currentChar == '('))
+										markWordRec 
+buffer name start end "" tag 0 inOtherWord stopOnNewLine
 								
 								else do
 								--se obtiene el siguiente caracter
-									contents <- textBufferGetText buffer start end False	
-									markWordRec buffer name start end contents tag (nameOffset +1) inOtherWord stopOnNewLine
+								 contents <- textBufferGetText 
+buffer start end False	
+							  	 markWordRec buffer name start end
+contents tag (nameOffset +1) inOtherWord stopOnNewLine
 	
 ```
  La función "markWordRec" recibe los siguientes parámetros:
@@ -442,7 +475,43 @@ Luego, si se llega a un caracter de puntuación o un espacio, se realiza una nue
 
 ## Funciones de SpellingModule.hs
 
+Para realizar el marcado de palabras mal escritas se llama a la función "markSpelling", la cual a su vez llama a la función "markSpellingRec".
 
+```haskell
+markSpelling:: TextView->IO()
+markSpelling txtview=do
+			txtBuffer <- textViewGetBuffer txtview
+
+			start <- textBufferGetStartIter txtBuffer
+			
+			end <- textBufferGetEndIter txtBuffer
+			
+			--se remueven marcas previas
+			textBufferRemoveAllTags txtBuffer start end
+
+			contents <- textBufferGetText txtBuffer start end False	
+			tags <- textBufferGetTagTable txtBuffer
+			kindaRedItalic <- textTagNew Nothing
+			set kindaRedItalic [
+      					textTagStyle := StyleItalic,
+      					textTagForegroundSet := True,
+					textTagForeground := ("red" :: String) 
+					]
+			textTagTableAdd tags kindaRedItalic
+			end' <- textIterCopy start
+			markSpellingRec contents start end' "" txtBuffer kindaRedItalic
+--
+```
+
+La función "markSpellingRec" realiza el marcado en forma recursiva sobre todo el texto. En este sentido, se lee el texto hasta que se encuentra un separador de palabras. Se considera como separador de palabras a los espacios, el símbolo ":" y el punto y coma. 
+Cuando se encuentra un separador, se analiza el texto leído hasta dicho separador; en este sentido se emplea la función "spellCheckerWithOptions" de la librería Aspell para determinar si la palabra esta correctamente escrita. En caso de que dicha palabra no sea correcta, se procede a marcarla en la ventana de edición de texto.
+
+Para marcar las palabras mal escritas se utilizan etiquetas en la ventana de edición de texto (TextView) del aplicativo, asignándoles color de letra rojo con itálica. Se emplean iteradores que poseen la posición de comienzo y de fin de la palabra que se analiza en el buffer de la ventana de edición de texto; estos iteradores se especifican junto con la etiqueta para realizar el marcado. 
+
+
+```haskell
+
+```
 
 # Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:
