@@ -216,7 +216,8 @@ Recibe el string del nombre con el cual se desea guardar el archivo y el textvie
 
 ## Funciones de SyntaxHighlightModule.hs
 
-Las funciones de este módulo son las que se emplean para resaltar la sintaxis de Haskell. Este proceso comienza en la función "highlightSyntax". El módulo que se utiliza para realizar el parseo de la sintaxis de Haskel es "Language.Haskell.Parser" [9]; en particular se emplea la función "parseModule". Una vez que se obtiene el resultado del parseo, se le pasa dicho resultado a la función "processResult".
+Las funciones de este módulo son las que se emplean para resaltar la sintaxis de Haskell. Este proceso comienza en la función "highlightSyntax". El módulo que se utiliza para realizar el parseo de la sintaxis de Haskel es "Language.Haskell.Parser" [9]; en particular se emplea la función "parseModule".
+ Una vez que se obtiene el resultado del parseo, se le pasa dicho resultado a la función "processResult".
 
 
 ```haskell
@@ -234,8 +235,9 @@ highlightSyntax txtview table =do
 			
 			
 			
-			--parseo y marcado de sintaxis. También se agregan los botones para colapsar el código.
+			--parseo 
 			let parseResult=Language.Haskell.Parser.parseModule contents
+			--marcado de sintaxis. También se agregan los botones para colapsar el código.
 			processResult parseResult txtBuffer table 
 			
 
@@ -243,8 +245,8 @@ highlightSyntax txtview table =do
 
 La función "processResult" procesa el resultado del parseo que se obtiene del parser de sintaxis de Haskell. Si se obtiene un resultado de tipo "ParseOk" (el parseo del texto fue exitoso ya que presenta sintaxis de Haskell válida) se resalta gráficamente el código. Si se obtiene un resultado de tipo "ParseFailed" no se resalta el código.
 
-En caso del que la sintaxis sea válida, dentro del resultado tipo "ParseOk" se obtiene un valor tipo "HsModule" el cual representa un módulo de código fuente. 
-Cuando se recibe este módulo de código fuente, se marcan las palabras reservadas, se procesa el módulo de codigo fuente con la función "processModule", se agregan los botones para la funcionalidad de colapsado de código y por último se marcan los comentarios
+En caso del que la sintaxis sea válida, dentro del resultado tipo "ParseOk" se obtiene un valor tipo "HsModule" el cual representa un módulo de código fuente. La descripción completa del tipo "HsModule" se puede encontrar en la sección "Anexo".
+Cuando se recibe este módulo de código fuente, se marcan las palabras reservadas, se procesa el módulo de codigo fuente con la función "processModule", se agregan los botones para la funcionalidad de colapsado de código y por último se marcan los comentarios.
 
 ```haskell
 processResult::ParseResult HsModule->TextBuffer->Table-> IO()
@@ -268,21 +270,101 @@ processResult (ParseFailed _ _) _ _  =do
 ```
 
 
+El quinto parámetro que recibe el constructor de un "HsModule" es de tipo "[HsDecl]"; esto último representa un arreglo de declaraciones de Haskell. Una declaración de Haskell (valor tipo "HsDecl") puede ser tipo "HsTypeSig","HsDataDecl", o "HsFunBind"  entre otros tipos. Estos tipos de declaraciones de Haskell son procesados por la función "process_hsdecl", la cual delega el procesado de cada tipo de valor a funciones específicas para cada caso.
 
-El quinto parámetro que recibe el constructor de un "HsModule" es de tipo "[HsDecl]"; esto último representa un arreglo de declaraciones de Haskell. Una declaración de Haskell
-(valor tipo "HsDecl") puede ser tipo "HsTypeSig","HsDataDecl", o "HsFunBind"  entre otros tipos.
+```haskell
+process_hsdecl::TextBuffer-> HsDecl->IO()
+process_hsdecl buffer (HsFunBind hsMatchList)=foldIO (process_hsMatch buffer)  hsMatchList
+process_hsdecl buffer (HsTypeSig loc hsName hsQualType)= do 
+		foldIO (process_fun_declaration buffer loc ) hsName
+		process_hsQualType buffer hsQualType loc
+process_hsdecl buffer (HsDataDecl loc _ hsName _ hsDataDecl _ )	=do
+							
+							btag<-brownTag
+							markElement buffer loc "data"  btag 
+							gtag<-greenTag
+							markElement buffer loc (extractHsName hsName)  gtag
+							foldIO (process_hsConDecl buffer ) hsDataDecl
+ 
+process_hsdecl buffer (HsPatBind loc hspat _ _ )=processHsPat buffer loc hspat		
+process_hsdecl _ _ =return ()
+
+
+
+```
+
+
 
 El tipo "HsTypeSig" representa una declaración de tipos o "signature" de una función. Contiene la ubicación de dicha declaración en el texto y el nombre de la función; estos datos se emplean para resaltar el nombre de la función. Adicionalmente, el tipo "HsTypeSig" contiene un valor tipo "HsQualType" el cual representa al conjunto de tipos de datos que se declaran en el signature de la función (tipos de los parámetros y del valor de retorno); este último dato se emplea para resaltar los tipos que se declaran en el signature.
 
 Por otra parte, el tipo "HsDataDecl" representa la declaración de un nuevo tipo de datos mediante el empleo de la palabra reservada "data". Este tipo contiene el nombre del nuevo tipo junto con la ubicación de dicha declaración en el texto; esto se emplea para resaltar el nombre de dicho tipo. Adicionalmente, el constructor del tipo "HsDataDecl" contiene una lista de valores tipo "HsConDecl" que representan una lista de los distintos constructores que posee el tipo de dato que se esta definiendo en sintaxis de Haskell. 
 
-Cada valor de tipo "HsConDecl" contiene el nombre y la ubicación de cada constructor (del nuevo tipo de datos) en el texto. Además, contiene una lista de los tipos que recibe cada constructor. Tanto el nombre del constructor como los tipos de datos que recive cada constructor se resaltan del color seleccionado para los tipos, empleando los datos mencionados.
+Cada valor de tipo "HsConDecl" contiene el nombre y la ubicación de cada constructor (del nuevo tipo de datos) en el texto. Además, contiene una lista de los tipos que recibe cada constructor. Tanto el nombre del constructor como los tipos de datos que recibe cada constructor se resaltan del color seleccionado para los tipos, empleando los datos mencionados.
 
 También se tiene el tipo "HsFunBind", el cual representa a un conjunto de definiciones de una función (polimorfismo paramétrico). Cada definición de una función se representa con el tipo "HsMatch"; este último tipo contiene el nombre de la función que se esta declarando y su ubicación. Con estos datos, se procede a resaltar el nombre de la función que se declara. 
 
-En cuanto a las palabras reservadas, se busca cada una en todo el texto. En caso de que se encuentre una ocurrencia de dicha palabra, se la resalta. Este resaltado de palabras reservadas solo se realiza en caso de que el texto presente sintaxis de Haskell válida.
+En cuanto a las palabras reservadas, se busca cada una en todo el texto en la función "markReservedWords". En caso de que se encuentre una ocurrencia de dicha palabra, se la resalta. Este resaltado de palabras reservadas solo se realiza en caso de que el texto presente sintaxis de Haskell válida.
 
-Por último, en cuando al resaltado de los comentarios, el mismo se realiza en caso de que haya sintaxis válida de Haskell. Para lograr este resaltado, se buscan ocurrencias en el texto de dos guiones seguidos ("--"); cuando esto ocurre, se marca como comentario a todo el texto que se encuentre desde los guiones hasta el final de la línea.
+```haskell
+
+markReservedWords:: TextBuffer->IO ()
+markReservedWords txtBuffer =do
+			tag<-brownTag
+			foldIO (markWord txtBuffer  tag ) reservedWords
+
+```
+
+Por último, en cuando al resaltado de los comentarios, el mismo se realiza en caso de que haya sintaxis válida de Haskell. Para lograr este resaltado, se buscan ocurrencias en el texto de dos guiones seguidos ("--"); cuando esto ocurre, se marca como comentario a todo el texto que se encuentre desde los guiones hasta el final de la línea.Esto se realiza en las funciones "markComment" y "markCommentsRec":
+
+```haskell
+
+markComments::TextBuffer->IO()
+markComments buffer=do
+			putStrLn("[markComments] start")
+			start <- textBufferGetStartIter buffer
+			
+			end <-textIterCopy  start
+			btag<- blueTag
+			tags <- textBufferGetTagTable buffer
+							
+			textTagTableAdd tags btag
+			markCommentsRec buffer start end "" btag
+			
+markCommentsRec::TextBuffer->TextIter->TextIter->String->TextTag->IO()
+markCommentsRec buffer start end acum tag=do
+				
+				startOffset<-textIterGetOffset start
+				endOffset<-textIterGetOffset end
+				top<-textBufferGetEndIter buffer
+				topOffset<-textIterGetOffset top
+				--se controlan los límites
+				if (endOffset == topOffset)  
+					then return () --fuera de limite
+				else	do
+					end'<-textIterCopy end
+					textIterForwardChars end 1
+					currentChar<-textBufferGetText buffer end' end False
+				
+					case currentChar of
+						"\n" ->do
+							CM.when ((compare "--" acum)==EQ) 
+									(do 
+									textBufferApplyTag buffer tag start end
+									putStrLn ("[markCommentRec] comentario marcado")
+									 )
+							start<-textIterCopy end				  	
+							markCommentsRec buffer start end "" tag
+						"-" -> markCommentsRec buffer start end (acum++ currentChar) tag
+						_ -> if((compare "--" acum)==EQ) --dentro de un comentario
+								then markCommentsRec buffer start end acum tag
+							else do
+								start<-textIterCopy end
+								markCommentsRec buffer start end "" tag
+
+					
+
+```
+
 
 
 ## Funciones de FoldingModule.hs
@@ -644,6 +726,184 @@ Si bien la librería gráfica GTK ofrece una completa documentación, presentó 
 
 Por otra parte, el lenguaje Haskell es muy práctico para realizar funciones matemáticas, manejo de tipo, recursividades y algoritmos. Ya que las herramientas de currificación, pattern matching y las características propias de un lenguaje funcional facilitan el desarrollo de la aplicación. 
 Además resulta muy conveniente la separación que realiza Haskell entre lenguaje funcional puro y lenguaje impuro (con operaciones de IO).
+
+# Anexo
+## Declaración del tipo "HsModule".
+```haskell
+
+--como resultado del parseo se obtiene un módulo. El parámetro "[hsDecl]" es un arreglo de declaraciones. Las declaraciones son definiciones de datos, de funciones, signature de función, etc.
+data HsModule = HsModule SrcLoc Module (Maybe [HsExportSpec]) [HsImportDecl] [HsDecl]
+
+data HsExportSpec
+= HsEVar HsQName
+| HsEAbs HsQName
+| HsEThingAll HsQName
+| HsEThingWith HsQName [HsCName]
+| HsEModuleContents Module
+
+data HsImportDecl = HsImportDecl {
+importLoc :: SrcLoc
+importModule :: Module
+importQualified :: Bool
+importAs :: Maybe Module
+importSpecs :: Maybe (Bool, [HsImportSpec])
+}
+data HsImportSpec
+= HsIVar HsName
+| HsIAbs HsName
+| HsIThingAll HsName
+| HsIThingWith HsName [HsCName]
+data HsAssoc
+= HsAssocNone
+| HsAssocLeft
+| HsAssocRight
+data HsDecl
+= HsTypeDecl SrcLoc HsName [HsName] HsType
+| HsDataDecl SrcLoc HsContext HsName [HsName] [HsConDecl] [HsQName]
+| HsInfixDecl SrcLoc HsAssoc Int [HsOp]
+| HsNewTypeDecl SrcLoc HsContext HsName [HsName] HsConDecl [HsQName]
+| HsClassDecl SrcLoc HsContext HsName [HsName] [HsDecl]
+| HsInstDecl SrcLoc HsContext HsQName [HsType] [HsDecl]
+| HsDefaultDecl SrcLoc [HsType]
+| HsTypeSig SrcLoc [HsName] HsQualType--declaracion de tipos de la funcion
+| HsFunBind [HsMatch]  --ESTA ES LA FUNCION.Se compone de multiples definiciones.
+| HsPatBind SrcLoc HsPat HsRhs [HsDecl]
+| HsForeignImport SrcLoc String HsSafety String HsName HsType
+| HsForeignExport SrcLoc String String HsName HsType
+data HsConDecl
+= HsConDecl SrcLoc HsName [HsBangType]
+| HsRecDecl SrcLoc HsName [([HsName], HsBangType)]
+data HsBangType
+= HsBangedTy HsType
+| HsUnBangedTy HsType
+
+--HsMatch representa una definición de función con sus respectivos parámetros.SrcLoc contiene linea y columna en el archivo. Hsname el nombre de la funcion. HsPat son los argumentos que recibe la definicion.
+data HsMatch = HsMatch SrcLoc HsName [HsPat] HsRhs [HsDecl] 
+data HsRhs
+= HsUnGuardedRhs HsExp
+| HsGuardedRhss [HsGuardedRhs]
+data HsGuardedRhs = HsGuardedRhs SrcLoc HsExp HsExp
+data HsSafety
+= HsSafe
+| HsUnsafe
+data HsQualType = HsQualType HsContext HsType
+type HsContext = [HsAsst]
+type HsAsst = (HsQName, [HsType])
+data HsType
+= HsTyFun HsType HsType
+| HsTyTuple [HsType]
+| HsTyApp HsType HsType
+| HsTyVar HsName
+| HsTyCon HsQName
+data HsExp
+= HsVar HsQName
+| HsCon HsQName
+| HsLit HsLiteral
+| HsInfixApp HsExp HsQOp HsExp
+| HsApp HsExp HsExp
+| HsNegApp HsExp
+| HsLambda SrcLoc [HsPat] HsExp
+| HsLet [HsDecl] HsExp
+| HsIf HsExp HsExp HsExp
+| HsCase HsExp [HsAlt]
+| HsDo [HsStmt]
+| HsTuple [HsExp]
+| HsList [HsExp]
+| HsParen HsExp
+| HsLeftSection HsExp HsQOp
+| HsRightSection HsQOp HsExp
+| HsRecConstr HsQName [HsFieldUpdate]
+| HsRecUpdate HsExp [HsFieldUpdate]
+| HsEnumFrom HsExp
+| HsEnumFromTo HsExp HsExp
+| HsEnumFromThen HsExp HsExp
+| HsEnumFromThenTo HsExp HsExp HsExp
+| HsListComp HsExp [HsStmt]
+| HsExpTypeSig SrcLoc HsExp HsQualType
+| HsAsPat HsName HsExp
+| HsWildCard
+| HsIrrPat HsExp
+data HsStmt
+= HsGenerator SrcLoc HsPat HsExp
+| HsQualifier HsExp
+| HsLetStmt [HsDecl]
+data HsFieldUpdate = HsFieldUpdate HsQName HsExp
+data HsAlt = HsAlt SrcLoc HsPat HsGuardedAlts [HsDecl]
+data HsGuardedAlts
+= HsUnGuardedAlt HsExp
+| HsGuardedAlts [HsGuardedAlt]
+data HsGuardedAlt = HsGuardedAlt SrcLoc HsExp HsExp
+data HsPat
+= HsPVar HsName
+| HsPLit HsLiteral
+| HsPNeg HsPat
+| HsPInfixApp HsPat HsQName HsPat
+| HsPApp HsQName [HsPat]
+| HsPTuple [HsPat]
+| HsPList [HsPat]
+| HsPParen HsPat
+| HsPRec HsQName [HsPatField]
+| HsPAsPat HsName HsPat
+| HsPWildCard
+| HsPIrrPat HsPat
+data HsPatField = HsPFieldPat HsQName HsPat
+data HsLiteral
+= HsChar Char
+| HsString String
+| HsInt Integer
+| HsFrac Rational
+| HsCharPrim Char
+| HsStringPrim String
+| HsIntPrim Integer
+| HsFloatPrim Rational
+| HsDoublePrim Rational
+newtype Module = Module String
+data HsQName
+= Qual Module HsName
+| UnQual HsName
+| Special HsSpecialCon
+data HsName
+= HsIdent String
+| HsSymbol String
+data HsQOp
+= HsQVarOp HsQName
+| HsQConOp HsQName
+data HsOp
+= HsVarOp HsName
+| HsConOp HsName
+data HsSpecialCon
+= HsUnitCon
+| HsListCon
+| HsFunCon
+| HsTupleCon Int
+| HsCons
+data HsCName
+= HsVarName HsName
+| HsConName HsName
+prelude_mod :: Module
+main_mod :: Module
+main_name :: HsName
+unit_con_name :: HsQName
+tuple_con_name :: Int -> HsQName
+list_cons_name :: HsQName
+unit_con :: HsExp
+tuple_con :: Int -> HsExp
+unit_tycon_name :: HsQName
+fun_tycon_name :: HsQName
+list_tycon_name :: HsQName
+tuple_tycon_name :: Int -> HsQName
+unit_tycon :: HsType
+fun_tycon :: HsType
+list_tycon :: HsType
+tuple_tycon :: Int -> HsType
+data SrcLoc = SrcLoc {
+srcFilename :: String
+srcLine :: Int
+srcColumn :: Int
+}
+
+```
+
 
 # Bibliografía
 + [1] http://www.muitovar.com/gtk2hs/index.html
