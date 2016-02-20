@@ -34,8 +34,6 @@ En el siguiente diagrama se puede apreciar un esquema sobre la implementación d
 ### Abrir archivo
 Para abrir un archivo se debe tocar el botón correspondiente en la barra de herramientas. Al presionarlo, se abre una ventana de diálogo que permite elegir el archivo que se desea abrir. Una vez seleccionado el archivo, se carga el contenido del mismo en la ventana de edición de texto.
 
-En cuanto al código, lo que se realiza internamente es utilizar la función "openFile" del módulo "System.IO" para abrir el archivo en modo lectura. Como resultado de esto, se obtiene un "Handle"; mas tarde se obtiene el texto del archivo empleando la función "hGetContents" la cual recive como parámetro el handle.
-Una vez que se tiene el contenido del archivo, se lo carga en el buffer de la ventana de edición de texto ( [8] ). Por último, se cierra el handle. 
 
 ### Guardar un archivo
 Para utilizar esta funcionalidad se debe presionar el correspondiente botón en la barra de herramientas. Al presionarlo se abre una ventana que permite elegir el nombre y la ubicación del archivo que se desea guardar. Luego de confirmar estos datos, se guarda el contenido de la ventana de edición de texto (TextView) en un archivo.
@@ -118,11 +116,6 @@ En caso de que se vuelva a presionar el botón, se vuelve a mostrar la definici�
 
 Al presionar estos botones, si se colapsa una o más líneas debajo de una función, los botones de las funciones que se encuentran debajo de la primera deben ser movidos hacia arriba en la misma proporción de líneas que se colapsaron. Cuando se realiza el proceso inverso ( se desactiva el colapsado del código sobre una función), se mueven hacia abajo los botones de las funciones que se encuentran abajo de la función a la cual se le restaura la definición.
 
-En cuanto al código implementado, esta funcionalidad empieza con el resultado del parseo del texto obtenida en el resaltado de la sintaxis de Haskell; es decir que se recibe un valor tipo "HsModule". En forma similar al proceso de marcado de sintaxis (ver análisis hecho en la sección "Resaltado de sintaxis de haskell"), se procesa los distintos valores contenidos hasta llegar a los valores tipo "HsMatch". Cuando esto último ocurre, se considera al final del nombre de la función como posición inicial del texto a ocultar, y como posición final se toma el comienzo de la siguiente declaración de función; en caso de que no exista una siguiente definición de función, se considera como posición final a cualquier declaración de Haskell que se encuentre luego de la definición de la función actual.
-
-Una vez que se tiene la posición inicial y final del texto de la definición de función a ocultar, se crea un botón que se encuentre en la misma línea respecto de la definición de función. A dicho botón se le setea que al ser presionado, invoque una función (llamada "buttonSwitch" en el modulo "FoldingModule.hs") que  realiza el ocultamiento del texto entre las posiciones que se tienen (posición inicial y final) y además invoca otra función que lleva a cabo el reordenamiento de los otros botones.
-
-Para ocultar el texto, se emplean etiquetas en el buffer de la ventana de edición que lo vuelven "invisible" [11], aunque en realidad no se lo borra. Para volver a mostrar este texto, simplemente se quitan estas marcas y luego el texto vuelve a ser visible en la la ventana de edición.
 
 
 ### Macheo de paréntesis y de llaves
@@ -154,13 +147,13 @@ Junto con los botones mencionados anteriormente, se ofrece en la barra superior 
 
 ## Código Relevante
 
-### Función main ubicada en Main2.hs.
+### Main (Main2.hs)
 Función principal donde se inicializa la interfaz gráfica.
 
 ```haskell
 	main :: IO ()
 ```
-### Función copyFromClipboard ubicada en ClipboardModule.hs .
+### CopyFromClipboard (ClipboardModule.hs) .
 Se emplea para brindar la funcionalidad de "copiar".
 ```haskell
 	
@@ -176,12 +169,10 @@ Se emplea para brindar la funcionalidad de "copiar".
 "selectionClipboard" es una función que devuelve clipboard general del sistema operativo y "selectionPrimary" es el clipboard de selección de la ventana de edición de texto (TextView).
 Con la función "copyCallback" se termina copiando el texto al clipboard del sistema operativo.
 
-### Función "pasteFromClipboard" implementada en ClipboardModule.hs
+### "pasteFromClipboard" implementada en ClipboardModule.hs
 
 Se utiliza para brindar la funcionalidad de "pegar".
 ```haskell
---"selectionClipboard" es el clipboard general del sistema operativo
---"selectionPrimary"es el clipboard de selección de texto de la ventana de edición de texto.
 pasteFromClipboard:: ActionClass self => (self,TextView) -> IO (ConnectId self)
 pasteFromClipboard (a, txtview) = onActionActivate a $
 		do	putStrLn ("Paste from clipboard")
@@ -190,6 +181,161 @@ pasteFromClipboard (a, txtview) = onActionActivate a $
 
 ```
 Primero se obtiene el clipboard del sistema operativo, luego se obtiene el texto que se encuentra en dicho clipboard y por último se lo copia en el buffer de la ventana de edición de texto empleando la función "pasteCallBack"; esta última se emplea en forma asincrónica a través de la función "clipboardRequest".
+La función "selectionClipboard" devuelve el clipboard general del sistema operativo.
+### "readFileIntoTextView" (FileModule.hs).
+Esta función se utiliza para brindar la funcionalidad de abrir un archivo. 
+
+```haskell
+readFileIntoTextView:: FilePath -> TextView->Table -> IO ()
+readFileIntoTextView fileName txtView table =
+		catchIOError	( 
+						do	putStrLn ("Opening file: " ++ fileName)
+							handle <- openFile fileName ReadMode
+				  			contents <-hGetContents handle
+							txtBuffer <-textViewGetBuffer txtView
+				   			textBufferSetText txtBuffer contents
+							hClose handle
+							clearButtons table --se borran los botones para colapsar código del archivo anterior
+							highlightSyntax txtView	table 
+							return ()
+						) (\x -> do
+									putStrLn("INVALID FILE")
+									return ())
+
+```
+Esta función recibe el string del nombre del archivo a abrir y el textview.
+Se emplea la función "openFile" del módulo "System.IO" para abrir el archivo en modo lectura. Como resultado de esto, se obtiene un "Handle"; mas tarde se obtiene el texto del archivo empleando la función "hGetContents" la cual recibe como parámetro el handle. Una vez que se tiene el contenido del archivo, se lo carga en el buffer de la ventana de edición de texto ( [8] ). Por último, se cierra el handle. 
+En caso de que se obtenga una excepción (por ejemplo si el archivo es inválido), se la captura para que la aplicación no falle y no se realiza ningún cambio en la interfaz gráfica.
+
+### writeFileFromTextView (FileModule.hs)
+La siguiente función se emplea para brindar la funcionalidad de guardar un archivo.
+
+```haskell
+--recibe el string del nombre del archivo y el textview.
+--No retorna nada. Inserta el texto del buffer del textview al archivo.
+writeFileFromTextView:: FilePath -> TextView -> IO ()
+writeFileFromTextView fileName txtView=
+		do	putStrLn ("Saving file: " ++ fileName)
+			
+  			txtBuffer <- textViewGetBuffer txtView
+			start <- textBufferGetStartIter txtBuffer
+			end <- textBufferGetEndIter txtBuffer
+			contents <- textBufferGetText txtBuffer start end False		
+			writeFile fileName contents
+			return ()
+```
+Recibe el string del nombre con el cual se desea guardar el archivo y el textview; luego copia el contenido completo del textview (dejando de lado las etiquetas) en un archivo con el nombre indicado.
+
+### Funciones de SyntaxHighlightModule.hs
+
+### Funciones de FoldingModule.hs
+
+Las funciones de este módulo son las que se emplean para brindar el colapsado de código.
+Esta funcionalidad empieza en la función "processFolding" con el resultado del parseo del texto obtenida en el resaltado de la sintaxis de Haskell; es decir que se recibe un valor tipo "HsModule". 
+
+```haskell
+processFolding::HsModule->TextBuffer->Table  -> IO ()
+processFolding (HsModule _  _ _ _ hsDecl) buffer table =do
+								clearButtons table
+								processHsDecl buffer hsDecl table 
+								widgetShowAll table
+								putStrLn "[processFolding] buttons done"
+```
+
+En forma similar al proceso de marcado de sintaxis (ver análisis hecho en la sección "Funciones de SyntaxHighlightModule.hs"), se procesa los distintos valores contenidos hasta llegar a los valores tipo "HsMatch". Cuando esto último ocurre, en la función "processHsMatch" se considera al final del nombre de la función como posición inicial del texto a ocultar , y como posición final se toma el comienzo de la siguiente declaración de función; en caso de que no exista una definición de función siguiente, se considera como posición final a cualquier declaración de Haskell que se encuentre luego de la definición de la función actual.
+
+
+
+```haskell
+--primera lista contiene las siguientes declaraciones de Haskell.
+--segunda lista tiene como primer elemento a la declaración de la actual función. Los siguientes elementos son las siguientes funciones.
+processHsMatch :: [HsDecl] -> [HsMatch] -> TextBuffer->Table->IO ()
+processHsMatch xs (y:ys) buffer table = do
+					start<-getNameEndIter y buffer --iterador al comienzo del código a ocultar
+					
+					(end,nextLine)<- if (null ys)
+						then 
+							getStartIter xs buffer --comienzo siguiente declaración
+						else 
+							getNameStartIter ys buffer --comienzo de la siguiente función
+					tags <- textBufferGetTagTable buffer
+					tag<-invisibleTag	
+					textTagTableAdd tags tag
+										
+					startOffset<-textIterGetOffset start
+					endOffset<-textIterGetOffset end
+					
+					--se crea el boton para colapsar el código de dicha función
+					let currentLine=getRow y	
+					let row=getRow y				
+					button<-createButton start end tag buffer
+					tableAttachDefaults table button 0 1 (row-1) row
+					
+					processHsMatch xs ys buffer table  --llamada recursiva.
+					
+					onToggled button (buttonSwitch button buffer tag start end table (currentLine - nextLine ))			
+					
+
+processHsMatch _ _ _  _ =return ()
+
+```
+
+
+
+
+Una vez que se tiene la posición inicial (iterador guardado en la variable "start") y final (iterador guardado en la variable "end") del texto de la definición de función a ocultar, se crea un botón que se encuentre en la misma línea respecto de la definición de función. A dicho botón se le setea que al ser presionado, invoque una función (llamada "buttonSwitch" en el modulo "FoldingModule.hs") que  realiza el ocultamiento del texto entre las posiciones que se tienen (posición inicial y final) y además invoca otra función que lleva a cabo el reordenamiento de los otros botones.
+
+Para ocultar el texto, se emplean etiquetas en el buffer de la ventana de edición que lo vuelven "invisible" [11], aunque en realidad no se lo borra. Para volver a mostrar este texto, simplemente se quitan estas marcas y luego el texto vuelve a ser visible en la la ventana de edición.
+
+El comienzo de la siguiente declaración se extrae del valor tipo SrcLoc que contine dicha declaración.Esto se encuentra implementado en las funciones getStartIter y getStartIterRec:
+
+```haskell
+getStartIter::[HsDecl]->TextBuffer->IO (TextIter,Int)
+getStartIter [] buffer=do
+			iter<- textBufferGetEndIter buffer
+			return (iter,0)
+getStartIter (x:xs) buffer =getStartIterHsDecl x buffer
+
+
+--
+getStartIterHsDecl::HsDecl->TextBuffer->IO (TextIter,Int)
+getStartIterHsDecl (HsTypeDecl srcLoc _ _ _) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsDataDecl srcLoc _ _ _ _ _) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsInfixDecl srcLoc _ _ _) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsNewTypeDecl srcLoc _ _ _ _ _) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsClassDecl srcLoc _ _ _ _  ) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsInstDecl srcLoc _ _ _ _ ) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsDefaultDecl srcLoc _ ) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsTypeSig srcLoc _ _) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsFunBind hsMatch ) buffer=getNameStartIter hsMatch buffer
+getStartIterHsDecl (HsPatBind srcLoc _ _ _  ) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsForeignImport srcLoc _  _ _ _ _ ) buffer=getIterForSrcLoc srcLoc buffer
+getStartIterHsDecl (HsForeignExport srcLoc _ _ _ _ ) buffer=getIterForSrcLoc srcLoc buffer
+
+```
+
+El iterador que apunta a la posición en el texto en la cual comienza la siguiente función se obtiene con la funcion getNameStartIter; 
+
+```haskell
+--Retorna el iterador que apunta al comienzo del nombre de la definición de función
+getNameStartIter::[HsMatch]->TextBuffer->IO (TextIter,Int)
+getNameStartIter ((HsMatch srcLoc _ _ _ _):ys) buffer=getIterForSrcLoc srcLoc buffer
+							
+
+
+```
+
+Tanto la función getStartIterHsDecl como la función getNameStartIter terminan utilizando la función getIterForSrcLoc, la cual es la que crea el iterador a partir del valor tipo SrcLoc: 
+
+```haskell
+getIterForSrcLoc::SrcLoc->TextBuffer->IO (TextIter,Int)
+getIterForSrcLoc srcLoc buffer=do
+				let line=(srcLine srcLoc)-1
+				let column=(srcColumn srcLoc)
+				iter<-textBufferGetIterAtLine buffer line
+				textIterForwardChars iter (column -1 )
+				return (iter,line)
+```
 
 ## Dependencias del proyecto
 El proyecto depende de las siguientes programas y librerías:

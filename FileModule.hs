@@ -29,7 +29,7 @@ readFileIntoTextView fileName txtView table =
 									return ())
 
 --recibe el string del nombre del archivo y el textview.
---No reterna nada. Inserta el texto del buffer del textview al archivo.
+--No retorna nada. Inserta el texto del buffer del textview al archivo.
 writeFileFromTextView:: FilePath -> TextView -> IO ()
 writeFileFromTextView fileName txtView=
 		do	putStrLn ("Saving file: " ++ fileName)

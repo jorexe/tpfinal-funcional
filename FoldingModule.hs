@@ -51,8 +51,7 @@ processHsMatch xs (y:ys) buffer table = do
 					button<-createButton start end tag buffer
 					tableAttachDefaults table button 0 1 (row-1) row
 					
-					nextButtonProperties<-processHsMatch xs ys buffer table  --llamada recursiva. En la variable quedan los siguientes botones
-					
+					processHsMatch xs ys buffer table  --llamada recursiva. 
 					
 					onToggled button (buttonSwitch button buffer tag start end table (currentLine - nextLine ))			
 					

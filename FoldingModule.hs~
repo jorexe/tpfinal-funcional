@@ -188,7 +188,7 @@ updateButton table lines  buttonWidget=do
 						
 						let topAttach=currentTopAttach + lines
 						let bottomAttach=currentBottomAttach +lines
-						putStrLn ("[updateButton] lines: " ++ (show lines)++" currentTopAttach:"++ (show currentTopAttach) ++ " currentBottomAttach: " ++ (show currentBottomAttach) ++ "top attach: " ++ (show topAttach) ++ " bottomAttach: " ++ (show bottomAttach))	
+						--putStrLn ("[updateButton] lines: " ++ (show lines)++" currentTopAttach:"++ (show currentTopAttach) ++ " currentBottomAttach: " ++ (show currentBottomAttach) ++ "top attach: " ++ (show topAttach) ++ " bottomAttach: " ++ (show bottomAttach))	
 						set table	[tableChildTopAttach button :=topAttach,
 								tableChildBottomAttach button := bottomAttach
 							 	]
